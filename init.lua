@@ -1,11 +1,13 @@
 -- Load plugins and plugin settings
 require('plugins')
 
-local telescope_success = pcall(function () require('settings/telescope') end)
-local dashboard_success = pcall(function () require('settings/dashboard') end)
-local autosave_success  = pcall(function () require('settings/autosave') end)
-local neogit_success    = pcall(function () require('settings/neogit') end)
-local neogit_success    = pcall(function () require('settings/treesitter') end)
+local telescope_success     = pcall(function () require('settings/telescope') end)
+local dashboard_success     = pcall(function () require('settings/dashboard') end)
+local autosave_success      = pcall(function () require('settings/autosave') end)
+local neogit_success        = pcall(function () require('settings/neogit') end)
+local treesitter_success    = pcall(function () require('settings/treesitter') end)
+local diffview_successs     = pcall(function () require('settings/diffview') end)
+local neorg_successs     = pcall(function () require('settings/neorg') end)
 
 local util = require('utilities')
 local noremap = util.noremap
@@ -14,7 +16,7 @@ local g = vim.g
 local o, wo, bo = vim.o, vim.wo, vim.bo
 
 -- colorscheme
-vim.cmd("colorscheme everforest")
+vim.cmd("colorscheme forestbones")
 
 vim.cmd("set mouse=a")
 vim.cmd("set autoread")

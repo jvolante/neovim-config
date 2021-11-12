@@ -33,7 +33,13 @@ return require('packer').startup(function()
   use 'kyazdani42/nvim-web-devicons'
   use 'lewis6991/gitsigns.nvim'
   use 'Pocco81/AutoSave.nvim'
-
+  use 'sindrets/diffview.nvim'
+  --[[
+  use {
+    'nvim-neorg/neorg',
+    requires = 'nvim-lua/plenary.nvim'
+  }
+  ]]--
   use {
     'nvim-treesitter/nvim-treesitter',
     run = ':TSUpdate'
