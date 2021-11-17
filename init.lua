@@ -8,6 +8,7 @@ local neogit_success        = pcall(function () require('settings/neogit') end)
 local treesitter_success    = pcall(function () require('settings/treesitter') end)
 local diffview_successs     = pcall(function () require('settings/diffview') end)
 local neorg_successs     = pcall(function () require('settings/neorg') end)
+local nvim_window_success     = pcall(function () require('settings/window') end)
 
 local util = require('utilities')
 local noremap = util.noremap
