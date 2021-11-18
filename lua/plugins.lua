@@ -36,7 +36,7 @@ return require('packer').startup(function()
   use 'Pocco81/AutoSave.nvim'
   use 'sindrets/diffview.nvim'
   use  {
-    'https://gitlab.com/yorickpeterse/nvim-window.git',
+    gitlab..'yorickpeterse/nvim-window.git',
     as = 'nvim-window'
   }
   --[[
@@ -46,8 +46,12 @@ return require('packer').startup(function()
   }
   ]]--
   use {
+    'nvim-lualine/lualine.nvim',
+  }
+
+  use {
     'nvim-treesitter/nvim-treesitter',
-    run = ':TSUpdate'
+    --run = ':TSUpdate'
   }
 
   use {

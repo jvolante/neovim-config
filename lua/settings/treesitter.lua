@@ -9,8 +9,8 @@ parser_configs.norg = {
 }
 
 require('nvim-treesitter.configs').setup {
-  ensure_installed = { 'cpp', 'c', 'rust', 'json', 'json5', 'python' },
+  ensure_installed = { 'cpp', 'c', 'rust', 'json', 'json5', 'cmake', 'bash' },
   highlight = {
-    enable = false
+    enable = true
   }
 }

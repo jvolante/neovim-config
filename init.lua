@@ -9,6 +9,7 @@ local treesitter_success    = pcall(function () require('settings/treesitter') e
 local diffview_successs     = pcall(function () require('settings/diffview') end)
 local neorg_successs     = pcall(function () require('settings/neorg') end)
 local nvim_window_success     = pcall(function () require('settings/window') end)
+local lualine_success     = pcall(function () require('settings/lualine') end)
 
 local util = require('utilities')
 local noremap = util.noremap
