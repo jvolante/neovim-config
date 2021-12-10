@@ -76,6 +76,11 @@ return require('packer').startup(function()
     requires = {{'nvim-telescope/telescope.nvim'}}
   }
 
+  use {
+    'neovim/nvim-lspconfig',
+    'williamboman/nvim-lsp-installer',
+  }
+
   use 'tpope/vim-sleuth'
   use 'tpope/vim-repeat'
   use 'romainl/vim-cool'
