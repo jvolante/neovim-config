@@ -69,23 +69,33 @@ cmp.setup({
 --})
 
 -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
-cmp.setup.cmdline(':', {
-  sources = cmp.config.sources({
-    { name = 'path' }
-  }, {
-    { name = 'cmdline' }
-  })
-})
+--cmp.setup.cmdline(':', {
+--  sources = cmp.config.sources({
+--    { name = 'path' }
+--  }, {
+--    { name = 'cmdline' }
+--  })
+--})
 
 -- Setup lspconfig.
 local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
 require("nvim-lsp-installer").on_server_ready(function(server)
-    local opts = {
-        on_attach = on_attach,
-        capabilities = capabilities
-    }
+  local opts = {
+      on_attach = on_attach,
+      capabilities = capabilities
+  }
 
-    server:setup(opts)
+  if server.name == "sumneko_lua" then
+    opts.settings = {
+      Lua = {
+          diagnostics = {
+              globals = { 'vim' }
+          }
+      }
+    }
+  end
+
+  server:setup(opts)
 end)
 
 
