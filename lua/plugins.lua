@@ -50,6 +50,10 @@ return require('packer').startup(function()
   }
 
   use {
+    'monaqa/dial.nvim',
+  }
+
+  use {
     'nvim-treesitter/nvim-treesitter',
     --run = ':TSUpdate'
   }
@@ -76,6 +80,7 @@ return require('packer').startup(function()
     requires = {{'nvim-telescope/telescope.nvim'}}
   }
 
+  -- Autocomplete stuff
   use {
     'neovim/nvim-lspconfig',
     'williamboman/nvim-lsp-installer',
@@ -83,6 +88,8 @@ return require('packer').startup(function()
     'hrsh7th/cmp-buffer',
     'hrsh7th/cmp-path',
     'hrsh7th/nvim-cmp',
+    'L3MON4D3/LuaSnip',
+    'saadparwaiz1/cmp_luasnip'
   }
 
   use 'tpope/vim-sleuth'
