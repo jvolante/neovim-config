@@ -31,3 +31,5 @@ noremap('n', '<c-h>', '<c-w>h')
 noremap('n', '<c-j>', '<c-w>j')
 noremap('n', '<c-k>', '<c-w>k')
 noremap('n', '<c-l>', '<c-w>l')
+
+require('gitsigns').setup()

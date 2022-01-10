@@ -16,23 +16,29 @@ return require('packer').startup(function()
   use 'wbthomason/packer.nvim'
 
   -- Colorschemes
-  use 'kdheepak/monochrome.nvim'
-  use 'rose-pine/neovim' -- g.rose_pine_variant | base moon dawn
+  --use 'kdheepak/monochrome.nvim'
+  --use 'rose-pine/neovim' -- g.rose_pine_variant | base moon dawn
   use {
     'mcchrish/zenbones.nvim', -- zenbones/zenflesh/zenwritten/...
     requires = 'rktjmp/lush.nvim'
   }
-  use 'FrenzyExists/aquarium-vim'
-  use 'EdenEast/nightfox.nvim'
-  use 'kvrohit/substrata.nvim'
-  use 'rmehri01/onenord.nvim'
-  use 'kyazdani42/blue-moon'
-  use 'sainnhe/everforest'
-  use 'projekt0n/github-nvim-theme'
+  --use 'FrenzyExists/aquarium-vim'
+  --use 'EdenEast/nightfox.nvim'
+  --use 'kvrohit/substrata.nvim'
+  --use 'rmehri01/onenord.nvim'
+  --use 'kyazdani42/blue-moon'
+  --use 'sainnhe/everforest'
+  --use 'projekt0n/github-nvim-theme'
 
+  -- Lua plugins
   use 'ggandor/lightspeed.nvim'
   use 'kyazdani42/nvim-web-devicons'
-  use 'lewis6991/gitsigns.nvim'
+
+  use {
+    'lewis6991/gitsigns.nvim',
+    requires = {'nvim-lua/plenary.nvim'}
+  }
+
   use 'Pocco81/AutoSave.nvim'
   use 'sindrets/diffview.nvim'
   use  {
@@ -55,6 +61,7 @@ return require('packer').startup(function()
 
   use {
     'nvim-treesitter/nvim-treesitter',
+    'nvim-treesitter/nvim-treesitter-textobjects'
     --run = ':TSUpdate'
   }
 
