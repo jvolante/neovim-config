@@ -8,8 +8,24 @@ parser_configs.norg = {
   },
 }
 
+parser_configs.norg_meta = {
+  install_info = {
+    url = "https://github.com/nvim-neorg/tree-sitter-norg-meta",
+    files = { "src/parser.c" },
+    branch = "main"
+  },
+}
+
+parser_configs.norg_table = {
+  install_info = {
+    url = "https://github.com/nvim-neorg/tree-sitter-norg-table",
+    files = { "src/parser.c" },
+    branch = "main"
+  },
+}
+
 require('nvim-treesitter.configs').setup {
-  ensure_installed = { 'cpp', 'c', 'rust', 'json', 'json5', 'cmake', 'bash', 'lua', 'vim' },
+  ensure_installed = { 'norg_meta', 'norg_table', 'cpp', 'c', 'rust', 'json', 'json5', 'cmake', 'bash', 'lua', 'vim' },
 
   highlight = {
     enable = true
@@ -29,5 +45,5 @@ require('nvim-treesitter.configs').setup {
   }
 }
 
-vim.cmd("set foldmethod=expr")
+--vim.cmd("set foldmethod=expr")
 vim.cmd("set foldexpr=nvim_treesitter#foldexpr()")

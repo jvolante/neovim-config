@@ -10,9 +10,11 @@ local diffview_successs = pcall(function () require('settings/diffview') end)
 local neorg_successs = pcall(function () require('settings/neorg') end)
 local nvim_window_success = pcall(function () require('settings/window') end)
 local lualine_success = pcall(function () require('settings/lualine') end)
+local cmp_success = pcall(function () require('settings/cmp') end)
+local substitute_success = pcall(function () require('settings/substitute') end)
 local lualine_success = pcall(function () require('settings/dial') end)
---local cmp_success     = pcall(function () require('settings/cmp') end)
-require('settings/cmp')
+
+require('gitsigns').setup()
 
 local util = require('utilities')
 local noremap = util.noremap
@@ -32,4 +34,3 @@ noremap('n', '<c-j>', '<c-w>j')
 noremap('n', '<c-k>', '<c-w>k')
 noremap('n', '<c-l>', '<c-w>l')
 
-require('gitsigns').setup()

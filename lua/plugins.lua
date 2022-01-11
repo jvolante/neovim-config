@@ -39,18 +39,19 @@ return require('packer').startup(function()
     requires = {'nvim-lua/plenary.nvim'}
   }
 
+  use 'gbprod/substitute.nvim'
   use 'Pocco81/AutoSave.nvim'
   use 'sindrets/diffview.nvim'
   use  {
     gitlab..'yorickpeterse/nvim-window.git',
     as = 'nvim-window'
   }
-  --[[
+
   use {
     'nvim-neorg/neorg',
     requires = 'nvim-lua/plenary.nvim'
   }
-  ]]--
+
   use {
     'nvim-lualine/lualine.nvim',
   }
