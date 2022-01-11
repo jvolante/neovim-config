@@ -30,7 +30,7 @@ local util = require('utilities')
 local noremap = util.noremap
 
 -- colorscheme
-vim.cmd("colorscheme forestbones")
+pcall(vim.cmd, "colorscheme forestbones")
 
 o.mouse = "a"
 o.autoread = true
