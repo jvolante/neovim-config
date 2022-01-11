@@ -1,32 +1,39 @@
+local fn = vim.fn
+local g = vim.g
+-- set, setglobal, setlocal (for window), setlocal (for buffer) respectively
+local o, go, wo, bo = vim.o, vim.go, vim.wo, vim.bo
+
+-- Super important stuff to do first
+g.mapleader = ","
+
 -- Load plugins and plugin settings
 require('plugins')
 
-local telescope_success = pcall(function () require('settings/telescope') end)
-local dashboard_success = pcall(function () require('settings/dashboard') end)
-local autosave_success = pcall(function () require('settings/autosave') end)
-local neogit_success = pcall(function () require('settings/neogit') end)
-local treesitter_success = pcall(function () require('settings/treesitter') end)
-local diffview_successs = pcall(function () require('settings/diffview') end)
-local neorg_successs = pcall(function () require('settings/neorg') end)
-local nvim_window_success = pcall(function () require('settings/window') end)
-local lualine_success = pcall(function () require('settings/lualine') end)
-local cmp_success = pcall(function () require('settings/cmp') end)
-local substitute_success = pcall(function () require('settings/substitute') end)
-local lualine_success = pcall(function () require('settings/dial') end)
+-- Configure plugins, for some reason packer config option doesn't seem
+-- to work on Windows
+local telescope_success = pcall(require, 'settings/telescope')
+local dashboard_success = pcall(require, 'settings/dashboard')
+local autosave_success = pcall(require, 'settings/autosave')
+local neogit_success = pcall(require, 'settings/neogit')
+local treesitter_success = pcall(require, 'settings/treesitter')
+local diffview_successs = pcall(require, 'settings/diffview')
+local neorg_successs = pcall(require, 'settings/neorg')
+local nvim_window_success = pcall(require, 'settings/window')
+local lualine_success = pcall(require, 'settings/lualine')
+local cmp_success = pcall(require, 'settings/cmp')
+local substitute_success = pcall(require, 'settings/substitute')
+local lualine_success = pcall(require, 'settings/dial')
 
 require('gitsigns').setup()
 
 local util = require('utilities')
 local noremap = util.noremap
-local fn = vim.fn
-local g = vim.g
-local o, wo, bo = vim.o, vim.wo, vim.bo
 
 -- colorscheme
 vim.cmd("colorscheme forestbones")
 
-vim.cmd("set mouse=a")
-vim.cmd("set autoread")
+o.mouse = "a"
+o.autoread = true
 vim.cmd("autocmd BufWritePost plugins.lua PackerCompile")
 
 noremap('n', '<c-h>', '<c-w>h')
