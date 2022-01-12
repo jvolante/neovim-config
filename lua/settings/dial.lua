@@ -5,7 +5,13 @@ dial.augends["custom#boolean"] = dial.common.enum_cyclic {
   strlist = {"true", "false"}
 }
 
+dial.augends["custom#booleanUpper"] = dial.common.enum_cyclic {
+  name = "booleanUpper",
+  strlist = {"True", "False"}
+}
+
 table.insert(dial.config.searchlist.normal, "custom#boolean")
+table.insert(dial.config.searchlist.normal, "custom#booleanUpper")
 
 local util = require('utilities')
 local map = util.map
