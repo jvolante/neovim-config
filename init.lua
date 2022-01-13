@@ -9,9 +9,9 @@ g.mapleader = ","
 
 o.mouse = "a"
 o.autoread = true
-o.noswapfile = true
+o.swapfile = false
 o.scrolloff = 5
-o.noshowmode = true
+o.showmode = false
 o.foldlevelstart = 99
 o.foldmethod = "syntax"
 o.foldminlines = 10
