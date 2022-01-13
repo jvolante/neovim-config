@@ -7,10 +7,11 @@ local gitlab = 'https://gitlab.com/'
 local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
 
 if fn.empty(fn.glob(install_path)) > 0 then
-  packer_bootstrap = fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
+  packerBootstrap = fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
 end
 
 vim.cmd [[packadd packer.nvim]]
+vim.cmd("autocmd BufWritePost plugins.lua PackerCompile")
 
 return require('packer').startup(function()
   use 'wbthomason/packer.nvim'
@@ -33,12 +34,6 @@ return require('packer').startup(function()
   -- Lua plugins
   use 'ggandor/lightspeed.nvim'
   use 'kyazdani42/nvim-web-devicons'
-
-  use {
-    'lewis6991/gitsigns.nvim',
-    requires = {'nvim-lua/plenary.nvim'}
-  }
-
   use 'gbprod/substitute.nvim'
   use 'Pocco81/AutoSave.nvim'
   use 'sindrets/diffview.nvim'
@@ -105,7 +100,7 @@ return require('packer').startup(function()
   use 'romainl/vim-cool'
   use 'peterhoeg/vim-qml'
 
-  if packer_bootstrap then
+  if packerBootstrap then
     require('packer').sync()
   end
 end)
