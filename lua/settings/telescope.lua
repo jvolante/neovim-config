@@ -4,7 +4,7 @@ local util = require('utilities')
 
 local noremap = util.noremap
 
-noremap('n', '<c-p>', '<cmd>Telescope find_files<cr>')
+noremap('n', '<c-p>', '<cmd>Telescope find_files previewer=false<cr>')
 
 require('telescope').setup{
   defaults = {
