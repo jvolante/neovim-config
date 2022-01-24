@@ -1,3 +1,14 @@
+-- Set up lsputils
+vim.lsp.handlers['textDocument/codeAction'] = require'lsputil.codeAction'.code_action_handler
+vim.lsp.handlers['textDocument/references'] = require'lsputil.locations'.references_handler
+vim.lsp.handlers['textDocument/definition'] = require'lsputil.locations'.definition_handler
+vim.lsp.handlers['textDocument/declaration'] = require'lsputil.locations'.declaration_handler
+vim.lsp.handlers['textDocument/typeDefinition'] = require'lsputil.locations'.typeDefinition_handler
+vim.lsp.handlers['textDocument/implementation'] = require'lsputil.locations'.implementation_handler
+vim.lsp.handlers['textDocument/documentSymbol'] = require'lsputil.symbols'.document_handler
+vim.lsp.handlers['workspace/symbol'] = require'lsputil.symbols'.workspace_handler
+
+-- Set up on_attach so we can actually use the lsp
 local on_attach = function(_, bufnr)
     vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
@@ -46,7 +57,7 @@ cmp.setup({
     }),
     -- Accept currently selected item. If none selected, `select` first item.
     -- Set `select` to `false` to only confirm explicitly selected items.
-    ['<CR>'] = cmp.mapping.confirm({ select = true }),
+    ['<tab>'] = cmp.mapping.confirm({ select = true }),
   },
   sources = cmp.config.sources({
     { name = 'nvim_lsp' },
@@ -75,32 +86,40 @@ cmp.setup({
 --  })
 --})
 
--- Setup lspconfig.
+-- Make sure some lsps are installed and set them up
 local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
-require("nvim-lsp-installer").on_server_ready(function(server)
-  local opts = {
-      on_attach = on_attach,
-      capabilities = capabilities
-  }
 
-  if server.name == "sumneko_lua" then
-    opts.settings = {
-      Lua = {
-        runtime = {
-          version = 'LuaJIT',
-          path = vim.split(package.path, ';')
-        },
-        diagnostics = {
-            globals = { 'vim' }
-        }
-      },
-      workspace = {
-        library = vim.api.nvim_get_runtime_file("", true)
+local lspInstallerServers = require('nvim-lsp-installer.servers')
+local servers = {"sumneko_lua", "clangd", "cmake", "pylsp", "yamlls"}
+
+for _, server_name in ipairs(servers) do
+  local server_available, server = lspInstallerServers.get_server(server_name)
+
+  if server_available then
+    server:on_ready(function ()
+      local opts = {
+          on_attach = on_attach,
+          capabilities = capabilities
       }
-    }
+
+      if server_name == "sumneko_lua" then
+        opts.settings = {
+          Lua = {
+            runtime = {
+              version = 'LuaJIT',
+              path = vim.split(package.path, ';')
+            },
+            diagnostics = {
+                globals = { 'vim' }
+            }
+          },
+          workspace = {
+            library = vim.api.nvim_get_runtime_file("", true)
+          }
+        }
+      end
+
+      server:setup(opts)
+    end)
   end
-
-  server:setup(opts)
-end)
-
-
+end

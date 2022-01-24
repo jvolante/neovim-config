@@ -92,7 +92,9 @@ return require('packer').startup(function()
     'hrsh7th/cmp-path',
     'hrsh7th/nvim-cmp',
     'L3MON4D3/LuaSnip',
-    'saadparwaiz1/cmp_luasnip'
+    'saadparwaiz1/cmp_luasnip',
+    'RishabhRD/popfix',
+    'RishabhRD/nvim-lsputils',
   }
 
   use 'tpope/vim-sleuth'
