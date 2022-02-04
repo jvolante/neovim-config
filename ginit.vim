@@ -1,3 +1,6 @@
-GuiFont! FiraCode Nerd Font:h10:w57
+"GuiFont! FiraCode Nerd Font:h10:w57
+"GuiFont! DaddyTimeMono:h10
+"GuiFont! Lekton Nerd Font Mono:h11
+GuiFont! DM Mono:h10
 GuiTabline 0
 GuiPopupmenu 0

@@ -57,7 +57,8 @@ return require('packer').startup(function()
 
   use {
     'nvim-treesitter/nvim-treesitter',
-    'nvim-treesitter/nvim-treesitter-textobjects'
+    'nvim-treesitter/nvim-treesitter-textobjects',
+    'numToStr/Comment.nvim'
     --run = ':TSUpdate'
   }
 

@@ -38,4 +38,6 @@ noremap('n', '<c-j>', '<c-w>j')
 noremap('n', '<c-k>', '<c-w>k')
 noremap('n', '<c-l>', '<c-w>l')
 
+noremap('n', '<F5>', '<cmd>e!<cr>')
+
 noremap('n', 'W', 'b')
