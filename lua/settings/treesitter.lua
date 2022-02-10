@@ -28,7 +28,7 @@ require('nvim-treesitter.configs').setup {
   ensure_installed = { 'norg_meta', 'norg_table', 'cpp', 'c', 'rust', 'json', 'json5', 'cmake', 'bash', 'lua', 'vim' },
 
   highlight = {
-    enable = false
+    enable = true
   },
 
   textobjects = {

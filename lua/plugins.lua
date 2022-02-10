@@ -68,13 +68,6 @@ return require('packer').startup(function()
   }
 
   use {
-    'jghauser/mkdir.nvim',
-    config = function()
-      require('mkdir')
-    end
-  }
-
-  use {
     'nvim-telescope/telescope.nvim',
     requires = {{'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'}}
   }
@@ -94,8 +87,6 @@ return require('packer').startup(function()
     'hrsh7th/nvim-cmp',
     'L3MON4D3/LuaSnip',
     'saadparwaiz1/cmp_luasnip',
-    'RishabhRD/popfix',
-    'RishabhRD/nvim-lsputils',
   }
 
   use 'tpope/vim-sleuth'

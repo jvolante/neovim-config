@@ -22,6 +22,8 @@ o.tabstop = 2
 
 -- Load plugins and plugin settings
 require('plugins')
+-- Load custom functionality
+require('functionality')
 
 -- Configure plugins, for some reason packer config option doesn't seem
 -- to work on Windows
