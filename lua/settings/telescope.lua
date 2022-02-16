@@ -1,11 +1,8 @@
 local actions = require('telescope.actions')
 local config = require('telescope.config')
-local util = require('utilities')
 
-local noremap = util.noremap
-
-noremap('n', '<c-p>', '<cmd>Telescope find_files previewer=false<cr>')
-noremap('n', '<leader>/', '<cmd>Telescope live_grep<cr>')
+vim.keymap.set('n', '<c-p>', function() require('telescope.builtin').find_files({ previewer=false }) end)
+vim.keymap.set('n', '<leader>/', require('telescope.builtin').live_grep)
 
 require('telescope').setup{
   defaults = {

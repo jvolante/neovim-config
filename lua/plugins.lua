@@ -31,6 +31,9 @@ return require('packer').startup(function()
   --use 'sainnhe/everforest'
   --use 'projekt0n/github-nvim-theme'
 
+  -- Nvim 0.6+
+  use 'stevearc/dressing.nvim'
+
   -- Lua plugins
   use 'ggandor/lightspeed.nvim'
   use 'kyazdani42/nvim-web-devicons'

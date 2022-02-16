@@ -1,11 +1,7 @@
-local keymap = vim.api.nvim_set_keymap
+local M = {}
 
-return {
-  noremap = function (mode, i, o)
-    keymap(mode, i, o, {noremap=true})
-  end,
+function M.isTable(x)
+  return type(x) == 'table'
+end
 
-  map = function (mode, i, o)
-    keymap(mode, i, o, {noremap=false})
-  end
-}
+return M

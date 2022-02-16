@@ -1,5 +1,3 @@
 local util = require('utilities')
 
-local noremap = util.noremap
-
-noremap('n', '<c-w>', '<cmd>lua require("nvim-window").pick()<CR>')
+vim.keymap.set('n', '<c-w>', require("nvim-window").pick)

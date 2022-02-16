@@ -1,9 +1,6 @@
 require("substitute").setup()
 
-local util = require('utilities')
-local noremap = util.noremap
-
-noremap("n", "<tab>", "<cmd>lua require('substitute').operator()<cr>")
-noremap("n", "<tab><tab>", "<cmd>lua require('substitute').line()<cr>")
-noremap("n", "<s-tab>", "<cmd>lua require('substitute').eol()<cr>")
-noremap("x", "<tab>", "<cmd>lua require('substitute').visual()<cr>")
+vim.keymap.set("n", "<tab>", require('substitute').operator)
+vim.keymap.set("n", "<tab><tab>", require('substitute').line)
+vim.keymap.set("n", "<s-tab>", require('substitute').eol)
+vim.keymap.set("x", "<tab>", require('substitute').visual)

@@ -16,9 +16,13 @@ o.foldlevelstart = 99
 o.foldmethod = "syntax"
 o.foldminlines = 10
 o.foldopen = "all"
+o.tabstop = 2
 o.shiftwidth = 2
 o.softtabstop = 2
-o.tabstop = 2
+o.expandtab = true
+o.breakindent = true
+o.breakindentopt = 'shift:4'
+o.linebreak = true
 
 -- Load plugins and plugin settings
 require('plugins')
@@ -29,17 +33,20 @@ require('functionality')
 -- to work on Windows
 require('settings')
 
-local util = require('utilities')
-local noremap = util.noremap
-
 -- colorscheme
 pcall(vim.cmd, "colorscheme forestbones")
 
-noremap('n', '<c-h>', '<c-w>h')
-noremap('n', '<c-j>', '<c-w>j')
-noremap('n', '<c-k>', '<c-w>k')
-noremap('n', '<c-l>', '<c-w>l')
+vim.keymap.set('n', '<c-h>', '<c-w>h')
+vim.keymap.set('n', '<c-j>', '<c-w>j')
+vim.keymap.set('n', '<c-k>', '<c-w>k')
+vim.keymap.set('n', '<c-l>', '<c-w>l')
 
-noremap('n', '<F5>', '<cmd>e!<cr>')
+vim.keymap.set('n', '<F5>', '<cmd>e!<cr>')
 
-noremap('n', 'W', 'b')
+vim.keymap.set('n', 'W', 'b')
+
+-- Stop caffine on windows from being wierd
+vim.keymap.set({'n', 'v', 'x', 'i'}, '<F15>', '')
+
+--g.do_filetype_lua = true
+--g.did_load_filetypes = false
