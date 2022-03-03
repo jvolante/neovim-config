@@ -3,6 +3,9 @@ local g = vim.g
 -- set, setglobal, setlocal (for window), setlocal (for buffer) respectively
 local o, go, wo, bo = vim.o, vim.go, vim.wo, vim.bo
 
+-- Stop neovim from looking everywhere for the python program
+-- this can improve startuptime
+g.python3_host_prog = 'python3'
 -- Super important stuff to do first, loading plugins may change
 -- these options
 g.mapleader = ","
@@ -50,3 +53,13 @@ vim.keymap.set({'n', 'v', 'x', 'i'}, '<F15>', '')
 
 --g.do_filetype_lua = true
 --g.did_load_filetypes = false
+
+-- load user platform settings, I use this for stuff that isn't the same
+-- install to install
+local userSetup, err = loadfile(vim.env.HOME .. '/.nvimUserSettings')
+if userSetup ~= nil then
+  userSetup()
+else
+  print("User preferences not loaded")
+  print(err)
+end

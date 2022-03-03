@@ -75,11 +75,6 @@ return require('packer').startup(function()
     requires = {{'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'}}
   }
 
-  use {
-    'glepnir/dashboard-nvim',
-    requires = {{'nvim-telescope/telescope.nvim'}}
-  }
-
   -- Autocomplete stuff
   use {
     'neovim/nvim-lspconfig',
@@ -92,7 +87,11 @@ return require('packer').startup(function()
     'saadparwaiz1/cmp_luasnip',
   }
 
-  use 'tpope/vim-sleuth'
+  use {
+    'pianocomposer321/yabs.nvim',
+    requires = {'nvim-lua/plenary.nvim'}
+  }
+
   use 'tpope/vim-repeat'
   use 'romainl/vim-cool'
   use 'peterhoeg/vim-qml'

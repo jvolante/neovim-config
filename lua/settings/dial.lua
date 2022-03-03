@@ -1,22 +1,23 @@
-local dial = require("dial")
+local augend = require('dial.augend')
 
-dial.augends["custom#boolean"] = dial.common.enum_cyclic {
-  name = "boolean",
-  strlist = {"true", "false"}
+require("dial.config").augends:register_group{
+  default = {
+    augend.integer.alias.decimal_int,
+    augend.integer.alias.hex,
+    augend.integer.alias.binary,
+    augend.constant.alias.bool,
+    augend.constant.new {
+      elements = {"True", "False"},
+      word = true,
+      cyclic = true,
+    },
+    augend.date.alias["%Y/%m/%d"],
+  },
 }
 
-dial.augends["custom#booleanUpper"] = dial.common.enum_cyclic {
-  name = "booleanUpper",
-  strlist = {"True", "False"}
-}
-
-table.insert(dial.config.searchlist.normal, "custom#boolean")
-table.insert(dial.config.searchlist.normal, "custom#booleanUpper")
-
-local util = require('utilities')
-local map = util.map
-
-map('n', '<c-a>', '<Plug>(dial-increment)')
-map('n', '<c-x>', '<Plug>(dial-decrement)')
-map('v', '<c-a>', '<Plug>(dial-increment)')
-map('v', '<c-x>', '<Plug>(dial-decrement)')
+vim.keymap.set('n', '<c-a>', '<Plug>(dial-increment)')
+vim.keymap.set('n', '<c-x>', '<Plug>(dial-decrement)')
+vim.keymap.set('v', '<c-a>', '<Plug>(dial-increment)')
+vim.keymap.set('v', '<c-x>', '<Plug>(dial-decrement)')
+vim.keymap.set('v', 'g<c-a>', 'g<Plug>(dial-increment)')
+vim.keymap.set('v', 'g<c-x>', 'g<Plug>(dial-decrement)')
