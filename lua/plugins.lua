@@ -35,6 +35,7 @@ return require('packer').startup(function()
   use 'stevearc/dressing.nvim'
 
   -- Lua plugins
+  use 'nacro90/numb.nvim'
   use 'ggandor/lightspeed.nvim'
   use 'kyazdani42/nvim-web-devicons'
   use 'gbprod/substitute.nvim'
