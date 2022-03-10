@@ -44,6 +44,8 @@ vim.keymap.set('n', '<c-j>', '<c-w>j')
 vim.keymap.set('n', '<c-k>', '<c-w>k')
 vim.keymap.set('n', '<c-l>', '<c-w>l')
 
+vim.keymap.set('n', '<c-q>', '<cmd>q<cr>')
+
 vim.keymap.set('n', '<F5>', '<cmd>e!<cr>')
 
 vim.keymap.set('n', 'W', 'b')
