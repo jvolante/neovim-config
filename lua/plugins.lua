@@ -2,7 +2,6 @@ local fn = vim.fn
 local g = vim.g
 local o, wo, bo = vim.o, vim.wo, vim.bo
 
-local gitlab = 'https://gitlab.com/'
 -- Bootstrap paq
 local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
 
@@ -35,16 +34,13 @@ return require('packer').startup(function()
   use 'stevearc/dressing.nvim'
 
   -- Lua plugins
+  use 'folke/todo-comments.nvim'
   use 'nacro90/numb.nvim'
   use 'ggandor/lightspeed.nvim'
   use 'kyazdani42/nvim-web-devicons'
   use 'gbprod/substitute.nvim'
   use 'Pocco81/AutoSave.nvim'
   use 'sindrets/diffview.nvim'
-  use  {
-    gitlab..'yorickpeterse/nvim-window.git',
-    as = 'nvim-window'
-  }
 
   use {
     'nvim-neorg/neorg',
