@@ -36,7 +36,7 @@ return require('packer').startup(function()
   -- Lua plugins
   use 'folke/todo-comments.nvim'
   use 'nacro90/numb.nvim'
-  use 'ggandor/lightspeed.nvim'
+  use 'ggandor/leap.nvim'
   use 'kyazdani42/nvim-web-devicons'
   use 'gbprod/substitute.nvim'
   use 'Pocco81/AutoSave.nvim'

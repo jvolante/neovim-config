@@ -26,6 +26,7 @@ o.expandtab = true
 o.breakindent = true
 o.breakindentopt = 'shift:4'
 o.linebreak = true
+o.cursorline = true
 
 -- Load plugins and plugin settings
 require('plugins')
@@ -52,6 +53,9 @@ vim.keymap.set('n', 'W', 'b')
 
 -- Stop caffine on windows from being wierd
 vim.keymap.set({'n', 'v', 'x', 'i'}, '<F15>', '')
+
+vim.keymap.set({'n', 'v', 'o'}, 's', '<Plug>(leap-omni)')
+vim.keymap.set('n', 'S', '<Plug>(leap-cross-window)')
 
 --g.do_filetype_lua = true
 --g.did_load_filetypes = false
