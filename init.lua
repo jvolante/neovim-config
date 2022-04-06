@@ -27,6 +27,7 @@ o.breakindent = true
 o.breakindentopt = 'shift:4'
 o.linebreak = true
 o.cursorline = true
+o.laststatus = 3 -- Single global statusline
 
 -- Load plugins and plugin settings
 require('plugins')

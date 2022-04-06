@@ -1,5 +1,9 @@
 local neogit = require('neogit')
 
-neogit.setup {}
+neogit.setup {
+  integrations = {
+    diffview = true
+  }
+}
 
-vim.keymap.set('n', '<c-g>', '<cmd>Neogit<cr>')
+vim.keymap.set('n', '<c-g>', neogit.open)
