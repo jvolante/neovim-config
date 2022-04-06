@@ -72,3 +72,21 @@ else
     print("User preferences not loaded")
   end)
 end
+
+vim.api.nvim_create_autocmd("DirChanged", {
+  pattern = { '*' },
+  callback = function ()
+    local dirSetup, errr = loadfile('.nvim/nvimProject.lua')
+    if dirSetup ~= nil then
+      local setup = dirSetup()
+      -- possibly change this later to work with per tab working dirs
+      local scope = o
+      setup(scope)
+    else
+      vim.schedule(function ()
+        print(errr)
+        print("Dir preferences not loaded")
+      end)
+    end
+  end,
+})
