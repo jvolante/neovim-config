@@ -67,6 +67,8 @@ local userSetup, err = loadfile(vim.env.HOME .. '/.nvimUserSettings')
 if userSetup ~= nil then
   userSetup()
 else
-  print("User preferences not loaded")
-  print(err)
+  vim.schedule(function ()
+    print(err)
+    print("User preferences not loaded")
+  end)
 end
