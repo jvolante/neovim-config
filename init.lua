@@ -27,6 +27,7 @@ o.breakindent = true
 o.breakindentopt = 'shift:4'
 o.linebreak = true
 o.cursorline = true
+o.lazyredraw = true
 o.laststatus = 3 -- Single global statusline
 
 -- Load plugins and plugin settings
@@ -53,7 +54,8 @@ vim.keymap.set('n', '<F5>', '<cmd>e!<cr>')
 vim.keymap.set('n', 'W', 'b')
 
 -- Stop caffine on windows from being wierd
-vim.keymap.set({'n', 'v', 'x', 'i'}, '<F15>', '')
+vim.keymap.set({''}, '<F15>', '')
+vim.keymap.set({''}, '<c-F15>', '')
 
 vim.keymap.set({'n', 'v', 'o'}, 's', '<Plug>(leap-omni)')
 vim.keymap.set('n', 'S', '<Plug>(leap-cross-window)')
@@ -73,6 +75,8 @@ else
   end)
 end
 
+-- load workspace local settings, ussually use this to set build tasks
+-- and indent options on a per project basis
 vim.api.nvim_create_autocmd("DirChanged", {
   pattern = { '*' },
   callback = function ()

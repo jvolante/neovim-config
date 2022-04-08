@@ -8,4 +8,10 @@ function M.run()
   end
 end
 
+vim.api.nvim_create_autocmd("BufWritePre", {
+  pattern = { '*' },
+  callback = M.run
+})
+
+
 return M

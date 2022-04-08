@@ -23,7 +23,7 @@ local on_attach = function(_, bufnr)
   vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
   vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, opts)
   vim.keymap.set('n', '<leader>so', require('telescope.builtin').lsp_document_symbols, opts)
-  vim.cmd [[ command! Format execute 'lua vim.lsp.buf.formatting()' ]]
+  vim.nvim_add_user_command('Format', vim.lsp.buf.formatting)
 end
 
 -- Setup nvim-cmp.
@@ -67,12 +67,13 @@ cmp.setup({
 local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
 
 local lspInstallerServers = require('nvim-lsp-installer.servers')
-local servers = {"sumneko_lua", "clangd", "cmake", "pylsp", "yamlls", "vimls"}
+local servers = {"sumneko_lua", "clangd", "cmake", "pylsp", "yamlls"}
 
 for _, server_name in ipairs(servers) do
   local server_available, server = lspInstallerServers.get_server(server_name)
 
   if server_available then
+    server:install()
     server:on_ready(function ()
       local opts = {
           on_attach = on_attach,
