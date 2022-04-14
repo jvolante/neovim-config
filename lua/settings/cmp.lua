@@ -128,7 +128,8 @@ for _, server_name in ipairs(servers) do
   local server_available, server = lspInstallerServers.get_server(server_name)
 
   if server_available then
-    server:install()
+    -- this adds a ton of latency to startup
+    --server:install()
 
     local server_on_ready = create_server_ready_func(server, server_specific_setups[server_name])
     server:on_ready(server_on_ready)
