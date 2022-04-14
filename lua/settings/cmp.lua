@@ -23,7 +23,7 @@ local on_attach = function(_, bufnr)
   vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
   vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, opts)
   vim.keymap.set('n', '<leader>so', require('telescope.builtin').lsp_document_symbols, opts)
-  vim.nvim_add_user_command('Format', vim.lsp.buf.formatting)
+  vim.api.nvim_buf_create_user_command(bufnr, 'Format', vim.lsp.buf.formatting, {})
 end
 
 -- Setup nvim-cmp.
@@ -67,37 +67,70 @@ cmp.setup({
 local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
 
 local lspInstallerServers = require('nvim-lsp-installer.servers')
-local servers = {"sumneko_lua", "clangd", "cmake", "pylsp", "yamlls"}
+local servers = {"sumneko_lua", "clangd", "cmake", "pyright", "yamlls"}
+
+local function create_server_ready_func(server, server_specific_setup)
+  return function()
+    local opts = {
+      on_attach = on_attach,
+      capabilities = capabilities
+    }
+
+    if server_specific_setup ~= nil then
+      server_specific_setup(opts)
+    end
+    server:setup(opts)
+  end
+end
+
+local server_specific_setups = {
+  sumneko_lua = function (opts)
+    local indent_style
+
+    if vim.o.expandtab then
+      indent_style = "space"
+    else
+      indent_style = "tab"
+    end
+
+    opts.settings = {
+      Lua = {
+        runtime = {
+          version = 'LuaJIT',
+          path = vim.split(package.path, ';')
+        },
+        completion = {callSnippet = "Both"},
+        diagnostics = {
+            globals = {'vim'}
+        }
+      },
+      workspace = {
+        library = vim.api.nvim_get_runtime_file("", true)
+      },
+      format = {
+        enable = true,
+        defaultConfig = {
+          indent_style = indent_style,
+          indent_size = tostring(vim.o.tabstop),
+        },
+      },
+      IntelliSense = {
+        traceLocalSet = true,
+        traceReturn = true,
+        traceBeSetted = true,
+        traceFieldInject = true,
+      },
+    }
+  end
+}
 
 for _, server_name in ipairs(servers) do
   local server_available, server = lspInstallerServers.get_server(server_name)
 
   if server_available then
     server:install()
-    server:on_ready(function ()
-      local opts = {
-          on_attach = on_attach,
-          capabilities = capabilities
-      }
 
-      if server_name == "sumneko_lua" then
-        opts.settings = {
-          Lua = {
-            runtime = {
-              version = 'LuaJIT',
-              path = vim.split(package.path, ';')
-            },
-            diagnostics = {
-                globals = {'vim'}
-            }
-          },
-          workspace = {
-            library = vim.api.nvim_get_runtime_file("", true)
-          }
-        }
-      end
-
-      server:setup(opts)
-    end)
+    local server_on_ready = create_server_ready_func(server, server_specific_setups[server_name])
+    server:on_ready(server_on_ready)
   end
 end

@@ -1,4 +1,3 @@
-local fn = vim.fn
 local g = vim.g
 -- set, setglobal, setlocal (for window), setlocal (for buffer) respectively
 local o, go, wo, bo = vim.o, vim.go, vim.wo, vim.bo
@@ -20,8 +19,8 @@ o.foldmethod = "syntax"
 o.foldminlines = 10
 o.foldopen = "all"
 o.tabstop = 2
-o.shiftwidth = 2
-o.softtabstop = 2
+o.shiftwidth = o.tabstop
+o.softtabstop = o.tabstop
 o.expandtab = true
 o.breakindent = true
 o.breakindentopt = 'shift:4'
@@ -54,14 +53,17 @@ vim.keymap.set('n', '<F5>', '<cmd>e!<cr>')
 vim.keymap.set('n', 'W', 'b')
 
 -- Stop caffine on windows from being wierd
-vim.keymap.set({''}, '<F15>', '')
-vim.keymap.set({''}, '<c-F15>', '')
+vim.keymap.set({'n', 'v', 'o', 's', 'i', 'c', 't'}, '<F15>', '')
+vim.keymap.set({'n', 'v', 'o', 's', 'i', 'c', 't'}, '<c-F15>', '')
 
-vim.keymap.set({'n', 'v', 'o'}, 's', '<Plug>(leap-omni)')
-vim.keymap.set('n', 'S', '<Plug>(leap-cross-window)')
+vim.keymap.set({'n', 'v', 'o'}, 's', '<Plug>(leap-forward)')
+vim.keymap.set({'n', 'v', 'o'}, 'S', '<Plug>(leap-backward)')
+vim.keymap.set('n', 'gs', '<Plug>(leap-cross-window)')
 
---g.do_filetype_lua = true
---g.did_load_filetypes = false
+-- Switch to experimental lua filetype detection
+-- significantly improves startuptime
+g.do_filetype_lua = 1
+g.did_load_filetypes = 0
 
 -- load user platform settings, I use this for stuff that isn't the same
 -- install to install
