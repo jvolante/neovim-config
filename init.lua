@@ -55,6 +55,7 @@ vim.keymap.set('n', 'W', 'b')
 -- Stop caffine on windows from being wierd
 vim.keymap.set({'n', 'v', 'o', 's', 'i', 'c', 't'}, '<F15>', '')
 vim.keymap.set({'n', 'v', 'o', 's', 'i', 'c', 't'}, '<c-F15>', '')
+vim.keymap.set({'n', 'v', 'o', 's', 'i', 'c', 't'}, '<s-F15>', '')
 
 vim.keymap.set({'n', 'v', 'o'}, 's', '<Plug>(leap-forward)')
 vim.keymap.set({'n', 'v', 'o'}, 'S', '<Plug>(leap-backward)')
