@@ -33,17 +33,13 @@ return require('packer').startup(function()
   --use 'sainnhe/everforest'
   --use 'projekt0n/github-nvim-theme'
 
-  -- Nvim 0.6+
-  use 'stevearc/dressing.nvim'
-
   -- Lua plugins
-  use 'folke/todo-comments.nvim'
-  use 'nacro90/numb.nvim'
+  use 'lewis6991/impatient.nvim'
+  use 'stevearc/dressing.nvim'
   use 'ggandor/leap.nvim'
   use 'kyazdani42/nvim-web-devicons'
   use 'gbprod/substitute.nvim'
   use 'Pocco81/AutoSave.nvim'
-  use 'sindrets/diffview.nvim'
 
   use {
     'nvim-neorg/neorg',
@@ -60,9 +56,12 @@ return require('packer').startup(function()
 
   use {
     'nvim-treesitter/nvim-treesitter',
+    run = ':TSUpdate'
+  }
+
+  use {
     'nvim-treesitter/nvim-treesitter-textobjects',
     'numToStr/Comment.nvim'
-    --run = ':TSUpdate'
   }
 
   use {
@@ -84,6 +83,7 @@ return require('packer').startup(function()
     'hrsh7th/nvim-cmp',
     'L3MON4D3/LuaSnip',
     'saadparwaiz1/cmp_luasnip',
+    'folke/lua-dev.nvim',
   }
 
   use {

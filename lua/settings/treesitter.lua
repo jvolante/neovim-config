@@ -32,8 +32,16 @@ parser_configs.xml = {
   },
 }
 
+parser_configs.qml = {
+  install_info = {
+    url = "https://github.com/wingsandsuch/tree-sitter-qml.git",
+    files = { "src/parser.c" },
+    branch = "develop"
+  },
+}
+
 require('nvim-treesitter.configs').setup {
-  ensure_installed = {'norg_meta', 'norg_table', 'cpp', 'c', 'rust', 'json', 'json5', 'cmake', 'bash', 'lua', 'vim', 'xml'},
+  ensure_installed = {'norg_meta', 'norg_table', 'cpp', 'c', 'rust', 'json', 'json5', 'cmake', 'bash', 'lua', 'vim', 'xml', 'markdown', 'comment'},
 
   highlight = {
     enable = true
@@ -48,6 +56,8 @@ require('nvim-treesitter.configs').setup {
         ["if"] = "@function.inner",
         ["ac"] = "@class.outer",
         ["ic"] = "@class.inner",
+        ["al"] = "@loop.outer",
+        ["il"] = "@loop.inner",
       }
     }
   }

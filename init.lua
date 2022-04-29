@@ -1,4 +1,8 @@
+-- improve startuptime
+-- require('impatient')
+
 local g = vim.g
+local util = require('utilities')
 -- set, setglobal, setlocal (for window), setlocal (for buffer) respectively
 local o, go, wo, bo = vim.o, vim.go, vim.wo, vim.bo
 
@@ -18,16 +22,16 @@ o.foldlevelstart = 99
 o.foldmethod = "syntax"
 o.foldminlines = 10
 o.foldopen = "all"
-o.tabstop = 2
-o.shiftwidth = o.tabstop
-o.softtabstop = o.tabstop
-o.expandtab = true
 o.breakindent = true
-o.breakindentopt = 'shift:4'
 o.linebreak = true
 o.cursorline = true
 o.lazyredraw = true
-o.laststatus = 3 -- Single global statusline
+
+local function setDefaultDirPreferences(scope)
+  util.setupIndent(2, scope)
+end
+
+setDefaultDirPreferences(o)
 
 -- Load plugins and plugin settings
 require('plugins')
@@ -53,16 +57,19 @@ vim.keymap.set('n', '<F5>', '<cmd>e!<cr>')
 vim.keymap.set('n', 'W', 'b')
 
 -- Stop caffine on windows from being wierd
-vim.keymap.set({'n', 'v', 'o', 's', 'i', 'c', 't'}, '<F15>', '')
-vim.keymap.set({'n', 'v', 'o', 's', 'i', 'c', 't'}, '<c-F15>', '')
-vim.keymap.set({'n', 'v', 'o', 's', 'i', 'c', 't'}, '<s-F15>', '')
+vim.keymap.set({ 'n', 'v', 'o', 's', 'i', 'c', 't' }, '<F15>', '')
+vim.keymap.set({ 'n', 'v', 'o', 's', 'i', 'c', 't' }, '<c-F15>', '')
+vim.keymap.set({ 'n', 'v', 'o', 's', 'i', 'c', 't' }, '<s-F15>', '')
 
-vim.keymap.set({'n', 'v', 'o'}, 's', '<Plug>(leap-forward)')
-vim.keymap.set({'n', 'v', 'o'}, 'S', '<Plug>(leap-backward)')
+vim.keymap.set({ 'n', 'v', 'o' }, 's', '<Plug>(leap-forward)')
+vim.keymap.set({ 'n', 'v', 'o' }, 'S', '<Plug>(leap-backward)')
 vim.keymap.set('n', 'gs', '<Plug>(leap-cross-window)')
+
+vim.keymap.set('i', '<c-l>', '<c-r>"')
 
 -- Switch to experimental lua filetype detection
 -- significantly improves startuptime
+-- might not work for esoteric filetypes
 g.do_filetype_lua = 1
 g.did_load_filetypes = 0
 
@@ -72,28 +79,36 @@ local userSetup, err = loadfile(vim.env.HOME .. '/.nvimUserSettings')
 if userSetup ~= nil then
   userSetup()
 else
-  vim.schedule(function ()
-    print(err)
-    print("User preferences not loaded")
-  end)
+  if err ~= "" then
+    vim.schedule(function()
+      print(err)
+      print("User preferences not loaded")
+    end)
+  end
 end
+
+o.laststatus = 3 -- Single global statusline, this is last because something is screwing it up
 
 -- load workspace local settings, ussually use this to set build tasks
 -- and indent options on a per project basis
 vim.api.nvim_create_autocmd("DirChanged", {
   pattern = { '*' },
-  callback = function ()
+  callback = function()
     local dirSetup, errr = loadfile('.nvim/nvimProject.lua')
+    local scope = o
     if dirSetup ~= nil then
       local setup = dirSetup()
       -- possibly change this later to work with per tab working dirs
-      local scope = o
       setup(scope)
     else
-      vim.schedule(function ()
-        print(errr)
-        print("Dir preferences not loaded")
+      vim.schedule(function()
+        if errr ~= "" then
+          print(errr)
+          print("Dir preferences not loaded")
+        end
+        setDefaultDirPreferences(scope)
       end)
     end
   end,
 })
+
