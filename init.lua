@@ -73,13 +73,17 @@ vim.keymap.set('i', '<c-l>', '<c-r>"')
 g.do_filetype_lua = 1
 g.did_load_filetypes = 0
 
+-- Single global statusline, this is last because something is screwing it up
+o.laststatus = 3
+
 -- load user platform settings, I use this for stuff that isn't the same
 -- install to install
-local userSetup, err = loadfile(vim.env.HOME .. '/.nvimUserSettings')
+local userSetupFname = vim.env.HOME .. '/.nvimUserSettings'
+local userSetup, err = loadfile(userSetupFname)
 if userSetup ~= nil then
   userSetup()
 else
-  if err ~= "" then
+  if err ~= "cannot open " .. userSetupFname .. ": No such file or directory" then
     vim.schedule(function()
       print(err)
       print("User preferences not loaded")
@@ -87,14 +91,13 @@ else
   end
 end
 
-o.laststatus = 3 -- Single global statusline, this is last because something is screwing it up
-
 -- load workspace local settings, ussually use this to set build tasks
 -- and indent options on a per project basis
 vim.api.nvim_create_autocmd("DirChanged", {
   pattern = { '*' },
   callback = function()
-    local dirSetup, errr = loadfile('.nvim/nvimProject.lua')
+    local dirConfigFname = '.nvim/nvimProject.lua'
+    local dirSetup, errr = loadfile(dirConfigFname)
     local scope = o
     if dirSetup ~= nil then
       local setup = dirSetup()
@@ -102,12 +105,12 @@ vim.api.nvim_create_autocmd("DirChanged", {
       setup(scope)
     else
       vim.schedule(function()
-        if errr ~= "" then
+        if errr ~= "cannot open " .. dirConfigFname .. ": No such file or directory" then
           print(errr)
-          print("Dir preferences not loaded")
+          print("Project preferences not loaded")
         end
-        setDefaultDirPreferences(scope)
       end)
+      setDefaultDirPreferences(scope)
     end
   end,
 })
