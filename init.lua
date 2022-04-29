@@ -76,6 +76,9 @@ g.did_load_filetypes = 0
 -- Single global statusline, this is last because something is screwing it up
 o.laststatus = 3
 
+-- TODO: These custom config loaders are probably a bit of a security risk, and I
+-- should probably change them to load a json file or something
+
 -- load user platform settings, I use this for stuff that isn't the same
 -- install to install
 local userSetupFname = vim.env.HOME .. '/.nvimUserSettings'
@@ -104,12 +107,12 @@ vim.api.nvim_create_autocmd("DirChanged", {
       -- possibly change this later to work with per tab working dirs
       setup(scope)
     else
-      vim.schedule(function()
-        if errr ~= "cannot open " .. dirConfigFname .. ": No such file or directory" then
-          print(errr)
-          print("Project preferences not loaded")
-        end
-      end)
+      if errr ~= "cannot open " .. dirConfigFname .. ": No such file or directory" then
+        vim.schedule(function()
+            print(errr)
+            print("Project preferences not loaded")
+        end)
+      end
       setDefaultDirPreferences(scope)
     end
   end,
