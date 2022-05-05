@@ -14,5 +14,8 @@ function M.setupIndent(tabstop, scope)
   scope.breakindentopt = 'shift:' .. tostring(scope.tabstop * 2)
 end
 
+-- Determine if we are in a unix os, HOME is generally blank in windows
+-- but the vim environment will always set it
+M.isUnix = vim.env.HOME == os.getenv("HOME")
 
 return M
