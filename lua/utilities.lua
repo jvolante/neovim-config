@@ -14,6 +14,12 @@ function M.setupIndent(tabstop, scope)
   scope.breakindentopt = 'shift:' .. tostring(scope.tabstop * 2)
 end
 
+function M.table_update(table, table2)
+  for key, val in ipairs(table2) do
+    table[key] = val
+  end
+end
+
 -- Determine if we are in a unix os, HOME is generally blank in windows
 -- but the vim environment will always set it
 M.isUnix = vim.env.HOME == os.getenv("HOME")

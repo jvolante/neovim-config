@@ -94,6 +94,7 @@ return require('packer').startup(function(use)
   use 'tpope/vim-repeat'
   use 'romainl/vim-cool'
   use 'peterhoeg/vim-qml'
+  use 'bkad/CamelCaseMotion'
 
   if packerBootstrap then
     require('packer').sync()

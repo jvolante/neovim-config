@@ -1,5 +1,5 @@
 -- improve startuptime
--- require('impatient')
+require('impatient')
 
 local g = vim.g
 local util = require('utilities')
@@ -27,12 +27,6 @@ o.linebreak = true
 o.cursorline = true
 o.lazyredraw = true
 
-local function setDefaultDirPreferences(scope)
-  util.setupIndent(2, scope)
-end
-
-setDefaultDirPreferences(o)
-
 -- Load plugins and plugin settings
 require('plugins')
 -- Load custom functionality
@@ -54,8 +48,6 @@ vim.keymap.set('n', '<c-q>', '<cmd>q<cr>')
 
 vim.keymap.set('n', '<F5>', '<cmd>e!<cr>')
 
-vim.keymap.set('n', 'W', 'b')
-
 -- Stop caffine on windows from being wierd
 vim.keymap.set({ 'n', 'v', 'o', 's', 'i', 'c', 't' }, '<F15>', '')
 vim.keymap.set({ 'n', 'v', 'o', 's', 'i', 'c', 't' }, '<c-F15>', '')
@@ -72,46 +64,3 @@ vim.keymap.set('i', '<c-l>', '<c-r>"')
 -- might not work for esoteric filetypes
 g.do_filetype_lua = 1
 g.did_load_filetypes = 0
-
--- TODO: These custom config loaders are probably a bit of a security risk, and I
--- should probably change them to load a json file or something
-
--- load user platform settings, I use this for stuff that isn't the same
--- install to install
-local userSetupFname = vim.env.HOME .. '/.nvimUserSettings'
-local userSetup, err = loadfile(userSetupFname)
-if userSetup ~= nil then
-  userSetup()
-else
-  if err ~= "cannot open " .. userSetupFname .. ": No such file or directory" then
-    vim.schedule(function()
-      print(err)
-      print("User preferences not loaded")
-    end)
-  end
-end
-
--- load workspace local settings, ussually use this to set build tasks
--- and indent options on a per project basis
-vim.api.nvim_create_autocmd("DirChanged", {
-  pattern = { '*' },
-  callback = function()
-    local dirConfigFname = '.nvim/nvimProject.lua'
-    local dirSetup, errr = loadfile(dirConfigFname)
-    local scope = o
-    if dirSetup ~= nil then
-      local setup = dirSetup()
-      -- possibly change this later to work with per tab working dirs
-      setup(scope)
-    else
-      if errr ~= "cannot open " .. dirConfigFname .. ": No such file or directory" then
-        vim.schedule(function()
-            print(errr)
-            print("Project preferences not loaded")
-        end)
-      end
-      setDefaultDirPreferences(scope)
-    end
-  end,
-})
-
