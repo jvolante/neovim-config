@@ -4,5 +4,3 @@
 GuiFont! mononoki NF:h10
 GuiTabline 0
 GuiPopupmenu 0
-
-set laststatus=3

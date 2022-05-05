@@ -15,7 +15,7 @@ vim.api.nvim_create_autocmd("BufWritePost", {
   callback = "PackerCompile",
 })
 
-return require('packer').startup(function()
+return require('packer').startup(function(use)
   use 'wbthomason/packer.nvim'
 
   -- Colorschemes

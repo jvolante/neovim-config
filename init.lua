@@ -73,9 +73,6 @@ vim.keymap.set('i', '<c-l>', '<c-r>"')
 g.do_filetype_lua = 1
 g.did_load_filetypes = 0
 
--- Single global statusline, this is last because something is screwing it up
-o.laststatus = 3
-
 -- TODO: These custom config loaders are probably a bit of a security risk, and I
 -- should probably change them to load a json file or something
 
