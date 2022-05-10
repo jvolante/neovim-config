@@ -28,7 +28,6 @@ return require('packer').startup(function(use)
   --use 'FrenzyExists/aquarium-vim'
   --use 'EdenEast/nightfox.nvim'
   --use 'kvrohit/substrata.nvim'
-  --use 'rmehri01/onenord.nvim'
   --use 'kyazdani42/blue-moon'
   --use 'sainnhe/everforest'
   --use 'projekt0n/github-nvim-theme'
