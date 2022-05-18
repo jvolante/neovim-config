@@ -1,5 +1,5 @@
 -- improve startuptime
-require('impatient')
+pcall(require, 'impatient')
 
 local g = vim.g
 local util = require('utilities')
