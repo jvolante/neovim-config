@@ -29,6 +29,35 @@ end
 
 -- Setup nvim-cmp.
 local cmp = require 'cmp'
+local luasnip = require 'luasnip'
+
+local icons = {
+  Text = "",
+  Method = "",
+  Function = "",
+  Constructor = "⌘",
+  Field = "ﰠ",
+  Variable = "",
+  Class = "ﴯ",
+  Interface = "",
+  Module = "",
+  Property = "ﰠ",
+  Unit = "塞",
+  Value = "",
+  Enum = "",
+  Keyword = "廓",
+  Snippet = "",
+  Color = "",
+  File = "",
+  Reference = "",
+  Folder = "",
+  EnumMember = "",
+  Constant = "",
+  Struct = "פּ",
+  Event = "",
+  Operator = "",
+  TypeParameter = "",
+}
 
 cmp.setup({
   snippet = {
@@ -52,9 +81,25 @@ cmp.setup({
       i = cmp.mapping.abort(),
       c = cmp.mapping.close(),
     }),
-    -- Accept currently selected item. If none selected, `select` first item.
-    -- Set `select` to `false` to only confirm explicitly selected items.
-    ['<tab>'] = cmp.mapping.confirm({ select = true }),
+    -- Expanded tab behavior to make cmp and luasnip work
+    -- seamlessly
+    ['<tab>'] = cmp.mapping(function (fallback)
+      if cmp.visible() then
+        cmp.confirm({ select = true })
+      elseif luasnip.expand_or_jumpable() then
+        luasnip.expand_or_jump()
+      else
+        fallback()
+      end
+    end, {'i', 's'}),
+
+    ['<s-tab>'] = cmp.mapping(function (fallback)
+      if luasnip.jumpable(-1) then
+        luasnip.jump(-1)
+      else
+        fallback()
+      end
+    end, { 'i', 's' }),
   },
 
   -- window = {
@@ -72,7 +117,18 @@ cmp.setup({
 
   experimental = {
     ghost_text = true,
+    native_menu = false,
   },
+
+  formatting = {
+    fields = { "kind", "abbr", "menu" },
+    format = function (_, vim_item)
+      vim_item.menu = vim_item.kind
+      vim_item.kind = icons[vim_item.kind]
+
+      return vim_item
+    end,
+  }
 })
 
 -- Make sure some lsps are installed and set them up
