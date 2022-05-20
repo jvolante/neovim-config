@@ -65,12 +65,23 @@ function M.register_settings_handler(key, handler, default)
 end
 
 function M.setup(options)
-  options = options or {
+  local defaults = {
     load_user_settings = true,
     load_project_settings = true,
+    cache_settings = false,
   }
 
-  if options.load_user_settings or options.load_user_settings == nil then
+  options = options or defaults
+
+  return M._setup(
+    options.load_user_settings or defaults.load_user_settings,
+    options.load_project_settings or defaults.load_project_settings,
+    options.cache_settings or defaults.cache_settings)
+
+end
+
+function M._setup(load_user_settings, load_project_settings, cache_settings)
+  if load_user_settings then
     local user_setup_fname = vim.env.HOME .. '/.nvimUserSettings.json'
 
     local f = io.open(user_setup_fname, 'r')
@@ -94,13 +105,15 @@ function M.setup(options)
     end
   end
 
-  if options.load_project_settings or options.load_project_settings == nil then
+  if load_project_settings then
     -- load workspace local settings, ussually use this to set build tasks
     -- and indent options on a per project basis
     vim.api.nvim_create_autocmd("DirChanged", {
       pattern = { '*' },
       callback = function()
-        local dir_config_name = '.nvim/nvimProject.json'
+        -- find the project config folder
+        local project_top_dir = vim.fn.finddir('.nvim', ';/.', 1)
+        local dir_config_name = project_top_dir .. '/nvimProject.json'
         local f = io.open(dir_config_name, 'r')
 
         if f ~= nil then
