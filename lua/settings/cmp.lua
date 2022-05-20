@@ -75,7 +75,15 @@ cmp.setup({
     ['<C-p>'] = cmp.mapping.select_prev_item(),
     ['<C-b>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
     ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
-    ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
+    ['<C-Space>'] = cmp.mapping(function (fallback)
+      if not cmp.visible() then
+        cmp.complete()
+      elseif cmp.get_selected_entry() ~= nil then
+        cmp.confirm({ select = true })
+      else
+        fallback()
+      end
+    end, { 'i', 'c' }),
     ['<C-y>'] = cmp.config.disable, -- Specify `cmp.config.disable` if you want to remove the default `<C-y>` mapping.
     ['<C-e>'] = cmp.mapping({
       i = cmp.mapping.abort(),
@@ -84,10 +92,10 @@ cmp.setup({
     -- Expanded tab behavior to make cmp and luasnip work
     -- seamlessly
     ['<tab>'] = cmp.mapping(function (fallback)
-      if cmp.visible() then
-        cmp.confirm({ select = true })
-      elseif luasnip.expand_or_jumpable() then
+      if luasnip.expand_or_jumpable() then
         luasnip.expand_or_jump()
+      elseif cmp.visible() then
+        cmp.confirm({ select = true })
       else
         fallback()
       end
