@@ -64,3 +64,24 @@ vim.keymap.set('i', '<c-l>', '<c-r>"')
 -- might not work for esoteric filetypes
 g.do_filetype_lua = 1
 g.did_load_filetypes = 0
+
+local proj_settings = require('functionality.platform_project_settings')
+proj_settings.register_settings_handler('o',
+  function(osettings)
+    for setting, value in pairs(osettings) do
+      vim.o[setting] = value
+    end
+  end,
+  {})
+
+proj_settings.register_settings_handler('g',
+  function(osettings)
+    for setting, value in pairs(osettings) do
+      vim.g[setting] = value
+    end
+  end,
+  {})
+
+proj_settings.register_settings_handler('indent',
+  function(indent_length) util.setupIndent(indent_length, vim.o) end,
+  2)
