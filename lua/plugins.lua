@@ -90,6 +90,8 @@ return require('packer').startup(function(use)
     requires = {'nvim-lua/plenary.nvim'}
   }
 
+  use 'kevinhwang91/nvim-bqf'
+
   use 'tpope/vim-repeat'
   use 'romainl/vim-cool'
   use 'peterhoeg/vim-qml'
