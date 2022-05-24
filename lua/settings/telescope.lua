@@ -33,6 +33,7 @@ require('telescope').setup{
         ['<c-CR>'] = actions.select_vertical,
         ['<s-CR>'] = actions.select_horizontal,
         ['<c-q>'] = function (buffnr)
+          vim.cmd('cexpr []')
           actions.smart_add_to_qflist(buffnr)
 
           -- Open the quickfix list and disable word wrap
