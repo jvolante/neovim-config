@@ -76,7 +76,9 @@ cmp.setup({
     ['<C-b>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
     ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
     ['<C-Space>'] = cmp.mapping(function (fallback)
-      if not cmp.visible() then
+      if luasnip.expand_or_jumpable() then
+        luasnip.expand_or_jump()
+      elseif not cmp.visible() then
         cmp.complete()
       elseif cmp.get_selected_entry() ~= nil then
         cmp.confirm({ select = true })
@@ -92,9 +94,7 @@ cmp.setup({
     -- Expanded tab behavior to make cmp and luasnip work
     -- seamlessly
     ['<tab>'] = cmp.mapping(function (fallback)
-      if luasnip.expand_or_jumpable() then
-        luasnip.expand_or_jump()
-      elseif cmp.visible() then
+      if cmp.visible() then
         cmp.confirm({ select = true })
       else
         fallback()
@@ -190,7 +190,7 @@ local server_specific_setups = {
     return require('lua-dev').setup {
       lspconfig = opts
     }
-  end
+  end,
 }
 
 for _, server_name in ipairs(servers) do
