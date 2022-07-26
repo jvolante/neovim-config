@@ -37,7 +37,7 @@ require('telescope').setup{
           actions.smart_add_to_qflist(buffnr)
 
           -- Open the quickfix list and disable word wrap
-          vim.cmd('vert copen 60')
+          vim.cmd('vert copen 80')
           vim.wo.wrap = false
         end,
         -- Keep player controls and others from causing telescope to act strange
