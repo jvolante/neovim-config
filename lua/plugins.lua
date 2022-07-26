@@ -86,6 +86,11 @@ return require('packer').startup(function(use)
   }
 
   use {
+    'https://git.sr.ht/~whynothugo/lsp_lines.nvim',
+    as = 'lsp_lines',
+  }
+
+  use {
     'pianocomposer321/yabs.nvim',
     requires = {'nvim-lua/plenary.nvim'}
   }

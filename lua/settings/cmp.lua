@@ -204,3 +204,8 @@ for _, server_name in ipairs(servers) do
     server:on_ready(server_on_ready)
   end
 end
+
+require('lsp_lines').setup()
+vim.diagnostic.config {
+  virtual_text = false,
+}
