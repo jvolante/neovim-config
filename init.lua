@@ -1,5 +1,5 @@
 -- improve startuptime
-require('impatient')
+pcall(require, 'impatient')
 
 local g = vim.g
 local util = require('utilities')
@@ -59,8 +59,8 @@ vim.keymap.set('n', 'gs', '<Plug>(leap-cross-window)')
 
 vim.keymap.set('i', '<c-l>', '<c-r>"')
 
--- Switch to experimental lua filetype detection
--- significantly improves startuptime
--- might not work for esoteric filetypes
-g.do_filetype_lua = 1
-g.did_load_filetypes = 0
+local proj_settings = require('functionality.project_settings')
+
+proj_settings.register_settings_handler('indent',
+  function(indent_length) util.setupIndent(indent_length, vim.o) end,
+  2)

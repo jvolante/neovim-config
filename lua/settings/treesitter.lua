@@ -24,14 +24,6 @@ parser_configs.norg_table = {
   },
 }
 
-parser_configs.xml = {
-  install_info = {
-    url = "https://github.com/unhammer/tree-sitter-xml",
-    files = { "src/parser.c" },
-    branch = "master"
-  },
-}
-
 parser_configs.qml = {
   install_info = {
     url = "https://github.com/wingsandsuch/tree-sitter-qml.git",
@@ -41,7 +33,7 @@ parser_configs.qml = {
 }
 
 require('nvim-treesitter.configs').setup {
-  ensure_installed = {'norg_meta', 'norg_table', 'cpp', 'c', 'rust', 'json', 'json5', 'cmake', 'bash', 'lua', 'vim', 'xml', 'markdown', 'comment'},
+  ensure_installed = {'norg_meta', 'norg_table', 'cpp', 'c', 'rust', 'json', 'json5', 'cmake', 'bash', 'lua', 'vim', 'markdown', 'comment'},
 
   highlight = {
     enable = true

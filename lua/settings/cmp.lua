@@ -29,6 +29,35 @@ end
 
 -- Setup nvim-cmp.
 local cmp = require 'cmp'
+local luasnip = require 'luasnip'
+
+local icons = {
+  Text = "",
+  Method = "",
+  Function = "",
+  Constructor = "⌘",
+  Field = "ﰠ",
+  Variable = "",
+  Class = "ﴯ",
+  Interface = "",
+  Module = "",
+  Property = "ﰠ",
+  Unit = "塞",
+  Value = "",
+  Enum = "",
+  Keyword = "廓",
+  Snippet = "",
+  Color = "",
+  File = "",
+  Reference = "",
+  Folder = "",
+  EnumMember = "",
+  Constant = "",
+  Struct = "פּ",
+  Event = "",
+  Operator = "",
+  TypeParameter = "",
+}
 
 cmp.setup({
   snippet = {
@@ -46,15 +75,39 @@ cmp.setup({
     ['<C-p>'] = cmp.mapping.select_prev_item(),
     ['<C-b>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
     ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
-    ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
+    ['<C-Space>'] = cmp.mapping(function (fallback)
+      if luasnip.expand_or_jumpable() then
+        luasnip.expand_or_jump()
+      elseif not cmp.visible() then
+        cmp.complete()
+      elseif cmp.get_selected_entry() ~= nil then
+        cmp.confirm({ select = true })
+      else
+        fallback()
+      end
+    end, { 'i', 'c' }),
     ['<C-y>'] = cmp.config.disable, -- Specify `cmp.config.disable` if you want to remove the default `<C-y>` mapping.
     ['<C-e>'] = cmp.mapping({
       i = cmp.mapping.abort(),
       c = cmp.mapping.close(),
     }),
-    -- Accept currently selected item. If none selected, `select` first item.
-    -- Set `select` to `false` to only confirm explicitly selected items.
-    ['<tab>'] = cmp.mapping.confirm({ select = true }),
+    -- Expanded tab behavior to make cmp and luasnip work
+    -- seamlessly
+    ['<tab>'] = cmp.mapping(function (fallback)
+      if cmp.visible() then
+        cmp.confirm({ select = true })
+      else
+        fallback()
+      end
+    end, {'i', 's'}),
+
+    ['<s-tab>'] = cmp.mapping(function (fallback)
+      if luasnip.jumpable(-1) then
+        luasnip.jump(-1)
+      else
+        fallback()
+      end
+    end, { 'i', 's' }),
   },
 
   -- window = {
@@ -72,7 +125,18 @@ cmp.setup({
 
   experimental = {
     ghost_text = true,
+    native_menu = false,
   },
+
+  formatting = {
+    fields = { "kind", "abbr", "menu" },
+    format = function (_, vim_item)
+      vim_item.menu = vim_item.kind
+      vim_item.kind = icons[vim_item.kind]
+
+      return vim_item
+    end,
+  }
 })
 
 -- Make sure some lsps are installed and set them up
@@ -126,7 +190,7 @@ local server_specific_setups = {
     return require('lua-dev').setup {
       lspconfig = opts
     }
-  end
+  end,
 }
 
 for _, server_name in ipairs(servers) do
@@ -140,3 +204,24 @@ for _, server_name in ipairs(servers) do
     server:on_ready(server_on_ready)
   end
 end
+
+require('lsp_lines').setup()
+vim.diagnostic.config {
+  virtual_text = false,
+}
+
+vim.api.nvim_create_user_command('DlinesOff',
+  function()
+    vim.diagnostic.config {
+      virtual_text = true,
+      virtual_lines = false,
+    }
+  end, {})
+
+vim.api.nvim_create_user_command('DlinesOn',
+  function()
+    vim.diagnostic.config {
+      virtual_text = false,
+      virtual_lines = true,
+    }
+  end, {})

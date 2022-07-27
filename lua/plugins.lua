@@ -28,7 +28,6 @@ return require('packer').startup(function(use)
   --use 'FrenzyExists/aquarium-vim'
   --use 'EdenEast/nightfox.nvim'
   --use 'kvrohit/substrata.nvim'
-  --use 'rmehri01/onenord.nvim'
   --use 'kyazdani42/blue-moon'
   --use 'sainnhe/everforest'
   --use 'projekt0n/github-nvim-theme'
@@ -61,6 +60,9 @@ return require('packer').startup(function(use)
 
   use {
     'nvim-treesitter/nvim-treesitter-textobjects',
+  }
+
+  use {
     'numToStr/Comment.nvim'
   }
 
@@ -87,9 +89,16 @@ return require('packer').startup(function(use)
   }
 
   use {
+    'https://git.sr.ht/~whynothugo/lsp_lines.nvim',
+    as = 'lsp_lines',
+  }
+
+  use {
     'pianocomposer321/yabs.nvim',
     requires = {'nvim-lua/plenary.nvim'}
   }
+
+  use 'kevinhwang91/nvim-bqf'
 
   use 'tpope/vim-repeat'
   use 'romainl/vim-cool'

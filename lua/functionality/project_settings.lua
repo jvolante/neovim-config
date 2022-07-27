@@ -7,26 +7,15 @@ M = {}
 -- dictionary of keys that will be parsed from the user settings json
 -- who's values are the functions that will be called on the values
 -- from the json dictionary
-M._settings_handlers = {
-  indent = function(indent_length) util.setupIndent(indent_length, vim.o) end,
-  o = function(osettings)
-    for setting, value in pairs(osettings) do
-      vim.o[setting] = value
-    end
-  end,
-
-  g = function(gsettings)
-    for setting, value in pairs(gsettings) do
-      vim.g[setting] = value
-    end
-  end,
-}
+M._settings_handlers = {}
 
 -- The default project settings table
-M._default_project_settings = {
-  indent = 2,
-}
+M._default_project_settings = {}
 
+-- @brief Iterates over the table from the settings json and runs the
+--        appropriate settings handlers on each table item.
+--
+-- @param settings: the table generated from the settings json file
 local function process_settings(settings)
   for key, value in pairs(settings) do
     local callback = M._settings_handlers[key]
@@ -65,12 +54,21 @@ function M.register_settings_handler(key, handler, default)
 end
 
 function M.setup(options)
-  options = options or {
+  local defaults = {
     load_user_settings = true,
     load_project_settings = true,
   }
 
-  if options.load_user_settings or options.load_user_settings == nil then
+  options = options or defaults
+
+  return M._setup(
+    options.load_user_settings or defaults.load_user_settings,
+    options.load_project_settings or defaults.load_project_settings)
+
+end
+
+function M._setup(load_user_settings, load_project_settings)
+  if load_user_settings then
     local user_setup_fname = vim.env.HOME .. '/.nvimUserSettings.json'
 
     local f = io.open(user_setup_fname, 'r')
@@ -94,13 +92,15 @@ function M.setup(options)
     end
   end
 
-  if options.load_project_settings or options.load_project_settings == nil then
+  if load_project_settings then
     -- load workspace local settings, ussually use this to set build tasks
     -- and indent options on a per project basis
     vim.api.nvim_create_autocmd("DirChanged", {
       pattern = { '*' },
       callback = function()
-        local dir_config_name = '.nvim/nvimProject.json'
+        -- find the project config folder
+        local project_top_dir = vim.fn.finddir('.nvim', ';/.', 1)
+        local dir_config_name = project_top_dir .. '/nvimProject.json'
         local f = io.open(dir_config_name, 'r')
 
         if f ~= nil then

@@ -1,6 +1,6 @@
 vim.keymap.set('n', '<leader>b', '<cmd>Telescope yabs tasks<cr>')
 
-require('functionality.platform_project_settings').register_settings_handler('tasks',
+require('functionality.project_settings').register_settings_handler('tasks',
   function(tasks_dict)
     local out = 'buffer'
     local opts = { open_on_run = 'always' }

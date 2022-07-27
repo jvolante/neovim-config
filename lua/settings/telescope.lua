@@ -32,6 +32,14 @@ require('telescope').setup{
         ['<ESC>'] = actions.close,
         ['<c-CR>'] = actions.select_vertical,
         ['<s-CR>'] = actions.select_horizontal,
+        ['<c-q>'] = function (buffnr)
+          vim.cmd('cexpr []')
+          actions.smart_add_to_qflist(buffnr)
+
+          -- Open the quickfix list and disable word wrap
+          vim.cmd('vert copen 80')
+          vim.wo.wrap = false
+        end,
         -- Keep player controls and others from causing telescope to act strange
         ['<F15>'] = noop,
         ['<c-F15>'] = noop,
