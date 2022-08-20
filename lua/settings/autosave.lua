@@ -1,19 +1,19 @@
-local autosave = require("autosave")
+local autosave = require("auto-save")
 
-autosave.setup(
-    {
-        enabled = true,
-        execution_message = "AutoSave: saved at " .. vim.fn.strftime("%H:%M:%S"),
-        events = {"InsertLeave", "TextChanged"},
-        conditions = {
-            exists = true,
-            filename_is_not = {},
-            filetype_is_not = {},
-            modifiable = true
-        },
-        write_all_buffers = true,
-        on_off_commands = true,
-        clean_command_line_interval = 0,
-        debounce_delay = 500
-    }
-)
+autosave.setup {
+  condition = function(buf)
+		local fn = vim.fn
+		local utils = require("auto-save.utils.data")
+
+		if
+			fn.getbufvar(buf, "&modifiable") == 1 and
+      fn.bufname(buf) ~= nil and
+      #fn.bufname(buf) > 0 and
+			utils.not_in(fn.getbufvar(buf, "&filetype"), {}) then
+			return true -- met condition(s), can save
+		end
+		return false -- can't save
+	end,
+  debounce_delay = 1000
+}
+

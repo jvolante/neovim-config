@@ -204,24 +204,3 @@ for _, server_name in ipairs(servers) do
     server:on_ready(server_on_ready)
   end
 end
-
-require('lsp_lines').setup()
-vim.diagnostic.config {
-  virtual_text = false,
-}
-
-vim.api.nvim_create_user_command('DlinesOff',
-  function()
-    vim.diagnostic.config {
-      virtual_text = true,
-      virtual_lines = false,
-    }
-  end, {})
-
-vim.api.nvim_create_user_command('DlinesOn',
-  function()
-    vim.diagnostic.config {
-      virtual_text = false,
-      virtual_lines = true,
-    }
-  end, {})

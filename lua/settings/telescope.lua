@@ -2,16 +2,7 @@ local actions = require('telescope.actions')
 local config = require('telescope.config')
 local builtin = require('telescope.builtin')
 
-require('telescope').load_extension('yabs')
-
-vim.keymap.set('n', '<c-p>',
-  function ()
-    local ok = pcall(builtin.git_files)
-    if not ok then
-      builtin.find_files()
-    end
-  end)
-
+vim.keymap.set('n', '<c-p>', builtin.find_files)
 vim.keymap.set('n', 'gB', builtin.buffers)
 vim.keymap.set('n', '<leader>/', builtin.live_grep)
 vim.keymap.set('n', '<F1>', builtin.help_tags)
