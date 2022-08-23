@@ -11,3 +11,7 @@ require('settings/comment')
 require('settings/yabs')
 require('settings/camelcase')
 require('settings/bqf')
+require('settings/dressing')
+
+-- set up vim notify
+vim.notify = require('notify')

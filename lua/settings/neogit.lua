@@ -7,3 +7,8 @@ neogit.setup {
 }
 
 vim.keymap.set('n', '<c-g>', neogit.open)
+
+-- set up github integration
+require'octo'.setup {
+  default_remote = { 'origin', 'upstream' },
+}

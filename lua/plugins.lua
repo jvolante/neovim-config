@@ -35,10 +35,11 @@ return require('packer').startup(function(use)
   -- Lua plugins
   use 'lewis6991/impatient.nvim'
   use 'stevearc/dressing.nvim'
+  use 'rcarriga/nvim-notify'
   use 'ggandor/leap.nvim'
   use 'kyazdani42/nvim-web-devicons'
   use 'gbprod/substitute.nvim'
-  use 'Pocco81/AutoSave.nvim'
+  use 'Pocco81/auto-save.nvim'
 
   use {
     'nvim-neorg/neorg',
@@ -88,17 +89,10 @@ return require('packer').startup(function(use)
     'folke/lua-dev.nvim',
   }
 
-  use {
-    'https://git.sr.ht/~whynothugo/lsp_lines.nvim',
-    as = 'lsp_lines',
-  }
-
-  use {
-    'pianocomposer321/yabs.nvim',
-    requires = {'nvim-lua/plenary.nvim'}
-  }
+  use 'stevearc/overseer.nvim'
 
   use 'kevinhwang91/nvim-bqf'
+  use 'pwntester/octo.nvim'
 
   use 'tpope/vim-repeat'
   use 'romainl/vim-cool'
