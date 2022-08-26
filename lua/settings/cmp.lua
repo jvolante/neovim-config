@@ -24,7 +24,7 @@ local on_attach = function(_, bufnr)
   vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
   vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, opts)
   vim.keymap.set('n', '<leader>so', require('telescope.builtin').lsp_document_symbols, opts)
-  vim.api.nvim_buf_create_user_command(bufnr, 'Format', vim.lsp.buf.formatting, {})
+  vim.api.nvim_buf_create_user_command(bufnr, 'Format', function () vim.lsp.buf.format({async = false, timeout_ms = 5000,}) end, {})
 end
 
 -- Setup nvim-cmp.
@@ -143,7 +143,7 @@ cmp.setup({
 local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
 
 local lspInstallerServers = require('nvim-lsp-installer.servers')
-local servers = { "sumneko_lua", "clangd", "cmake", "pyright", "yamlls" }
+local servers = { "sumneko_lua", "clangd", "cmake", "pylsp", "yamlls" }
 
 local function create_server_ready_func(server, server_specific_setup)
   return function()

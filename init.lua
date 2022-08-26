@@ -16,7 +16,7 @@ g.mapleader = ","
 o.mouse = "a"
 o.autoread = true
 o.swapfile = false
-o.scrolloff = 5
+o.scrolloff = 10
 o.showmode = false
 o.foldlevelstart = 99
 o.foldmethod = "syntax"
@@ -64,3 +64,12 @@ local proj_settings = require('functionality.project_settings')
 proj_settings.register_settings_handler('indent',
   function(indent_length) util.setupIndent(indent_length, vim.o) end,
   2)
+
+-- if the terminal/gui gets resized, resize all the splits to defaults
+vim.api.nvim_create_autocmd("VimResized", {
+  pattern = '*',
+  callback = function ()
+    local keys = vim.api.nvim_replace_termcodes("<c-w>=", true, true, true)
+    vim.fn.feedkeys(keys, 'n')
+  end,
+})
