@@ -24,11 +24,6 @@ overseer.setup {
       ["}"] = "NextTask",
     },
   },
-
-  pre_task_hook = function (task_defn, util)
-    -- auto open the task list when starting a task
-    -- vim.cmd("OverseerOpen")
-  end
 }
 
 require('functionality.project_settings').register_settings_handler('tasks',

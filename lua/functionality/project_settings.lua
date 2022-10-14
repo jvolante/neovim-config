@@ -82,10 +82,7 @@ function M._setup(load_user_settings, load_project_settings)
         util.table_update(M._default_project_settings, settings)
         process_settings(settings)
       else
-        vim.schedule(function()
-          print(settings)
-          print("User preferences not loaded")
-        end)
+          vim.notify("User preferences not loaded")
       end
     else
       process_default_project_settings()
@@ -115,6 +112,10 @@ function M._setup(load_user_settings, load_project_settings)
               print("Project preferences not loaded")
             end)
           end
+        else
+          vim.schedule(function ()
+            vim.notify("Did not find project settings for this directory")
+          end)
         end
 
         -- If the file is not found, or we have an error parsing it
