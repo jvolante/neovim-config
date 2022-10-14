@@ -42,11 +42,6 @@ return require('packer').startup(function(use)
   use 'Pocco81/auto-save.nvim'
 
   use {
-    'nvim-neorg/neorg',
-    requires = 'nvim-lua/plenary.nvim'
-  }
-
-  use {
     'nvim-lualine/lualine.nvim',
   }
 
@@ -86,7 +81,7 @@ return require('packer').startup(function(use)
     'hrsh7th/nvim-cmp',
     'L3MON4D3/LuaSnip',
     'saadparwaiz1/cmp_luasnip',
-    'folke/lua-dev.nvim',
+    'folke/neodev.nvim',
   }
 
   use 'stevearc/overseer.nvim'

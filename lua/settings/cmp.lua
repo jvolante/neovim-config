@@ -187,7 +187,7 @@ local server_specific_setups = {
       },
     }
 
-    return require('lua-dev').setup {
+    return require('neodev').setup {
       lspconfig = opts
     }
   end,
