@@ -74,8 +74,9 @@ return require('packer').startup(function(use)
 
   -- Autocomplete stuff
   use {
+    'williamboman/mason.nvim',
+    'williamboman/mason-lspconfig.nvim',
     'neovim/nvim-lspconfig',
-    'williamboman/nvim-lsp-installer',
     'hrsh7th/cmp-nvim-lsp',
     'hrsh7th/cmp-buffer',
     'hrsh7th/nvim-cmp',
@@ -93,6 +94,10 @@ return require('packer').startup(function(use)
   use 'romainl/vim-cool'
   use 'peterhoeg/vim-qml'
   use 'bkad/CamelCaseMotion'
+
+  if require('utilities').isUnix then
+    use 'eunuch.vim'
+  end
 
   if packerBootstrap then
     require('packer').sync()

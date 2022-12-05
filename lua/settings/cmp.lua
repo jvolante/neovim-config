@@ -139,24 +139,29 @@ cmp.setup({
   }
 })
 
--- Make sure some lsps are installed and set them up
-local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+require('neodev').setup {
+}
 
-local lspInstallerServers = require('nvim-lsp-installer.servers')
+-- Make sure some lsps are installed and set them up
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
+
 local servers = { "sumneko_lua", "clangd", "cmake", "pylsp", "yamlls" }
 
-local function create_server_ready_func(server, server_specific_setup)
-  return function()
-    local opts = {
-      on_attach = on_attach,
-      capabilities = capabilities
-    }
+require('mason').setup()
+require('mason-lspconfig').setup {
+  ensure_installed = servers
+}
 
-    if server_specific_setup ~= nil then
-      opts = server_specific_setup(opts)
-    end
-    server:setup(opts)
+local function setup_server(server, server_specific_setup)
+  local opts = {
+    on_attach = on_attach,
+    capabilities = capabilities
+  }
+
+  if server_specific_setup ~= nil then
+    opts = server_specific_setup(opts)
   end
+  require('lspconfig')[server].setup(opts)
 end
 
 local server_specific_setups = {
@@ -170,6 +175,11 @@ local server_specific_setups = {
     end
 
     opts.settings = {
+      Lua = {
+        completion = {
+          callSnippet = "Replace"
+        }
+      },
       format = {
         enable = true,
         defaultConfig = {
@@ -187,20 +197,51 @@ local server_specific_setups = {
       },
     }
 
-    return require('neodev').setup {
-      lspconfig = opts
+    return opts
+  end,
+  pylsp = function(opts)
+    opts.settings = {
+      pylsp = {
+        plugins = {
+          jedi_completion = {
+            fuzzy = true,
+            eager = true,
+            include_params = true,
+            cache_for = {'numpy', 'pandas', 'tensorflow', 'torch', 'matplotlib', 'sklearn', 'scipy'},
+          },
+          jedi_signature_help = {
+            enable = true,
+          },
+          pyflakes = {
+            enabled = false,
+          },
+          pycodestyle = {
+            enabled = true,
+            ignore = {'E501', 'E231', 'E261'},
+            maxLineLength = 120,
+            yapf = {
+              enabled = true,
+            },
+          },
+          pylint = {
+            enabled = true,
+          },
+          -- rope_completion = {
+          --   enabled = true,
+          --   eager = true,
+          -- },
+        },
+      },
     }
+
+    return opts
   end,
 }
 
-for _, server_name in ipairs(servers) do
-  local server_available, server = lspInstallerServers.get_server(server_name)
-
-  if server_available then
-    -- this adds a ton of latency to startup
-    --server:install()
-
-    local server_on_ready = create_server_ready_func(server, server_specific_setups[server_name])
-    server:on_ready(server_on_ready)
+require('mason-lspconfig').setup_handlers {
+  function (server_name)
+    setup_server(server_name, server_specific_setups[server_name])
   end
-end
+}
+
+vim.o.signcolumn = 'yes'

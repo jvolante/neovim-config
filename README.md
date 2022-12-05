@@ -5,6 +5,8 @@
 * git
 * gcc (prefered), or cl
 
+you may need to run `winget install Microsoft.PowerShell`
+
 #Setup Notes
 :LspInstallInfo can be run to select which language servers you want to intstall
 

@@ -14,6 +14,7 @@ g.python3_host_prog = 'python3'
 g.mapleader = ","
 
 o.mouse = "a"
+o.mousemodel = "extend"
 o.autoread = true
 o.swapfile = false
 o.scrolloff = 10
@@ -32,12 +33,12 @@ require('plugins')
 -- Load custom functionality
 require('functionality')
 
+-- colorscheme
+pcall(vim.cmd, "colorscheme forestbones")
+
 -- Configure plugins, for some reason packer config option doesn't seem
 -- to work on Windows
 require('settings')
-
--- colorscheme
-pcall(vim.cmd, "colorscheme forestbones")
 
 vim.keymap.set('n', '<c-h>', '<c-w>h')
 vim.keymap.set('n', '<c-j>', '<c-w>j')

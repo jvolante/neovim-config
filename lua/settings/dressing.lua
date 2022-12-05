@@ -1,6 +1,8 @@
 require'dressing'.setup {
   input = {
-    winblend = 0,
-    relative = "editor"
+    options = {
+      winblend = 0,
+    },
+    relative = "editor",
   },
 }
