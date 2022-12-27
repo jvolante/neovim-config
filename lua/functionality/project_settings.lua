@@ -47,9 +47,7 @@ function M.register_settings_handler(key, handler, default)
     M._settings_handlers[key] = handler
     M._default_project_settings[key] = default
   else
-    vim.schedule(function()
-      print("Could not register handler " .. key .. " because it already exists")
-    end)
+    vim.notify("Could not register handler " .. key .. " because it already exists", vim.log.levels.WARN)
   end
 end
 
@@ -107,10 +105,7 @@ function M._setup(load_user_settings, load_project_settings)
             process_settings(settings)
             return
           else
-            vim.schedule(function()
-              print(settings)
-              print("Project preferences not loaded")
-            end)
+            vim.notify("Error parsing project preferences", vim.log.levels.ERROR)
           end
         else
           vim.schedule(function ()

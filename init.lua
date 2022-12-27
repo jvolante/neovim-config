@@ -8,7 +8,12 @@ local o, go, wo, bo = vim.o, vim.go, vim.wo, vim.bo
 
 -- Stop neovim from looking everywhere for the python program
 -- this can improve startuptime
-g.python3_host_prog = 'python3'
+if util.isUnix then
+  g.python3_host_prog = 'python3'
+else
+  g.python3_host_prog = 'python'
+end
+
 -- Super important stuff to do first, loading plugins may change
 -- these options
 g.mapleader = ","
@@ -40,10 +45,10 @@ pcall(vim.cmd, "colorscheme forestbones")
 -- to work on Windows
 require('settings')
 
-vim.keymap.set('n', '<c-h>', '<c-w>h')
-vim.keymap.set('n', '<c-j>', '<c-w>j')
-vim.keymap.set('n', '<c-k>', '<c-w>k')
-vim.keymap.set('n', '<c-l>', '<c-w>l')
+-- vim.keymap.set('n', '<c-h>', '<c-w>h')
+-- vim.keymap.set('n', '<c-j>', '<c-w>j')
+-- vim.keymap.set('n', '<c-k>', '<c-w>k')
+-- vim.keymap.set('n', '<c-l>', '<c-w>l')
 
 vim.keymap.set('n', '<c-q>', '<cmd>q<cr>')
 

@@ -145,7 +145,7 @@ require('neodev').setup {
 -- Make sure some lsps are installed and set them up
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
-local servers = { "sumneko_lua", "clangd", "cmake", "pylsp", "yamlls" }
+local servers = { "sumneko_lua", "clangd", "cmake", "pylsp" }
 
 require('mason').setup()
 require('mason-lspconfig').setup {
@@ -213,18 +213,15 @@ local server_specific_setups = {
             enable = true,
           },
           pyflakes = {
-            enabled = false,
+            enabled = true,
           },
           pycodestyle = {
             enabled = true,
             ignore = {'E501', 'E231', 'E261'},
-            maxLineLength = 120,
+            maxLineLength = 150,
             yapf = {
               enabled = true,
             },
-          },
-          pylint = {
-            enabled = true,
           },
           -- rope_completion = {
           --   enabled = true,
