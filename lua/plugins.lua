@@ -40,6 +40,7 @@ return require('packer').startup(function(use)
   use 'kyazdani42/nvim-web-devicons'
   use 'gbprod/substitute.nvim'
   use 'Pocco81/auto-save.nvim'
+  use 'folke/persistence.nvim'
 
   use {
     'nvim-lualine/lualine.nvim',
@@ -63,7 +64,8 @@ return require('packer').startup(function(use)
   }
 
   use {
-    'TimUntersberger/neogit',
+    -- 'TimUntersberger/neogit',
+    'kdheepak/lazygit.nvim',
     requires = 'nvim-lua/plenary.nvim'
   }
 
