@@ -59,6 +59,9 @@ vim.keymap.set({ 'n', 'v', 'o', 's', 'i', 'c', 't' }, '<F15>', '')
 vim.keymap.set({ 'n', 'v', 'o', 's', 'i', 'c', 't' }, '<c-F15>', '')
 vim.keymap.set({ 'n', 'v', 'o', 's', 'i', 'c', 't' }, '<s-F15>', '')
 
+-- make terminal mode less annoying
+vim.keymap.set('t', '<c-\\>', '<c-\\><c-N>')
+
 vim.keymap.set({ 'n', 'v', 'o' }, 's', '<Plug>(leap-forward)')
 vim.keymap.set({ 'n', 'v', 'o' }, 'S', '<Plug>(leap-backward)')
 vim.keymap.set('n', 'gs', '<Plug>(leap-cross-window)')

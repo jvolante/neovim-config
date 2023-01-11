@@ -63,11 +63,10 @@ return require('packer').startup(function(use)
     'numToStr/Comment.nvim'
   }
 
-  use {
-    -- 'TimUntersberger/neogit',
-    'kdheepak/lazygit.nvim',
-    requires = 'nvim-lua/plenary.nvim'
-  }
+  -- use {
+  --   'TimUntersberger/neogit',
+  --   requires = 'nvim-lua/plenary.nvim'
+  -- }
 
   use {
     'nvim-telescope/telescope.nvim',
