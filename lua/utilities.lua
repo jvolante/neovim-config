@@ -24,11 +24,13 @@ function M.table_update(table, table2)
   end
 end
 
+-- Remove spaces from the end of a string
 function M.rstrip(st)
   local rstrip = '%s+$'
   return st:gsub(rstrip, "")
 end
 
+-- Remove spaces from the begining of a string
 function M.lstrip(st)
   local lstrip = '^%s+'
   return st:gsub(lstrip, "")
@@ -39,5 +41,16 @@ M.strip = M.compose(M.rstrip, M.lstrip)
 -- Determine if we are in a unix os, HOME is generally blank in windows
 -- but the vim environment will always set it
 M.isUnix = vim.env.HOME == os.getenv("HOME")
+
+-- Generic function to do error handling
+-- reports error to the command line
+-- @param f: function to call with possible error to catch
+function M.error_wrap(f)
+  local ok, result = pcall(f)
+  if not ok then
+    vim.schedule(vim.pretty_print(result))
+  end
+  return ok, result
+end
 
 return M
