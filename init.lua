@@ -27,7 +27,6 @@ o.showmode = false
 o.foldlevelstart = 99
 o.foldmethod = "syntax"
 o.foldminlines = 10
-o.foldopen = "all"
 o.breakindent = true
 o.linebreak = true
 o.cursorline = true
