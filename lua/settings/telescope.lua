@@ -64,3 +64,10 @@ require('telescope').setup{
     },
   },
 }
+
+-- WORKAROUND: fix issue with telescope where folds don't work
+-- when a file is opened with it
+vim.api.nvim_create_autocmd('BufAdd', {
+  pattern = '*',
+  command = 'normal zX',
+})
