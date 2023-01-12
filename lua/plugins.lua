@@ -12,7 +12,7 @@ end
 vim.cmd [[packadd packer.nvim]]
 vim.api.nvim_create_autocmd("BufWritePost", {
   pattern = { 'plugins.lua' },
-  callback = "PackerCompile",
+  command = "PackerCompile",
 })
 
 return require('packer').startup(function(use)
