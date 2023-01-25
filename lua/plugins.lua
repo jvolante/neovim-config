@@ -51,10 +51,10 @@ return require('packer').startup(function(use)
     'monaqa/dial.nvim',
   }
 
-  -- use {
-  --   'nvim-treesitter/nvim-treesitter',
-  --   run = ':TSUpdate'
-  -- }
+  use {
+    'nvim-treesitter/nvim-treesitter',
+    run = ':TSUpdate'
+  }
 
   use {
     'nvim-treesitter/nvim-treesitter-textobjects',
@@ -64,10 +64,10 @@ return require('packer').startup(function(use)
     'numToStr/Comment.nvim'
   }
 
-  use {
-    'TimUntersberger/neogit',
-    requires = 'nvim-lua/plenary.nvim'
-  }
+  -- use {
+  --   'TimUntersberger/neogit',
+  --   requires = 'nvim-lua/plenary.nvim'
+  -- }
 
   use {
     'nvim-telescope/telescope.nvim',
