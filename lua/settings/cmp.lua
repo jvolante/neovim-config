@@ -146,7 +146,6 @@ if luasnip_ok and cmp_ok then
 
   -- Make sure some lsps are installed and set them up
   local capabilities = require('cmp_nvim_lsp').default_capabilities()
-
   local servers = { "sumneko_lua", "clangd", "cmake", "pylsp" }
 
   local mason_ok, mason = pcall(require, 'mason')

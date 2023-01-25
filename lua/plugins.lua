@@ -41,6 +41,7 @@ return require('packer').startup(function(use)
   use 'gbprod/substitute.nvim'
   use 'Pocco81/auto-save.nvim'
   use 'folke/persistence.nvim'
+  use 'RaafatTurki/hex.nvim'
 
   use {
     'nvim-lualine/lualine.nvim',
@@ -50,10 +51,10 @@ return require('packer').startup(function(use)
     'monaqa/dial.nvim',
   }
 
-  use {
-    'nvim-treesitter/nvim-treesitter',
-    run = ':TSUpdate'
-  }
+  -- use {
+  --   'nvim-treesitter/nvim-treesitter',
+  --   run = ':TSUpdate'
+  -- }
 
   use {
     'nvim-treesitter/nvim-treesitter-textobjects',
@@ -63,10 +64,10 @@ return require('packer').startup(function(use)
     'numToStr/Comment.nvim'
   }
 
-  -- use {
-  --   'TimUntersberger/neogit',
-  --   requires = 'nvim-lua/plenary.nvim'
-  -- }
+  use {
+    'TimUntersberger/neogit',
+    requires = 'nvim-lua/plenary.nvim'
+  }
 
   use {
     'nvim-telescope/telescope.nvim',

@@ -45,10 +45,10 @@ M.isUnix = vim.env.HOME == os.getenv("HOME")
 -- Generic function to do error handling
 -- reports error to the command line
 -- @param f: function to call with possible error to catch
-function M.error_wrap(f)
-  local ok, result = pcall(f)
+function M.error_wrap(f, ...)
+  local ok, result = pcall(f, ...)
   if not ok then
-    vim.schedule(vim.pretty_print(result))
+    vim.notify(vim.inspect(result), vim.log.levels.ERROR)
   end
   return ok, result
 end

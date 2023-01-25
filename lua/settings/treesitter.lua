@@ -9,7 +9,7 @@ parser_configs.qml = {
 }
 
 require('nvim-treesitter.configs').setup {
-  ensure_installed = {'cpp', 'c', 'rust', 'json', 'json5', 'cmake', 'bash', 'lua', 'vim', 'markdown', 'comment'},
+  ensure_installed = {'python', 'cpp', 'c', 'rust', 'json', 'json5', 'cmake', 'bash', 'lua', 'vim', 'markdown', 'comment'},
 
   highlight = {
     enable = true

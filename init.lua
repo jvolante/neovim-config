@@ -81,3 +81,13 @@ vim.api.nvim_create_autocmd("VimResized", {
     vim.fn.feedkeys(keys, 'n')
   end,
 })
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = {'json',},
+  command = 'set foldlevel=1'
+})
+
+if vim.g.neovide then
+  vim.o.guifont = "CartographCF Nerd Font:h7"
+  vim.g.neovide_cursor_animation_length = 0
+end
