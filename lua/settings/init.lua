@@ -85,6 +85,19 @@ util.error_wrap(function ()
   }
 end)
 
+-- set up gitsigns
+util.error_wrap(function ()
+  require'gitsigns'.setup {
+    current_line_blame = true,
+    current_line_blame_opts = {
+      virt_text = false,
+      virt_text_pos = 'right_align',
+      delay = 1500,
+      ignore_whitespace = true,
+    }
+  }
+end)
+
 -- set up camelcase
 vim.keymap.set({ 'n', 'v', 'o' }, 'W', '<Plug>CamelCaseMotion_w')
 vim.keymap.set({ 'n', 'v', 'o' }, 'B', '<Plug>CamelCaseMotion_b')

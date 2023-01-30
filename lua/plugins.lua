@@ -34,6 +34,7 @@ return require('packer').startup(function(use)
 
   -- Lua plugins
   use 'lewis6991/impatient.nvim'
+  use 'lewis6991/gitsigns.nvim'
   use 'stevearc/dressing.nvim'
   use 'rcarriga/nvim-notify'
   use 'ggandor/leap.nvim'

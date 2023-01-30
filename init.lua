@@ -84,7 +84,7 @@ vim.api.nvim_create_autocmd("VimResized", {
 
 vim.api.nvim_create_autocmd("FileType", {
   pattern = {'json',},
-  command = 'set foldlevel=1'
+  command = 'set foldlevel=2'
 })
 
 if vim.g.neovide then

@@ -1,3 +1,13 @@
+local function blame()
+  local blame = vim.b.gitsigns_blame_line
+  if blame == nil then
+    blame = ''
+  else
+    blame = string.match(blame, '[%w%s%d]*')
+  end
+  return blame
+end
+
 require'lualine'.setup {
   options = {
     icons_enabled = true,
@@ -16,7 +26,7 @@ require'lualine'.setup {
     lualine_c = {'filename'},
     lualine_x = {'encoding', 'fileformat', 'overseer'},
     lualine_y = {'filetype'},
-    lualine_z = {'location'}
+    lualine_z = {blame, 'location'}
   },
   inactive_sections = {
     lualine_a = {},
