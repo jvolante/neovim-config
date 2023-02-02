@@ -1,10 +1,6 @@
 local function blame()
   local blame = vim.b.gitsigns_blame_line
-  if blame == nil then
-    blame = ''
-  else
-    blame = string.match(blame, '[%w%s%d]*')
-  end
+  blame = blame == nil and '' or blame
   return blame
 end
 
