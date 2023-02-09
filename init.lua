@@ -37,9 +37,6 @@ require('plugins')
 -- Load custom functionality
 require('functionality')
 
--- colorscheme
-pcall(vim.cmd, "colorscheme forestbones")
-
 -- Configure plugins, for some reason packer config option doesn't seem
 -- to work on Windows
 require('settings')
@@ -87,7 +84,8 @@ vim.api.nvim_create_autocmd("FileType", {
   command = 'set foldlevel=2'
 })
 
+vim.o.guifont = "CartographCF Nerd Font:h7"
+
 if vim.g.neovide then
-  vim.o.guifont = "CartographCF Nerd Font:h7"
   vim.g.neovide_cursor_animation_length = 0
 end

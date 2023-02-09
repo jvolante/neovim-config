@@ -1,15 +1,7 @@
 local util = require('utilities')
 
--- set up vim notify
-util.error_wrap(function () vim.notify = require('notify') end)
-
-util.error_wrap(require, 'settings/telescope')
--- util.error_wrap(require, 'settings/neogit')
 util.error_wrap(require, 'settings/treesitter')
-util.error_wrap(require, 'settings/lualine')
 util.error_wrap(require, 'settings/cmp')
-util.error_wrap(require, 'settings/dial')
-util.error_wrap(require, 'settings/yabs')
 util.error_wrap(require, 'settings/bqf')
 util.error_wrap(require, 'settings/debug')
 
@@ -66,11 +58,6 @@ util.error_wrap(function ()
   vim.keymap.set("n", "<tab><tab>", require('substitute').line)
   vim.keymap.set("n", "<s-tab>", require('substitute').eol)
   vim.keymap.set("x", "<tab>", require('substitute').visual)
-end)
-
--- set up comment
-util.error_wrap(function ()
-  require('Comment').setup()
 end)
 
 -- set up dressing

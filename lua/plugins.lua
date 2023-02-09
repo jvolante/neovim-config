@@ -1,111 +1,113 @@
 local fn = vim.fn
 local g = vim.g
 local o, wo, bo = vim.o, vim.wo, vim.bo
+local util = require('utilities')
 
--- Bootstrap paq
-local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
-
-if fn.empty(fn.glob(install_path)) > 0 then
-  packerBootstrap = fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
+-- Bootstrap lazy
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable", -- latest stable release
+    lazypath,
+  })
 end
+vim.opt.rtp:prepend(lazypath)
 
-vim.cmd [[packadd packer.nvim]]
-vim.api.nvim_create_autocmd("BufWritePost", {
-  pattern = { 'plugins.lua' },
-  command = "PackerCompile",
-})
-
-return require('packer').startup(function(use)
-  use 'wbthomason/packer.nvim'
-
+require('lazy').setup {
   -- Colorschemes
-  --use 'kdheepak/monochrome.nvim'
-  --use 'rose-pine/neovim' -- g.rose_pine_variant | base moon dawn
-  use {
+  {
     'mcchrish/zenbones.nvim', -- zenbones/zenflesh/zenwritten/...
-    requires = 'rktjmp/lush.nvim'
-  }
-  --use 'FrenzyExists/aquarium-vim'
-  --use 'EdenEast/nightfox.nvim'
-  --use 'kvrohit/substrata.nvim'
-  --use 'kyazdani42/blue-moon'
-  --use 'sainnhe/everforest'
-  --use 'projekt0n/github-nvim-theme'
+    dependencies = { 'rktjmp/lush.nvim' },
+    lazy = false,
+    priority = 1000,
+    config = function () vim.cmd 'colorscheme forestbones' end,
+  },
 
   -- Lua plugins
-  use 'lewis6991/impatient.nvim'
-  use 'lewis6991/gitsigns.nvim'
-  use 'stevearc/dressing.nvim'
-  use 'rcarriga/nvim-notify'
-  use 'ggandor/leap.nvim'
-  use 'kyazdani42/nvim-web-devicons'
-  use 'gbprod/substitute.nvim'
-  use 'Pocco81/auto-save.nvim'
-  use 'folke/persistence.nvim'
-  use 'RaafatTurki/hex.nvim'
-
-  use {
+  'lewis6991/impatient.nvim',
+  'lewis6991/gitsigns.nvim',
+  'stevearc/dressing.nvim',
+  {
+    'rcarriga/nvim-notify',
+    config = function () vim.notify = require('notify') end,
+  },
+  'ggandor/leap.nvim',
+  'kyazdani42/nvim-web-devicons',
+  'gbprod/substitute.nvim',
+  'Pocco81/auto-save.nvim',
+  'folke/persistence.nvim',
+  'RaafatTurki/hex.nvim',
+  'anuvyklack/hydra.nvim',
+  {
     'nvim-lualine/lualine.nvim',
-  }
-
-  use {
+    config = function () require('settings/lualine') end,
+  },
+  {
     'monaqa/dial.nvim',
-  }
-
-  use {
+    config = function () require('settings/dial') end,
+    keys = { '<c-a>', '<c-x>' },
+  },
+  {
     'nvim-treesitter/nvim-treesitter',
-    run = ':TSUpdate'
-  }
-
-  use {
+    build = ':TSUpdate',
+  },
+  {
     'nvim-treesitter/nvim-treesitter-textobjects',
-  }
-
-  use {
-    'numToStr/Comment.nvim'
-  }
-
-  -- use {
+    dependencies = 'nvim-treesitter/nvim-treesitter',
+  },
+  {
+    'numToStr/Comment.nvim',
+    dependencies = 'nvim-treesitter/nvim-treesitter',
+    config = function () require('Comment').setup() end,
+    keys = {'gc', 'gb'},
+  },
+  -- {
   --   'TimUntersberger/neogit',
   --   requires = 'nvim-lua/plenary.nvim'
+  --   config = function () require('settings/neogit') end,
+  --   cmd = 'Neogit',
   -- }
-
-  use {
+  {
     'nvim-telescope/telescope.nvim',
-    requires = {{'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'}}
-  }
+    dependencies = {'nvim-lua/popup.nvim', 'nvim-lua/plenary.nvim'},
+    config = function () require('settings/telescope') end,
+  },
 
   -- Autocomplete stuff
-  use {
-    'williamboman/mason.nvim',
-    'williamboman/mason-lspconfig.nvim',
-    'mfussenegger/nvim-dap',
-    'rcarriga/nvim-dap-ui',
-    'mfussenegger/nvim-dap-python',
-    'neovim/nvim-lspconfig',
-    'hrsh7th/cmp-nvim-lsp',
-    'hrsh7th/cmp-buffer',
-    'hrsh7th/nvim-cmp',
-    'L3MON4D3/LuaSnip',
-    'saadparwaiz1/cmp_luasnip',
-    'folke/neodev.nvim',
-  }
+  'williamboman/mason.nvim',
+  'williamboman/mason-lspconfig.nvim',
+  'neovim/nvim-lspconfig',
+  'hrsh7th/cmp-nvim-lsp',
+  'hrsh7th/cmp-buffer',
+  'hrsh7th/nvim-cmp',
+  'L3MON4D3/LuaSnip',
+  'saadparwaiz1/cmp_luasnip',
+  'folke/neodev.nvim',
 
-  use 'stevearc/overseer.nvim'
+  -- Debug stuff
+  'mfussenegger/nvim-dap',
+  'rcarriga/nvim-dap-ui',
+  'mfussenegger/nvim-dap-python',
 
-  use 'kevinhwang91/nvim-bqf'
-  use 'pwntester/octo.nvim'
+  {
+    'stevearc/overseer.nvim',
+    config = function () require('settings/yabs') end,
+  },
 
-  use 'tpope/vim-repeat'
-  use 'romainl/vim-cool'
-  use 'peterhoeg/vim-qml'
-  use 'bkad/CamelCaseMotion'
+  'kevinhwang91/nvim-bqf',
+  'pwntester/octo.nvim',
 
-  if require('utilities').isUnix then
-    use 'eunuch.vim'
-  end
+  'tpope/vim-repeat',
+  'romainl/vim-cool',
+  'peterhoeg/vim-qml',
+  'bkad/CamelCaseMotion',
 
-  if packerBootstrap then
-    require('packer').sync()
-  end
-end)
+  {
+    'tpope/vim-eunuch',
+    cond = require('utilities').isUnix,
+  },
+}
