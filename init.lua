@@ -1,6 +1,3 @@
--- improve startuptime
-pcall(require, 'impatient')
-
 local g = vim.g
 local util = require('utilities')
 -- set, setglobal, setlocal (for window), setlocal (for buffer) respectively

@@ -27,20 +27,93 @@ require('lazy').setup {
     config = function () vim.cmd 'colorscheme forestbones' end,
   },
 
-  -- Lua plugins
-  'lewis6991/impatient.nvim',
-  'lewis6991/gitsigns.nvim',
-  'stevearc/dressing.nvim',
+  {
+    'lewis6991/gitsigns.nvim',
+    config = function ()
+      require'gitsigns'.setup {
+        current_line_blame = true,
+        current_line_blame_formatter = '<author> - <author_time>',
+        current_line_blame_opts = {
+          virt_text = false,
+          virt_text_pos = 'right_align',
+          delay = 1500,
+          ignore_whitespace = true,
+        }
+      }
+    end,
+  },
+  {
+    'stevearc/dressing.nvim',
+    config = function ()
+      require'dressing'.setup {
+        input = {
+          options = {
+            winblend = 0,
+          },
+          relative = "editor",
+        },
+      }
+    end,
+  },
   {
     'rcarriga/nvim-notify',
     config = function () vim.notify = require('notify') end,
   },
   'ggandor/leap.nvim',
   'kyazdani42/nvim-web-devicons',
-  'gbprod/substitute.nvim',
-  'Pocco81/auto-save.nvim',
-  'folke/persistence.nvim',
-  'RaafatTurki/hex.nvim',
+  {
+    'gbprod/substitute.nvim',
+    config = function ()
+      require("substitute").setup()
+
+      vim.keymap.set("n", "<tab>", require('substitute').operator)
+      vim.keymap.set("n", "<tab><tab>", require('substitute').line)
+      vim.keymap.set("n", "<s-tab>", require('substitute').eol)
+      vim.keymap.set("x", "<tab>", require('substitute').visual)
+    end
+  },
+  {
+    'Pocco81/auto-save.nvim',
+    event = { 'InsertLeave', 'TextChanged' },
+    config = function ()
+      local autosave = require("auto-save")
+
+      autosave.setup {
+        condition = function(buf)
+          local fn = vim.fn
+          local utils = require("auto-save.utils.data")
+
+          if
+            fn.getbufvar(buf, "&modifiable") == 1 and
+            fn.bufname(buf) ~= nil and
+            #fn.bufname(buf) > 0 and
+            utils.not_in(fn.getbufvar(buf, "&filetype"), {}) then
+            return true -- met condition(s), can save
+          end
+          return false -- can't save
+        end,
+        debounce_delay = 1000
+      }
+    end,
+  },
+  {
+    'folke/persistence.nvim',
+    config = function ()
+      local persistence = require('persistence')
+      persistence.setup {}
+
+      vim.api.nvim_create_user_command('Restore', function()
+          persistence.load {last = true}
+      end, {})
+    end,
+  },
+  {
+    'RaafatTurki/hex.nvim',
+    config = function ()
+      require'hex'.setup()
+    end,
+    enabled = vim.fn.executable('xxd'),
+  },
   'anuvyklack/hydra.nvim',
   {
     'nvim-lualine/lualine.nvim',
@@ -70,7 +143,7 @@ require('lazy').setup {
   --   requires = 'nvim-lua/plenary.nvim'
   --   config = function () require('settings/neogit') end,
   --   cmd = 'Neogit',
-  -- }
+  -- },
   {
     'nvim-telescope/telescope.nvim',
     dependencies = {'nvim-lua/popup.nvim', 'nvim-lua/plenary.nvim'},
@@ -98,16 +171,32 @@ require('lazy').setup {
     config = function () require('settings/yabs') end,
   },
 
-  'kevinhwang91/nvim-bqf',
-  'pwntester/octo.nvim',
+  {
+    'kevinhwang91/nvim-bqf',
+    config = function () require('settings/bqf') end,
+  },
+  {
+    'pwntester/octo.nvim',
+    config = function ()
+      require'octo'.setup {
+        default_remote = { 'origin', 'upstream' },
+      }
+    end,
+  },
 
   'tpope/vim-repeat',
   'romainl/vim-cool',
   'peterhoeg/vim-qml',
-  'bkad/CamelCaseMotion',
+  {
+    'bkad/CamelCaseMotion',
+    config = function ()
+      vim.keymap.set({ 'n', 'v', 'o' }, 'W', '<Plug>CamelCaseMotion_w')
+      vim.keymap.set({ 'n', 'v', 'o' }, 'B', '<Plug>CamelCaseMotion_b')
+    end
+  },
 
   {
     'tpope/vim-eunuch',
-    cond = require('utilities').isUnix,
+    enabled = require('utilities').isUnix,
   },
 }
