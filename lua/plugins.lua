@@ -44,22 +44,28 @@ require('lazy').setup {
   },
   {
     'stevearc/dressing.nvim',
-    config = function ()
-      require'dressing'.setup {
-        input = {
-          options = {
-            winblend = 0,
-          },
-          relative = "editor",
+    opt = {
+      input = {
+        options = {
+          winblend = 0,
         },
-      }
-    end,
+        relative = "editor",
+      },
+    },
+    dependencies = {'nvim-telescope/telescope.nvim'},
   },
   {
     'rcarriga/nvim-notify',
     config = function () vim.notify = require('notify') end,
   },
-  'ggandor/leap.nvim',
+  {
+    'ggandor/leap.nvim',
+    config = function ()
+      vim.keymap.set({ 'n', 'v', 'o' }, 's', '<Plug>(leap-forward)')
+      vim.keymap.set({ 'n', 'v', 'o' }, 'S', '<Plug>(leap-backward)')
+      vim.keymap.set('n', 'gs', '<Plug>(leap-cross-window)')
+    end,
+  },
   'kyazdani42/nvim-web-devicons',
   {
     'gbprod/substitute.nvim',
@@ -113,8 +119,8 @@ require('lazy').setup {
       require'hex'.setup()
     end,
     enabled = vim.fn.executable('xxd'),
+    cmd = {'HexToggle', 'HexAssemble', 'HexDump'},
   },
-  'anuvyklack/hydra.nvim',
   {
     'nvim-lualine/lualine.nvim',
     config = function () require('settings/lualine') end,
@@ -126,11 +132,11 @@ require('lazy').setup {
   },
   {
     'nvim-treesitter/nvim-treesitter',
+    dependencies = {
+      'nvim-treesitter/nvim-treesitter-textobjects',
+    },
+    conifg = function () require'settings/treesitter' end,
     build = ':TSUpdate',
-  },
-  {
-    'nvim-treesitter/nvim-treesitter-textobjects',
-    dependencies = 'nvim-treesitter/nvim-treesitter',
   },
   {
     'numToStr/Comment.nvim',
@@ -151,20 +157,31 @@ require('lazy').setup {
   },
 
   -- Autocomplete stuff
-  'williamboman/mason.nvim',
-  'williamboman/mason-lspconfig.nvim',
-  'neovim/nvim-lspconfig',
-  'hrsh7th/cmp-nvim-lsp',
-  'hrsh7th/cmp-buffer',
-  'hrsh7th/nvim-cmp',
-  'L3MON4D3/LuaSnip',
-  'saadparwaiz1/cmp_luasnip',
-  'folke/neodev.nvim',
+  {
+    'hrsh7th/nvim-cmp',
+    dependencies = {
+      'williamboman/mason.nvim',
+      'williamboman/mason-lspconfig.nvim',
+      'neovim/nvim-lspconfig',
+      'hrsh7th/cmp-nvim-lsp',
+      'hrsh7th/cmp-buffer',
+      'L3MON4D3/LuaSnip',
+      'saadparwaiz1/cmp_luasnip',
+      'folke/neodev.nvim',
+      'nvim-telescope/telescope.nvim',
+    },
+    config = function () require('settings/cmp') end,
+  },
 
   -- Debug stuff
-  'mfussenegger/nvim-dap',
-  'rcarriga/nvim-dap-ui',
-  'mfussenegger/nvim-dap-python',
+  {
+    'mfussenegger/nvim-dap',
+    dependencies = {
+      'rcarriga/nvim-dap-ui',
+      'mfussenegger/nvim-dap-python',
+    },
+    config = function () require'settings/debug' end,
+  },
 
   {
     'stevearc/overseer.nvim',

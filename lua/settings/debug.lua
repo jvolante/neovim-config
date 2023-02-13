@@ -1,26 +1,13 @@
-local dap_ok, dap = pcall(require, 'dap')
-if not dap_ok then
-  vim.notify('nvim-dap not installed', vim.log.levels.WARN)
-  return
-end
+local dap = require('dap')
+local dapui = require('dapui')
+local dap_python = require('dap-python')
 
-local dapui_ok, dapui = pcall(require, 'dapui')
-if not dapui_ok then
-  vim.notify('nvim-dap-ui not installed', vim.log.levels.WARN)
-  return
-end
-
-local dap_python_ok, dap_python = pcall(require, 'dap-python')
-if not dap_python_ok then
-  vim.notify('nvim-dap-python not installed', vim.log.levels.WARN)
+if require('utilities').isUnix then
+    dap_python.setup('~/.virtualenvs/debugpy/bin/python')
 else
-  if require('utilities').isUnix then
-      dap_python.setup('~/.virtualenvs/debugpy/bin/python')
-  else
-      dap_python.setup('~/AppData/Local/nvim-data/mason/packages/debugpy/venv/Scripts/python')
-  end
-  dap_python.test_runner = 'pytest'
+    dap_python.setup('~/AppData/Local/nvim-data/mason/packages/debugpy/venv/Scripts/python')
 end
+dap_python.test_runner = 'pytest'
 
 dapui.setup({
   icons = { expanded = "", collapsed = "", current_frame = "" },

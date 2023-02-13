@@ -28,20 +28,17 @@ o.breakindent = true
 o.linebreak = true
 o.cursorline = true
 o.lazyredraw = true
+o.termguicolors = true
 
 -- Load plugins and plugin settings
 require('plugins')
 -- Load custom functionality
 require('functionality')
 
--- Configure plugins, for some reason packer config option doesn't seem
--- to work on Windows
-require('settings')
-
--- vim.keymap.set('n', '<c-h>', '<c-w>h')
--- vim.keymap.set('n', '<c-j>', '<c-w>j')
--- vim.keymap.set('n', '<c-k>', '<c-w>k')
--- vim.keymap.set('n', '<c-l>', '<c-w>l')
+vim.keymap.set('n', '<c-h>', '<c-w>h')
+vim.keymap.set('n', '<c-j>', '<c-w>j')
+vim.keymap.set('n', '<c-k>', '<c-w>k')
+vim.keymap.set('n', '<c-l>', '<c-w>l')
 
 vim.keymap.set('n', '<c-q>', '<cmd>q<cr>')
 
@@ -55,10 +52,7 @@ vim.keymap.set({ 'n', 'v', 'o', 's', 'i', 'c', 't' }, '<s-F15>', '')
 -- make terminal mode less annoying
 vim.keymap.set('t', '<c-\\>', '<c-\\><c-N>')
 
-vim.keymap.set({ 'n', 'v', 'o' }, 's', '<Plug>(leap-forward)')
-vim.keymap.set({ 'n', 'v', 'o' }, 'S', '<Plug>(leap-backward)')
-vim.keymap.set('n', 'gs', '<Plug>(leap-cross-window)')
-
+-- easy put while in insert mode
 vim.keymap.set('i', '<c-l>', '<c-r>"')
 
 local proj_settings = require('functionality.project_settings')
