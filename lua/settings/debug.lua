@@ -100,17 +100,17 @@ return {
     vim.api.nvim_create_user_command("Debug", dapui.toggle, {})
   end,
   keys = {
-    {'<leader><leader>b', function () require'dap'.toggle_breakpoint() end},
-    {'<leader><leader>s', function () require'dap'.step_over() end},
-    {'<leader><leader>i', function () require'dap'.step_into() end},
-    {'<leader><leader>o', function () require'dap'.step_out() end},
-    {'<leader><leader>c', function () require'dap'.continue() end},
-    {'<leader><leader>K', function () require'dap'.terminate() end},
-    {'<leader><leader>h', function () require('dap.ui.widgets').hover() end},
+    {'<leader><leader>b', function () require'dap'.toggle_breakpoint() end, desc = 'Toggle breakpoint'},
+    {'<leader><leader>s', function () require'dap'.step_over() end, desc = 'Debug step over'},
+    {'<leader><leader>i', function () require'dap'.step_into() end, desc = 'Debug step into'},
+    {'<leader><leader>o', function () require'dap'.step_out() end, desc = 'Debug step out of'},
+    {'<leader><leader>c', function () require'dap'.continue() end, desc = 'Debug continue'},
+    {'<leader><leader>K', function () require'dap'.terminate() end, desc = 'Debug terminate session'},
+    {'<leader><leader>h', function () require('dap.ui.widgets').hover() end, desc = 'Debug get info for symbol'},
     {'<leader><leader>C', function ()
       require'dap'.clear_breakpoints()
       vim.notify('Breakpoints Cleared', vim.log.levels.INFO)
-    end},
+    end, desc = 'Clear all breakpoints'},
   },
   cmd = {'Debug'},
 }

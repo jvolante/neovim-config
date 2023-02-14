@@ -35,14 +35,14 @@ require('plugins')
 -- Load custom functionality
 require('functionality')
 
-vim.keymap.set('n', '<c-h>', '<c-w>h')
-vim.keymap.set('n', '<c-j>', '<c-w>j')
-vim.keymap.set('n', '<c-k>', '<c-w>k')
-vim.keymap.set('n', '<c-l>', '<c-w>l')
+vim.keymap.set('n', '<c-h>', '<c-w>h', {desc = 'Jump window left'})
+vim.keymap.set('n', '<c-j>', '<c-w>j', {desc = 'Jump window down'})
+vim.keymap.set('n', '<c-k>', '<c-w>k', {desc = 'Jump window up'})
+vim.keymap.set('n', '<c-l>', '<c-w>l', {desc = 'Jump window right'})
 
-vim.keymap.set('n', '<c-q>', '<cmd>q<cr>')
+vim.keymap.set('n', '<c-q>', '<cmd>q<cr>', {desc = 'Close window'})
 
-vim.keymap.set('n', '<F5>', '<cmd>e!<cr>')
+vim.keymap.set('n', '<F5>', '<cmd>e!<cr>', {desc = 'Reload buffer'})
 
 -- Stop caffine on windows from being wierd
 vim.keymap.set({ 'n', 'v', 'o', 's', 'i', 'c', 't' }, '<F15>', '')
@@ -50,10 +50,10 @@ vim.keymap.set({ 'n', 'v', 'o', 's', 'i', 'c', 't' }, '<c-F15>', '')
 vim.keymap.set({ 'n', 'v', 'o', 's', 'i', 'c', 't' }, '<s-F15>', '')
 
 -- make terminal mode less annoying
-vim.keymap.set('t', '<c-\\>', '<c-\\><c-N>')
+vim.keymap.set('t', '<c-\\>', '<c-\\><c-N>', {desc = 'Leave insert terminal mode'})
 
 -- easy put while in insert mode
-vim.keymap.set('i', '<c-l>', '<c-r>"')
+vim.keymap.set('i', '<c-l>', '<c-r>"', {desc = 'Insert mode put'})
 
 local proj_settings = require('functionality.project_settings')
 

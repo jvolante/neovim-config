@@ -43,7 +43,7 @@ return {
       {})
   end,
   keys = {
-    {'<leader>b', '<cmd>OverseerRun<cr>'},
+    {'<leader>b', '<cmd>OverseerRun<cr>', desc = 'Select a task to run'},
   },
   cmd = {
     'OverseerOpen',

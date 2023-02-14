@@ -67,12 +67,13 @@ return {
     })
   end,
   keys = {
-    {'<c-p>', function () require'telescope.builtin'.find_files() end},
-    {'gB', function () require'telescope.builtin'.buffers() end},
-    {'<leader>/', function () require'telescope.builtin'.live_grep() end},
-    {'<F1>', function () require'telescope.builtin'.help_tags() end},
+    {'<c-p>', function () require'telescope.builtin'.find_files() end, desc = 'File fuzzy finder'},
+    {'gB', function () require'telescope.builtin'.buffers() end, desc = 'Buffer fuzzy finder'},
+    {'<leader>/', function () require'telescope.builtin'.live_grep() end, desc = 'Global search current directory'},
+    {'<F1>', function () require'telescope.builtin'.keymaps() end, desc = 'Fuzzy search keymaps'},
+    {'<s-F1>', function () require'telescope.builtin'.help_tags() end, desc = 'Fuzzy search help docs'},
     -- TODO: Make this keymap only bind in git repos
-    {'<F2>', function () require'telescope.builtin'.git_branches() end},
+    {'<F2>', function () require'telescope.builtin'.git_branches() end, desc = 'Fuzzy search and checkout git branches'},
   },
   cmd = 'Telescope',
 }

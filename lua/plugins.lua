@@ -70,6 +70,14 @@ require('lazy').setup {
   {
     'rcarriga/nvim-notify',
     config = function () vim.notify = require('notify') end,
+    lazy = true,
+    init = function()
+      ---@diagnostic disable-next-line: duplicate-set-field
+      vim.notify = function(...)
+        require("lazy").load({ plugins = { "nvim-notify" }})
+        return vim.notify(...)
+      end
+    end,
   },
   {
     'ggandor/leap.nvim',
@@ -86,15 +94,15 @@ require('lazy').setup {
       require("substitute").setup()
     end,
     keys = {
-      {"<tab>", function () require('substitute').operator() end, mode = "n",},
-      {"<tab><tab>", function () require('substitute').line() end, mode = "n",},
-      {"<s-tab>", function () require('substitute').eol() end, mode = "n",},
-      {"<tab>", function () require('substitute').visual() end, mode = "x",},
+      {"<tab>", function () require('substitute').operator() end, mode = "n", desc = 'replace text selected with operator'},
+      {"<tab><tab>", function () require('substitute').line() end, mode = "n", desc = 'replace entire line'},
+      {"<s-tab>", function () require('substitute').eol() end, mode = "n", desc = 'replace until end of line'},
+      {"<tab>", function () require('substitute').visual() end, mode = "x", desc = 'replace visually selected text'},
     },
   },
   {
     'Pocco81/auto-save.nvim',
-    event = { 'InsertLeave', 'TextChanged' },
+    event = { 'BufReadPre', 'BufNewFile' },
     config = function ()
       local autosave = require("auto-save")
 
@@ -140,11 +148,7 @@ require('lazy').setup {
     event = 'VeryLazy',
     config = function () require('settings/lualine') end,
   },
-  {
-    'monaqa/dial.nvim',
-    config = function () require('settings/dial') end,
-    keys = { '<c-a>', '<c-x>' },
-  },
+  require('settings/dial'),
   {
     'nvim-treesitter/nvim-treesitter',
     dependencies = {
@@ -183,7 +187,7 @@ require('lazy').setup {
       'nvim-telescope/telescope.nvim',
     },
     config = function () require('settings/cmp') end,
-    ft = {'cpp', 'c', 'python', 'lua', 'cmake'},
+    ft = {'cpp', 'c', 'cuda', 'python', 'lua', 'cmake'},
     cmd = 'Mason',
   },
 
@@ -213,8 +217,8 @@ require('lazy').setup {
   {
     'bkad/CamelCaseMotion',
     keys = {
-      {'W', '<Plug>CamelCaseMotion_w', mode = { 'n', 'v', 'o' },},
-      {'B', '<Plug>CamelCaseMotion_b', mode = { 'n', 'v', 'o' },},
+      {'W', '<Plug>CamelCaseMotion_w', mode = { 'n', 'v', 'o' }, desc = 'Camelcase forward word motion'},
+      {'B', '<Plug>CamelCaseMotion_b', mode = { 'n', 'v', 'o' }, desc = 'Camelcase backward word motion'},
     },
   },
 
