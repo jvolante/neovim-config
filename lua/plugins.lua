@@ -29,18 +29,18 @@ require('lazy').setup {
 
   {
     'lewis6991/gitsigns.nvim',
-    config = function ()
-      require'gitsigns'.setup {
-        current_line_blame = true,
-        current_line_blame_formatter = '<author> - <author_time>',
-        current_line_blame_opts = {
-          virt_text = false,
-          virt_text_pos = 'right_align',
-          delay = 1500,
-          ignore_whitespace = true,
-        }
+    opt = {
+      current_line_blame = true,
+      current_line_blame_formatter = '<author> - <author_time>',
+      current_line_blame_opts = {
+        virt_text = false,
+        virt_text_pos = 'right_align',
+        delay = 1500,
+        ignore_whitespace = true,
       }
-    end,
+    },
+    event = { 'BufReadPre', 'BufNewFile' },
+    enabled = vim.fn.executable('git'),
   },
   {
     'stevearc/dressing.nvim',
@@ -53,6 +53,19 @@ require('lazy').setup {
       },
     },
     dependencies = {'nvim-telescope/telescope.nvim'},
+    lazy = true,
+    init = function()
+      ---@diagnostic disable-next-line: duplicate-set-field
+      vim.ui.select = function(...)
+        require("lazy").load({ plugins = { "dressing.nvim" } })
+        return vim.ui.select(...)
+      end
+      ---@diagnostic disable-next-line: duplicate-set-field
+      vim.ui.input = function(...)
+        require("lazy").load({ plugins = { "dressing.nvim" } })
+        return vim.ui.input(...)
+      end
+    end,
   },
   {
     'rcarriga/nvim-notify',
@@ -60,23 +73,24 @@ require('lazy').setup {
   },
   {
     'ggandor/leap.nvim',
-    config = function ()
-      vim.keymap.set({ 'n', 'v', 'o' }, 's', '<Plug>(leap-forward)')
-      vim.keymap.set({ 'n', 'v', 'o' }, 'S', '<Plug>(leap-backward)')
-      vim.keymap.set('n', 'gs', '<Plug>(leap-cross-window)')
-    end,
+    keys = {
+      { 's', '<Plug>(leap-forward)', mode = { 'n', 'v', 'o' }, desc = 'Leap search forward' },
+      { 'S', '<Plug>(leap-backward)', mode = { 'n', 'v', 'o' }, desc = 'Leap search backward' },
+      { 'gs', '<Plug>(leap-cross-window)', mode = { 'n', 'v', 'o' }, desc = 'Leap search cross window' },
+    },
   },
   'kyazdani42/nvim-web-devicons',
   {
     'gbprod/substitute.nvim',
     config = function ()
       require("substitute").setup()
-
-      vim.keymap.set("n", "<tab>", require('substitute').operator)
-      vim.keymap.set("n", "<tab><tab>", require('substitute').line)
-      vim.keymap.set("n", "<s-tab>", require('substitute').eol)
-      vim.keymap.set("x", "<tab>", require('substitute').visual)
-    end
+    end,
+    keys = {
+      {"<tab>", function () require('substitute').operator() end, mode = "n",},
+      {"<tab><tab>", function () require('substitute').line() end, mode = "n",},
+      {"<s-tab>", function () require('substitute').eol() end, mode = "n",},
+      {"<tab>", function () require('substitute').visual() end, mode = "x",},
+    },
   },
   {
     'Pocco81/auto-save.nvim',
@@ -123,6 +137,7 @@ require('lazy').setup {
   },
   {
     'nvim-lualine/lualine.nvim',
+    event = 'VeryLazy',
     config = function () require('settings/lualine') end,
   },
   {
@@ -142,19 +157,16 @@ require('lazy').setup {
     'numToStr/Comment.nvim',
     dependencies = 'nvim-treesitter/nvim-treesitter',
     config = function () require('Comment').setup() end,
-    keys = {'gc', 'gb'},
+    keys = {{'gc', mode = {'v', 'n'}}, {'gb', mode = {'v', 'n'}},},
   },
   -- {
   --   'TimUntersberger/neogit',
   --   requires = 'nvim-lua/plenary.nvim'
   --   config = function () require('settings/neogit') end,
   --   cmd = 'Neogit',
+  --   enabled = vim.fn.executable('git'),
   -- },
-  {
-    'nvim-telescope/telescope.nvim',
-    dependencies = {'nvim-lua/popup.nvim', 'nvim-lua/plenary.nvim'},
-    config = function () require('settings/telescope') end,
-  },
+  require('settings/telescope'),
 
   -- Autocomplete stuff
   {
@@ -171,22 +183,12 @@ require('lazy').setup {
       'nvim-telescope/telescope.nvim',
     },
     config = function () require('settings/cmp') end,
+    ft = {'cpp', 'c', 'python', 'lua', 'cmake'},
+    cmd = 'Mason',
   },
 
-  -- Debug stuff
-  {
-    'mfussenegger/nvim-dap',
-    dependencies = {
-      'rcarriga/nvim-dap-ui',
-      'mfussenegger/nvim-dap-python',
-    },
-    config = function () require'settings/debug' end,
-  },
-
-  {
-    'stevearc/overseer.nvim',
-    config = function () require('settings/yabs') end,
-  },
+  require'settings/debug',
+  require'settings/yabs',
 
   {
     'kevinhwang91/nvim-bqf',
@@ -199,17 +201,21 @@ require('lazy').setup {
         default_remote = { 'origin', 'upstream' },
       }
     end,
+    cmd = 'Octo'
   },
 
   'tpope/vim-repeat',
-  'romainl/vim-cool',
+  {
+    'romainl/vim-cool',
+    keys = {'/', '<cmd>'},
+  },
   'peterhoeg/vim-qml',
   {
     'bkad/CamelCaseMotion',
-    config = function ()
-      vim.keymap.set({ 'n', 'v', 'o' }, 'W', '<Plug>CamelCaseMotion_w')
-      vim.keymap.set({ 'n', 'v', 'o' }, 'B', '<Plug>CamelCaseMotion_b')
-    end
+    keys = {
+      {'W', '<Plug>CamelCaseMotion_w', mode = { 'n', 'v', 'o' },},
+      {'B', '<Plug>CamelCaseMotion_b', mode = { 'n', 'v', 'o' },},
+    },
   },
 
   {
