@@ -29,29 +29,33 @@ require('lazy').setup {
 
   {
     'lewis6991/gitsigns.nvim',
-    opt = {
-      current_line_blame = true,
-      current_line_blame_formatter = '<author> - <author_time>',
-      current_line_blame_opts = {
-        virt_text = false,
-        virt_text_pos = 'right_align',
-        delay = 1500,
-        ignore_whitespace = true,
+    config = function ()
+      require('gitsigns').setup {
+        current_line_blame = true,
+        current_line_blame_formatter = '<author> - <author_time>',
+        current_line_blame_opts = {
+          virt_text = false,
+          virt_text_pos = 'right_align',
+          delay = 1500,
+          ignore_whitespace = true,
+        }
       }
-    },
+    end,
     event = { 'BufReadPre', 'BufNewFile' },
     enabled = vim.fn.executable('git'),
   },
   {
     'stevearc/dressing.nvim',
-    opt = {
-      input = {
-        options = {
-          winblend = 0,
+    config = function ()
+      require('dressing').setup {
+        input = {
+          options = {
+            winblend = 0,
+          },
+          relative = "editor",
         },
-        relative = "editor",
-      },
-    },
+      }
+    end,
     dependencies = {'nvim-telescope/telescope.nvim'},
     lazy = true,
     init = function()
