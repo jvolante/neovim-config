@@ -75,7 +75,8 @@ vim.api.nvim_create_autocmd("FileType", {
   command = 'set foldlevel=2'
 })
 
-vim.o.guifont = "CartographCF Nerd Font:h7"
+-- set font for gui
+pcall(function () vim.o.guifont = "CartographCF Nerd Font:h6" end)
 
 if vim.g.neovide then
   vim.g.neovide_cursor_animation_length = 0
