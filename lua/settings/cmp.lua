@@ -5,26 +5,43 @@
 local on_attach = function(_, bufnr)
   vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
-  local opts = { noremap = true, silent = true, buffer = bufnr }
+  local opts = { noremap = true, silent = true, buffer = bufnr, desc = 'LSP Go to declaration' }
   vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
+  opts['desc'] = 'LSP Go to deffinition'
   vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
+  opts['desc'] = 'LSP Go to header'
   vim.keymap.set('n', 'gh', '<cmd>ClangdSwitchSourceHeader<CR>', opts)
+  opts['desc'] = 'LSP Show symbol info'
   vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
+  opts['desc'] = 'LSP Go to implementation'
   vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
+  opts['desc'] = 'LSP Show signature help'
   vim.keymap.set('n', '<C-;>', vim.lsp.buf.signature_help, opts)
+  opts['desc'] = 'LSP add workspace folder'
   vim.keymap.set('n', '<leader>wa', vim.lsp.buf.add_workspace_folder, opts)
+  opts['desc'] = 'LSP remove workspace folder'
   vim.keymap.set('n', '<leader>wr', vim.lsp.buf.remove_workspace_folder, opts)
+  opts['desc'] = 'LSP list workspace folders'
   vim.keymap.set('n', '<leader>wl', function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end, opts)
+  opts['desc'] = 'LSP go to type deffinition'
   vim.keymap.set('n', '<leader>D', vim.lsp.buf.type_definition, opts)
+  opts['desc'] = 'LSP Refactor rename symbol'
   vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
+  opts['desc'] = 'LSP Find all references in quickfix'
   vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
+  opts['desc'] = 'LSP Code actions'
   vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, opts)
+  opts['desc'] = 'LSP Diagnostic expand diagnostic'
   vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, opts)
+  opts['desc'] = 'LSP Diagnostic Go to next issue'
   vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
+  opts['desc'] = 'LSP Diagnostic Go to previous issue'
   vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
+  opts['desc'] = 'LSP Diagnostic set location list'
   vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, opts)
 
   local ts = require('telescope.builtin')
+  opts['desc'] = 'LSP Fuzzy search symbols in this document'
   vim.keymap.set('n', '<leader>so', ts.lsp_document_symbols, opts)
 
   vim.api.nvim_buf_create_user_command(bufnr, 'Format', function () vim.lsp.buf.format({async = false, timeout_ms = 5000,}) end, {})

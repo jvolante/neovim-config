@@ -85,10 +85,16 @@ require('lazy').setup {
   },
   {
     'ggandor/leap.nvim',
+    dependencies = {'ggandor/leap-spooky.nvim'},
+    config = function ()
+      require('leap-spooky').setup()
+    end,
     keys = {
       { 's', '<Plug>(leap-forward)', mode = { 'n', 'v', 'o' }, desc = 'Leap search forward' },
       { 'S', '<Plug>(leap-backward)', mode = { 'n', 'v', 'o' }, desc = 'Leap search backward' },
       { 'gs', '<Plug>(leap-cross-window)', mode = { 'n', 'v', 'o' }, desc = 'Leap search cross window' },
+      { 'i', mode = { 'o' }, },
+      { 'a', mode = { 'o' }, },
     },
   },
   'kyazdani42/nvim-web-devicons',
@@ -112,7 +118,6 @@ require('lazy').setup {
 
       autosave.setup {
         condition = function(buf)
-          local fn = vim.fn
           local utils = require("auto-save.utils.data")
 
           if
@@ -165,7 +170,12 @@ require('lazy').setup {
     'numToStr/Comment.nvim',
     dependencies = 'nvim-treesitter/nvim-treesitter',
     config = function () require('Comment').setup() end,
-    keys = {{'gc', mode = {'v', 'n'}}, {'gb', mode = {'v', 'n'}},},
+    keys = {
+      {'gc', mode = {'v', 'n'}, desc = 'Comment toggle linewise'},
+      {'gb', mode = {'v', 'n'}, desc = 'Comment toggle blockwise'},
+      {'gco', desc = 'Comment insert below'},
+      {'gcO', desc = 'Comment insert above'},
+    },
   },
   -- {
   --   'TimUntersberger/neogit',
@@ -225,7 +235,13 @@ require('lazy').setup {
       {'B', '<Plug>CamelCaseMotion_b', mode = { 'n', 'v', 'o' }, desc = 'Camelcase backward word motion'},
     },
   },
-
+  {
+    'wellle/targets.vim',
+    keys = {
+      { 'i', mode = { 'o' }, },
+      { 'a', mode = { 'o' }, },
+    }
+  },
   {
     'tpope/vim-eunuch',
     enabled = require('utilities').isUnix,

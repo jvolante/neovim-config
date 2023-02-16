@@ -26,14 +26,12 @@ end
 
 -- Remove spaces from the end of a string
 function M.rstrip(st)
-  local rstrip = '%s+$'
-  return st:gsub(rstrip, "")
+  return st:gsub('%s+$', "")
 end
 
 -- Remove spaces from the begining of a string
 function M.lstrip(st)
-  local lstrip = '^%s+'
-  return st:gsub(lstrip, "")
+  return st:gsub('^%s+', "")
 end
 
 M.strip = M.compose(M.rstrip, M.lstrip)

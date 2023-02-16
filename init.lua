@@ -45,9 +45,9 @@ vim.keymap.set('n', '<c-q>', '<cmd>q<cr>', {desc = 'Close window'})
 vim.keymap.set('n', '<F5>', '<cmd>e!<cr>', {desc = 'Reload buffer'})
 
 -- Stop caffine on windows from being wierd
-vim.keymap.set({ 'n', 'v', 'o', 's', 'i', 'c', 't' }, '<F15>', '')
-vim.keymap.set({ 'n', 'v', 'o', 's', 'i', 'c', 't' }, '<c-F15>', '')
-vim.keymap.set({ 'n', 'v', 'o', 's', 'i', 'c', 't' }, '<s-F15>', '')
+vim.keymap.set({ 'n', 'v', 'o', 's', 'i', 'c', 't' }, '<F15>', '', {desc = 'noop Fix behavior with caffine'})
+vim.keymap.set({ 'n', 'v', 'o', 's', 'i', 'c', 't' }, '<c-F15>', '', {desc = 'noop Fix behavior with caffine'})
+vim.keymap.set({ 'n', 'v', 'o', 's', 'i', 'c', 't' }, '<s-F15>', '', {desc = 'noop Fix behavior with caffine'})
 
 -- make terminal mode less annoying
 vim.keymap.set('t', '<c-\\>', '<c-\\><c-N>', {desc = 'Leave insert terminal mode'})
