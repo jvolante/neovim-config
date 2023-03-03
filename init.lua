@@ -29,6 +29,7 @@ o.linebreak = true
 o.cursorline = true
 o.lazyredraw = true
 o.termguicolors = true
+vim.o.signcolumn = 'yes'
 
 -- Load plugins and plugin settings
 require('plugins')
@@ -55,12 +56,6 @@ vim.keymap.set('t', '<c-\\>', '<c-\\><c-N>', {desc = 'Leave insert terminal mode
 -- easy put while in insert mode
 vim.keymap.set('i', '<c-l>', '<c-r>"', {desc = 'Insert mode put'})
 
-local proj_settings = require('functionality.project_settings')
-
-proj_settings.register_settings_handler('indent',
-  function(indent_length) util.setupIndent(indent_length, vim.o) end,
-  2)
-
 -- if the terminal/gui gets resized, resize all the splits to defaults
 vim.api.nvim_create_autocmd("VimResized", {
   pattern = '*',
@@ -75,9 +70,17 @@ vim.api.nvim_create_autocmd("FileType", {
   command = 'set foldlevel=2'
 })
 
--- set font for gui
-pcall(function () vim.o.guifont = "CartographCF Nerd Font:h6" end)
-
 if vim.g.neovide then
   vim.g.neovide_cursor_animation_length = 0
 end
+
+local proj_settings = require('functionality.project_settings')
+
+proj_settings.register_settings_handler('indent',
+  function(indent_length) util.setupIndent(indent_length, vim.o) end,
+  2)
+
+-- set font for gui
+proj_settings.register_settings_handler('guifont',
+  function(guifont_string) pcall(function () vim.o.guifont = guifont_string end) end,
+  "CartographCF Nerd Font:h6")

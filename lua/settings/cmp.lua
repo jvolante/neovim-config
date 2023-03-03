@@ -257,5 +257,3 @@ mason_lsp.setup_handlers {
     setup_server(server_name, server_specific_setups[server_name])
   end
 }
-
-vim.o.signcolumn = 'yes'
