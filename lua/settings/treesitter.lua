@@ -1,15 +1,11 @@
 local parser_configs = require('nvim-treesitter.parsers').get_parser_configs()
 
-parser_configs.qml = {
-  install_info = {
-    url = "https://github.com/wingsandsuch/tree-sitter-qml.git",
-    files = { "src/parser.c" },
-    branch = "develop"
-  },
-}
-
 require('nvim-treesitter.configs').setup {
-  ensure_installed = {'python', 'cpp', 'c', 'rust', 'json', 'json5', 'cmake', 'bash', 'lua', 'vim', 'markdown'},
+  -- ensure_installed = {'python', 'cpp', 'c', 'rust', 'json', 'json5', 'cmake', 'bash', 'lua', 'vim', 'markdown', 'proto', 'nix'},
+
+  indent = {
+    enable = true,
+  },
 
   highlight = {
     enable = true

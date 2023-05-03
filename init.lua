@@ -26,10 +26,13 @@ o.foldmethod = "syntax"
 o.foldminlines = 10
 o.breakindent = true
 o.linebreak = true
+o.number = false
 o.cursorline = true
 o.lazyredraw = true
 o.termguicolors = true
-vim.o.signcolumn = 'yes'
+o.signcolumn = 'yes'
+-- o.undodir = o.undodir .. ',/tmp/nvim'
+-- o.undofile = true
 
 -- Load plugins and plugin settings
 require('plugins')
@@ -77,10 +80,10 @@ end
 local proj_settings = require('functionality.project_settings')
 
 proj_settings.register_settings_handler('indent',
-  function(indent_length) util.setupIndent(indent_length, vim.o) end,
-  2)
+  function(indent_length) util.setupIndent(indent_length, o) end,
+  4)
 
 -- set font for gui
 proj_settings.register_settings_handler('guifont',
-  function(guifont_string) pcall(function () vim.o.guifont = guifont_string end) end,
+  function(guifont_string) pcall(function () o.guifont = guifont_string end) end,
   "CartographCF Nerd Font:h6")

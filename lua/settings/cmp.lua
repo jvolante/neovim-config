@@ -158,102 +158,95 @@ neodev.setup {}
 
 -- Make sure some lsps are installed and set them up
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
-local servers = { "lua_ls", "clangd", "cmake", "pylsp" }
-
-local mason = require('mason')
-local mason_lsp = require('mason-lspconfig')
+-- local servers = { "lua_ls", "clangd", "cmake", "pylsp" }
+--
+-- local mason = require('mason')
+-- local mason_lsp = require('mason-lspconfig')
 local lsp_config = require('lspconfig')
 
-mason.setup()
-mason_lsp.setup {
-  ensure_installed = servers
-}
-
-local function setup_server(server, server_specific_setup)
-  local opts = {
-    on_attach = on_attach,
-    capabilities = capabilities
+-- NEW
+lsp_config.lua_ls.setup{
+  on_attach = on_attach,
+  capabilities = capabilities,
+  settings = {
+    Lua = {
+      completion = {
+        callSnippet = "Replace"
+      }
+    },
+    format = {
+      enable = true,
+      defaultConfig = {
+        indent_style = "space",
+        indent_size = tostring(vim.o.tabstop),
+      },
+    },
+    IntelliSense = {
+      -- Some of these options can slow the language server down
+      -- If you have issues you can try disabling them
+      traceLocalSet = true,
+      traceReturn = true,
+      traceBeSetted = true,
+      traceFieldInject = true,
+    },
   }
+}
+lsp_config.pylsp.setup {
+  on_attach = on_attach,
+  capabilities = capabilities,
+  settings = {
+    pylsp = {
+      plugins = {
+        jedi_completion = {
+          eager = true,
+          include_params = true,
+          cache_for = {'numpy', 'pandas', 'tensorflow', 'torch', 'matplotlib', 'sklearn', 'scipy'},
+        },
+        jedi_signature_help = {
+          enable = true,
+        },
+        pylint = {
+          enabled = true,
+          executable = 'pylint'
+        },
+        -- ruff = {
+        --   enabled = true,
+        -- },
+        pycodestyle = {
+          enabled = false,
+          ignore = {'E501', 'E231', 'E261'},
+          maxLineLength = 150,
+          yapf = {
+            enabled = true,
+          },
+        },
+        -- rope_completion = {
+        --   enabled = true,
+        --   eager = true,
+        -- },
+      },
+    },
+  }
+}
 
-  if server_specific_setup ~= nil then
-    opts = server_specific_setup(opts)
-  end
-  lsp_config[server].setup(opts)
+lsp_config.nil_ls.setup {
+  on_attach = on_attach,
+  capabilities = capabilities,
+}
+
+lsp_config.clangd.setup {
+  on_attach = on_attach,
+  capabilities = capabilities,
+  -- settings = {
+  --   CompileFlags = {
+  --     CompilationDatabase = './build',
+  --   }
+  -- }
+}
+
+lsp_config.bashls.setup{}
+
+-- Disable LSP highlight, treesitter is better
+for _, group in ipairs(vim.fn.getcompletion("@lsp", "highlight")) do
+  vim.api.nvim_set_hl(0, group, {})
 end
-
-local server_specific_setups = {
-  lua_ls = function(opts)
-    local indent_style
-
-    if vim.o.expandtab then
-      indent_style = "space"
-    else
-      indent_style = "tab"
-    end
-
-    opts.settings = {
-      Lua = {
-        completion = {
-          callSnippet = "Replace"
-        }
-      },
-      format = {
-        enable = true,
-        defaultConfig = {
-          indent_style = indent_style,
-          indent_size = tostring(vim.o.tabstop),
-        },
-      },
-      IntelliSense = {
-        -- Some of these options can slow the language server down
-        -- If you have issues you can try disabling them
-        traceLocalSet = true,
-        traceReturn = true,
-        traceBeSetted = true,
-        traceFieldInject = true,
-      },
-    }
-
-    return opts
-  end,
-  pylsp = function(opts)
-    opts.settings = {
-      pylsp = {
-        plugins = {
-          jedi_completion = {
-            fuzzy = true,
-            eager = true,
-            include_params = true,
-            cache_for = {'numpy', 'pandas', 'tensorflow', 'torch', 'matplotlib', 'sklearn', 'scipy'},
-          },
-          jedi_signature_help = {
-            enable = true,
-          },
-          pyflakes = {
-            enabled = true,
-          },
-          pycodestyle = {
-            enabled = true,
-            ignore = {'E501', 'E231', 'E261'},
-            maxLineLength = 150,
-            yapf = {
-              enabled = true,
-            },
-          },
-          -- rope_completion = {
-          --   enabled = true,
-          --   eager = true,
-          -- },
-        },
-      },
-    }
-
-    return opts
-  end,
-}
-
-mason_lsp.setup_handlers {
-  function (server_name)
-    setup_server(server_name, server_specific_setups[server_name])
-  end
-}

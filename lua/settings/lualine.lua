@@ -19,8 +19,8 @@ require'lualine'.setup {
   sections = {
     lualine_a = {'mode'},
     lualine_b = {'branch', {'diagnostics', sources={'nvim_diagnostic'}}},
-    lualine_c = {'filename'},
-    lualine_x = {'encoding', 'fileformat', 'overseer'},
+    lualine_c = {'filename', 'aerial'},
+    lualine_x = {'overseer'},
     lualine_y = {'filetype'},
     lualine_z = {blame, 'location'}
   },

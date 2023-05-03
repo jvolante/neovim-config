@@ -26,7 +26,7 @@ return {
           ["}"] = "NextTask",
         },
       },
-      templates = {"builtin", 'user.build_pmas'},
+      templates = {"builtin", 'user.build', 'user.configure', 'user.clean'},
     }
 
     require('functionality.project_settings').register_settings_handler('tasks',

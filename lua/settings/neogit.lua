@@ -1,9 +1,14 @@
-local neogit = require('neogit')
+{
+  'TimUntersberger/neogit',
+  requires = 'nvim-lua/plenary.nvim',
+  config = function ()
+    local neogit = require('neogit')
 
-neogit.setup {
-  integrations = {
-    diffview = true
-  }
-}
-
-vim.keymap.set('n', '<c-g>', neogit.open)
+    neogit.setup {}
+  end,
+  cmd = 'Neogit',
+  keys = {
+    {'<c-g>', ':Neogit', desc = 'Open Neogit git viewer'},
+  },
+  enabled = vim.fn.executable('git'),
+},

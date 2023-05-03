@@ -26,7 +26,7 @@ require('lazy').setup {
     priority = 1000,
     config = function () vim.cmd 'colorscheme forestbones' end,
   },
-
+  require 'settings/aerial',
   {
     'lewis6991/gitsigns.nvim',
     config = function ()
@@ -177,21 +177,15 @@ require('lazy').setup {
       {'gcO', desc = 'Comment insert above'},
     },
   },
-  -- {
-  --   'TimUntersberger/neogit',
-  --   requires = 'nvim-lua/plenary.nvim'
-  --   config = function () require('settings/neogit') end,
-  --   cmd = 'Neogit',
-  --   enabled = vim.fn.executable('git'),
-  -- },
+  require('settings/neogit'),
   require('settings/telescope'),
 
   -- Autocomplete stuff
   {
     'hrsh7th/nvim-cmp',
     dependencies = {
-      'williamboman/mason.nvim',
-      'williamboman/mason-lspconfig.nvim',
+      -- 'williamboman/mason.nvim',
+      -- 'williamboman/mason-lspconfig.nvim',
       'neovim/nvim-lspconfig',
       'hrsh7th/cmp-nvim-lsp',
       'hrsh7th/cmp-buffer',
@@ -201,8 +195,8 @@ require('lazy').setup {
       'nvim-telescope/telescope.nvim',
     },
     config = function () require('settings/cmp') end,
-    ft = {'cpp', 'c', 'cuda', 'python', 'lua', 'cmake'},
-    cmd = 'Mason',
+    ft = {'cpp', 'c', 'cuda', 'python', 'lua', 'cmake', 'nix',},
+    -- cmd = 'Mason',
   },
 
   require'settings/debug',
