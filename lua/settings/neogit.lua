@@ -1,4 +1,4 @@
-{
+return {
   'TimUntersberger/neogit',
   requires = 'nvim-lua/plenary.nvim',
   config = function ()
@@ -8,7 +8,7 @@
   end,
   cmd = 'Neogit',
   keys = {
-    {'<c-g>', ':Neogit', desc = 'Open Neogit git viewer'},
+    {'<c-g>', ':Neogit<cr>', desc = 'Open Neogit git viewer'},
   },
   enabled = vim.fn.executable('git'),
-},
+}
