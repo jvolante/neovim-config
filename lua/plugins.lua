@@ -143,6 +143,7 @@ require('lazy').setup {
           persistence.load {last = true}
       end, {})
     end,
+    cond = false,
   },
   {
     'RaafatTurki/hex.nvim',
@@ -213,7 +214,7 @@ require('lazy').setup {
         default_remote = { 'origin', 'upstream' },
       }
     end,
-    cmd = 'Octo'
+    cmd = 'Octo',
   },
 
   'tpope/vim-repeat',
@@ -234,7 +235,7 @@ require('lazy').setup {
     keys = {
       { 'i', mode = { 'o' }, },
       { 'a', mode = { 'o' }, },
-    }
+    },
   },
   {
     'tpope/vim-eunuch',

@@ -31,8 +31,8 @@ o.cursorline = true
 o.lazyredraw = true
 o.termguicolors = true
 o.signcolumn = 'yes'
--- o.undodir = o.undodir .. ',/tmp/nvim'
--- o.undofile = true
+ o.undodir = o.undodir .. ',/tmp/nvim'
+ o.undofile = true
 
 -- Load plugins and plugin settings
 require('plugins')
