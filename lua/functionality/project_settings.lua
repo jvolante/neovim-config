@@ -90,7 +90,7 @@ function M._setup(load_user_settings, load_project_settings)
   if load_project_settings then
     -- load workspace local settings, ussually use this to set build tasks
     -- and indent options on a per project basis
-    vim.api.nvim_create_autocmd("DirChanged", {
+    vim.api.nvim_create_autocmd({"DirChanged", "VimEnter"}, {
       pattern = { '*' },
       callback = function()
         -- find the project config folder
