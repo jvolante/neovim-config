@@ -163,8 +163,9 @@ require('lazy').setup {
     'nvim-treesitter/nvim-treesitter',
     dependencies = {
       'nvim-treesitter/nvim-treesitter-textobjects',
+      'RRethy/nvim-treesitter-textsubjects',
     },
-    conifg = function () require'settings/treesitter' end,
+    config = function () require'settings/treesitter' end,
     build = ':TSUpdate',
   },
   {
@@ -196,7 +197,7 @@ require('lazy').setup {
       'nvim-telescope/telescope.nvim',
     },
     config = function () require('settings/cmp') end,
-    ft = {'cpp', 'c', 'cuda', 'python', 'lua', 'cmake', 'nix',},
+    -- ft = {'cpp', 'c', 'cuda', 'python', 'lua', 'cmake', 'nix',},
     -- cmd = 'Mason',
   },
 
@@ -215,6 +216,7 @@ require('lazy').setup {
       }
     end,
     cmd = 'Octo',
+    enabled = vim.fn.executable('git') and vim.fn.executable('gh'),
   },
 
   'tpope/vim-repeat',
