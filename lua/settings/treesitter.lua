@@ -4,11 +4,12 @@ require('nvim-treesitter.configs').setup {
   -- ensure_installed = {'python', 'cpp', 'c', 'rust', 'json', 'json5', 'cmake', 'bash', 'lua', 'vim', 'markdown', 'proto', 'nix'},
 
   indent = {
-    enable = true,
+    enable = false,
   },
 
   highlight = {
-    enable = true
+    enable = true,
+    additional_vim_regex_higlighting = false,
   },
 
   textobjects = {
@@ -23,6 +24,15 @@ require('nvim-treesitter.configs').setup {
         ["al"] = "@loop.outer",
         ["il"] = "@loop.inner",
       }
+    }
+  },
+
+  textsubjects = {
+    enable = true,
+    keymaps = {
+      ['.'] = 'textsubjects-smart',
+      ['as'] = 'textsubjects-outer',
+      ['is'] = 'textsubjects-inner',
     }
   }
 }
