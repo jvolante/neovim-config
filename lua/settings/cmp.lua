@@ -100,7 +100,7 @@ cmp.setup({
       elseif cmp.get_selected_entry() ~= nil then
         cmp.confirm({ select = true })
       else
-        fallback()
+        --fallback()
       end
     end, { 'i', 'c' }),
     ['<C-y>'] = cmp.config.disable, -- Specify `cmp.config.disable` if you want to remove the default `<C-y>` mapping.
@@ -158,10 +158,7 @@ neodev.setup {}
 
 -- Make sure some lsps are installed and set them up
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
--- local servers = { "lua_ls", "clangd", "cmake", "pylsp" }
---
--- local mason = require('mason')
--- local mason_lsp = require('mason-lspconfig')
+
 local lsp_config = require('lspconfig')
 
 -- NEW
@@ -191,6 +188,7 @@ lsp_config.lua_ls.setup{
     },
   }
 }
+
 lsp_config.pylsp.setup {
   on_attach = on_attach,
   capabilities = capabilities,
