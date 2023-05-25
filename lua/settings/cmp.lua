@@ -242,7 +242,15 @@ lsp_config.clangd.setup {
   -- }
 }
 
-lsp_config.bashls.setup{}
+lsp_config.bashls.setup{
+  on_attach = on_attach,
+  capabilities = capabilities,
+}
+
+lsp_config.cmake.setup{
+  on_attach = on_attach,
+  capabilities = capabilities,
+}
 
 -- Disable LSP highlight, treesitter is better
 for _, group in ipairs(vim.fn.getcompletion("@lsp", "highlight")) do

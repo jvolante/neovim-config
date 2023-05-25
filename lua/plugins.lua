@@ -186,8 +186,6 @@ require('lazy').setup {
   {
     'hrsh7th/nvim-cmp',
     dependencies = {
-      -- 'williamboman/mason.nvim',
-      -- 'williamboman/mason-lspconfig.nvim',
       'neovim/nvim-lspconfig',
       'hrsh7th/cmp-nvim-lsp',
       'hrsh7th/cmp-buffer',
@@ -197,8 +195,6 @@ require('lazy').setup {
       'nvim-telescope/telescope.nvim',
     },
     config = function () require('settings/cmp') end,
-    -- ft = {'cpp', 'c', 'cuda', 'python', 'lua', 'cmake', 'nix',},
-    -- cmd = 'Mason',
   },
 
   require'settings/debug',
@@ -208,17 +204,6 @@ require('lazy').setup {
     'kevinhwang91/nvim-bqf',
     config = function () require('settings/bqf') end,
   },
-  {
-    'pwntester/octo.nvim',
-    config = function ()
-      require'octo'.setup {
-        default_remote = { 'origin', 'upstream' },
-      }
-    end,
-    cmd = 'Octo',
-    enabled = vim.fn.executable('git') and vim.fn.executable('gh'),
-  },
-
   'tpope/vim-repeat',
   {
     'romainl/vim-cool',
