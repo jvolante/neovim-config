@@ -227,10 +227,17 @@ lsp_config.pylsp.setup {
   }
 }
 
-lsp_config.nil_ls.setup {
-  on_attach = on_attach,
-  capabilities = capabilities,
-}
+if vim.fn.executable('nixd') then
+  lsp_config.nixd.setup {
+    on_attach = on_attach,
+    capabilities = capabilities,
+  }
+else
+  lsp_config.nil_ls.setup {
+    on_attach = on_attach,
+    capabilities = capabilities,
+  }
+end
 
 lsp_config.clangd.setup {
   on_attach = on_attach,
@@ -253,6 +260,11 @@ lsp_config.cmake.setup{
 }
 
 lsp_config.rust_analyzer.setup{
+  on_attach = on_attach,
+  capabilities = capabilities,
+}
+
+lsp_config.typst_lsp.setup{
   on_attach = on_attach,
   capabilities = capabilities,
 }
