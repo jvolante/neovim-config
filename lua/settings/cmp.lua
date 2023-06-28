@@ -254,7 +254,7 @@ lsp_config.bashls.setup{
   capabilities = capabilities,
 }
 
-lsp_config.cmake.setup{
+lsp_config.neocmake.setup{
   on_attach = on_attach,
   capabilities = capabilities,
 }
@@ -264,10 +264,12 @@ lsp_config.rust_analyzer.setup{
   capabilities = capabilities,
 }
 
-lsp_config.typst_lsp.setup{
-  on_attach = on_attach,
-  capabilities = capabilities,
-}
+if vim.fn.executable('typst-lsp') then
+  lsp_config.typst_lsp.setup{
+    on_attach = on_attach,
+    capabilities = capabilities,
+  }
+end
 
 -- Disable LSP highlight, treesitter is better
 for _, group in ipairs(vim.fn.getcompletion("@lsp", "highlight")) do
