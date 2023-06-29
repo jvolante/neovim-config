@@ -9,6 +9,14 @@ return {
     local function noop(buffnr) end
 
     require('telescope').setup{
+      extensions = {
+        fzf = {
+          fuzzy = true,
+          override_generic_sorter = true,
+          override_file_sorter = true,
+          case_mode = "smart_case",
+        }
+      },
       defaults = {
         mappings = {
           i = {
@@ -22,7 +30,8 @@ return {
               actions.smart_add_to_qflist(buffnr)
 
               -- Open the quickfix list and disable word wrap
-              vim.cmd('vert copen 80')
+              -- vim.cmd('vert copen 80')
+              vim.cmd('copen')
               vim.wo.wrap = false
             end,
             -- Keep player controls and others from causing telescope to act strange
@@ -58,6 +67,8 @@ return {
         },
       },
     }
+
+    require('telescope').load_extension('fzf')
 
     -- WORKAROUND: fix issue with telescope where folds don't work
     -- when a file is opened with it

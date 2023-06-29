@@ -254,6 +254,11 @@ lsp_config.bashls.setup{
   capabilities = capabilities,
 }
 
+lsp_config.yamlls.setup{
+  on_attach = on_attach,
+  capabilities = capabilities,
+}
+
 lsp_config.cmake.setup{
   on_attach = on_attach,
   capabilities = capabilities,
