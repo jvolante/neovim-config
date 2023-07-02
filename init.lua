@@ -87,3 +87,10 @@ proj_settings.register_settings_handler('indent',
 proj_settings.register_settings_handler('guifont',
   function(guifont_string) pcall(function () o.guifont = guifont_string end) end,
   "CartographCF Nerd Font:h6")
+
+-- custom filetypes
+vim.filetype.add({
+  extension = {
+    typ = 'typst',
+  },
+})
