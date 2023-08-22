@@ -1,3 +1,5 @@
+require('settings/luasnip')
+
 -- Set up on_attach so we can actually use the lsp
 -- sets up a bunch of keymaps for a buffer that has an
 -- attached LSP

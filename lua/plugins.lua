@@ -167,7 +167,7 @@ require('lazy').setup {
       'RRethy/nvim-treesitter-textsubjects',
     },
     config = function () require'settings/treesitter' end,
-    -- build = ':TSUpdate',
+    build = ':TSUpdate',
   },
   {
     'numToStr/Comment.nvim',
