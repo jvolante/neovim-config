@@ -37,7 +37,7 @@ require('lazy').setup {
         current_line_blame_opts = {
           virt_text = false,
           virt_text_pos = 'right_align',
-          delay = 1500,
+          delay = 1000,
           ignore_whitespace = true,
         }
       }
@@ -159,7 +159,7 @@ require('lazy').setup {
     event = 'VeryLazy',
     config = function () require('settings/lualine') end,
   },
-  require('settings/dial'),
+  -- require('settings/dial'),
   {
     'nvim-treesitter/nvim-treesitter',
     dependencies = {
@@ -167,7 +167,7 @@ require('lazy').setup {
       'RRethy/nvim-treesitter-textsubjects',
     },
     config = function () require'settings/treesitter' end,
-    build = ':TSUpdate',
+    -- build = ':TSUpdate',
   },
   {
     'numToStr/Comment.nvim',
@@ -218,13 +218,13 @@ require('lazy').setup {
       {'B', '<Plug>CamelCaseMotion_b', mode = { 'n', 'v', 'o' }, desc = 'Camelcase backward word motion'},
     },
   },
-  {
-    'wellle/targets.vim',
-    keys = {
-      { 'i', mode = { 'o' }, },
-      { 'a', mode = { 'o' }, },
-    },
-  },
+  -- {
+  --   'wellle/targets.vim',
+  --   keys = {
+  --     { 'i', mode = { 'o' }, },
+  --     { 'a', mode = { 'o' }, },
+  --   },
+  -- },
   {
     'tpope/vim-eunuch',
     enabled = require('utilities').isUnix,
