@@ -61,6 +61,15 @@ vim.keymap.set('t', '<c-\\>', '<c-\\><c-N>', {desc = 'Leave insert terminal mode
 -- easy put while in insert mode
 vim.keymap.set('i', '<c-l>', '<c-r>"', {desc = 'Insert mode put'})
 
+vim.api.nvim_create_user_command('Config',
+  function ()
+    if vim.fn.bufname("%") ~= '' then
+      vim.cmd 'tabnew'
+    end
+    vim.cmd('tc ' .. vim.fn.stdpath('config'))
+    vim.cmd('e ' .. vim.fn.stdpath('config') .. '/init.lua')
+  end, {})
+
 -- if the terminal/gui gets resized, resize all the splits to defaults
 vim.api.nvim_create_autocmd("VimResized", {
   pattern = '*',

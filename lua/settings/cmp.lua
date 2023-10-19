@@ -80,6 +80,7 @@ local icons = {
 
 local cmp = require('cmp')
 local luasnip = require('luasnip')
+-- require('codeium').setup{}
 
 cmp.setup({
   snippet = {
@@ -135,6 +136,7 @@ cmp.setup({
   sources = cmp.config.sources({
     { name = 'nvim_lsp' },
     { name = 'luasnip' }, -- For luasnip users.
+    -- { name = 'codeium' },
   }, {
     { name = 'buffer' },
   }),

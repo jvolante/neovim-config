@@ -194,6 +194,7 @@ require('lazy').setup {
       'saadparwaiz1/cmp_luasnip',
       'folke/neodev.nvim',
       'nvim-telescope/telescope.nvim',
+      -- 'jcdickinson/codeium.nvim',
     },
     config = function () require('settings/cmp') end,
   },
