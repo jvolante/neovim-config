@@ -74,7 +74,7 @@ vim.api.nvim_create_user_command('Config',
 vim.api.nvim_create_autocmd("VimResized", {
   pattern = '*',
   callback = function ()
-    local keys = vim.api.nvim_replace_termcodes("<c-w>=", true, true, true)
+    local keys = vim.api.nvim_replace_termcodes("<c-w>", true, true, true)
     vim.fn.feedkeys(keys, 'n')
   end,
 })
