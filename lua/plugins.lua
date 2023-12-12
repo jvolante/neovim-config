@@ -144,7 +144,6 @@ require('lazy').setup {
           persistence.load {last = true}
       end, {})
     end,
-    cond = false,
   },
   {
     'RaafatTurki/hex.nvim',
