@@ -50,7 +50,7 @@ vim.keymap.set('n', '<c-q>', '<cmd>q<cr>', {desc = 'Close window'})
 
 vim.keymap.set('n', '<F5>', '<cmd>e!<cr>', {desc = 'Reload buffer'})
 
--- Stop caffine on windows from being wierd
+-- Stop caffine on windows from being weird
 vim.keymap.set({ 'n', 'v', 'o', 's', 'i', 'c', 't' }, '<F15>', '', {desc = 'noop Fix behavior with caffine'})
 vim.keymap.set({ 'n', 'v', 'o', 's', 'i', 'c', 't' }, '<c-F15>', '', {desc = 'noop Fix behavior with caffine'})
 vim.keymap.set({ 'n', 'v', 'o', 's', 'i', 'c', 't' }, '<s-F15>', '', {desc = 'noop Fix behavior with caffine'})
@@ -89,10 +89,6 @@ if vim.g.neovide then
 end
 
 local proj_settings = require('functionality.project_settings')
-
-proj_settings.register_settings_handler('indent',
-  function(indent_length) util.setupIndent(indent_length, o) end,
-  4)
 
 -- set font for gui
 proj_settings.register_settings_handler('guifont',
