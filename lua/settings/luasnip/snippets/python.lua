@@ -1,3 +1,4 @@
+local utils = require('utilities')
 local ls = require('luasnip')
 local s = ls.snippet
 local sn = ls.snippet_node
@@ -48,4 +49,5 @@ ls.add_snippets('python', {
   s("pandas", {t("import pandas as pd")}),
   s("pyplot", {t("import matplotlib.pyplot as plt")}),
   s("path", {t("from pathlib import Path")}),
+  s("__author__", {t("__author__ = \""), f(utils.get_user_name), t(" <"), f(utils.get_user_email), t(">\"")}), --TODO change to parse git global user.name and user.email
 })

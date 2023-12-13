@@ -81,4 +81,43 @@ function M.find_containing_dir(name, isfile, search, count)
   end
 end
 
+function M.lines(str)
+  local result = {}
+  for line in str:gmatch '[^\n]+' do
+    table.insert(result, line)
+  end
+  return result
+end
+
+local parse_git_settings = "^(.*)=(.*)$"
+M.git_settings = {}
+
+function M.parse_git_settings()
+  for k, v in pairs(M.git_settings) do
+    M.git_settings[k] = nil
+  end
+
+  local handle = io.popen("git config --list")
+  for line in handle:lines() do
+    local key, val = line:match(parse_git_settings)
+    if key ~= nil then
+      M.git_settings[key] = val
+    end
+  end
+end
+
+vim.api.nvim_create_autocmd({"DirChanged", "VimEnter"}, {
+  pattern = { "*" },
+  callback = M.parse_git_settings,
+})
+
+function M.get_user_name()
+  return M.git_settings["user.name"]
+end
+
+function M.get_user_email()
+  return M.git_settings["user.email"]
+end
+
+M.parse_git_settings()
 return M
