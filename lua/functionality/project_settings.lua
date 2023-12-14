@@ -108,9 +108,9 @@ function M._setup(load_user_settings, load_project_settings)
             vim.notify("Error parsing project preferences", vim.log.levels.ERROR)
           end
         else
-          vim.schedule(function ()
-            vim.notify("Did not find project settings for this directory")
-          end)
+          -- vim.schedule(function ()
+          --   vim.notify("Did not find project settings for this directory")
+          -- end)
         end
 
         -- If the file is not found, or we have an error parsing it

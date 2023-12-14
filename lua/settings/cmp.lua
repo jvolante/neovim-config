@@ -91,7 +91,13 @@ cmp.setup({
   },
 
   mapping = {
-    ['<C-n>'] = cmp.mapping.select_next_item(),
+    ['<C-n>'] = function ()
+      if luasnip.choice_active() then
+        luasnip.change_choice(1)
+      else
+        cmp.select_next_item()
+      end
+    end,
     ['<C-p>'] = cmp.mapping.select_prev_item(),
     ['<C-b>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
     ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
