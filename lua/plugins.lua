@@ -26,7 +26,7 @@ require('lazy').setup {
     priority = 1000,
     config = function () vim.cmd 'colorscheme forestbones' end,
   },
-  -- {'nvim-telescope/telescope-fzf-native.nvim', build='make' },
+  {'nvim-telescope/telescope-fzf-native.nvim', build='make' },
   require 'settings/aerial',
   {
     'lewis6991/gitsigns.nvim',
