@@ -10,12 +10,12 @@ return {
 
     require('telescope').setup{
       extensions = {
-        fzf = {
-          fuzzy = true,
-          override_generic_sorter = true,
-          override_file_sorter = true,
-          case_mode = "smart_case",
-        }
+        -- fzf = {
+        --   fuzzy = true,
+        --   override_generic_sorter = true,
+        --   override_file_sorter = true,
+        --   case_mode = "smart_case",
+        -- }
       },
       defaults = {
         mappings = {
@@ -68,7 +68,7 @@ return {
       },
     }
 
-    require('telescope').load_extension('fzf')
+    -- require('telescope').load_extension('fzf')
 
     -- WORKAROUND: fix issue with telescope where folds don't work
     -- when a file is opened with it
