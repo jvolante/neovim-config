@@ -9,12 +9,56 @@ return {
     local dapui = require('dapui')
     local dap_python = require('dap-python')
 
+    -- PDB setup
     if require('utilities').isUnix then
         dap_python.setup('~/.virtualenvs/debugpy/bin/python')
     else
         dap_python.setup('~/AppData/Local/nvim-data/mason/packages/debugpy/venv/Scripts/python')
     end
     dap_python.test_runner = 'pytest'
+
+    -- GDB setup
+    dap.adapters.gdb = {
+      type = "executable",
+      command = "gdb",
+      args = { "-i", "dap" }
+    }
+
+    dap.configurations.c = {
+      {
+        name = "Launch",
+        type = "gdb",
+        request = "launch",
+        program = function()
+          return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+        end,
+        cwd = "${workspaceFolder}",
+      },
+    }
+
+    dap.configurations.rust = {
+      {
+        name = "Launch",
+        type = "gdb",
+        request = "launch",
+        program = function()
+          return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+        end,
+        cwd = "${workspaceFolder}",
+      },
+    }
+
+    dap.configurations.cpp = {
+      {
+        name = "Launch",
+        type = "gdb",
+        request = "launch",
+        program = function()
+          return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+        end,
+        cwd = "${workspaceFolder}",
+      },
+    }
 
     dapui.setup({
       icons = { expanded = "", collapsed = "", current_frame = "" },
