@@ -139,3 +139,17 @@ Volumetric
 filename
 datasets
 fiftyone
+roi's
+hough
+CelestialImageDetection
+laplacian
+writelog
+conf
+dest
+zipcode
+vectorize
+numba
+vectorized
+apieditorconfig
+editorconfig
+filetypes

@@ -279,6 +279,11 @@ lsp_config.rust_analyzer.setup{
   capabilities = capabilities,
 }
 
+lsp_config.sqls.setup{
+  on_attach = on_attach,
+  capabilities = capabilities,
+}
+
 if vim.fn.executable('typst-lsp') then
   lsp_config.typst_lsp.setup{
     on_attach = on_attach,

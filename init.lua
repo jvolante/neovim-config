@@ -101,3 +101,10 @@ vim.filetype.add({
     typ = 'typst',
   },
 })
+
+-- Set breakindent shift width from editorconfig
+require('editorconfig').properties.indent_size = function (bufnr, val, opts)
+  bo[bufnr].softtabstop = tonumber(val)
+  bo[bufnr].shiftwidth = tonumber(val)
+  vim.cmd("set breakindentopt=shift:" .. tostring(val * 2))
+end
