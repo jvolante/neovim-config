@@ -19,19 +19,12 @@ vim.opt.rtp:prepend(lazypath)
 
 require('lazy').setup {
   -- Colorschemes
-  -- {
-  --   'mcchrish/zenbones.nvim', -- zenbones/zenflesh/zenwritten/...
-  --   dependencies = { 'rktjmp/lush.nvim' },
-  --   lazy = false,
-  --   priority = 1000,
-  --   config = function () vim.cmd 'colorscheme forestbones' end,
-  -- },
   {
-    'rose-pine/neovim', -- zenbones/zenflesh/zenwritten/...
-    as = "rose-pine",
+    'mcchrish/zenbones.nvim', -- zenbones/zenflesh/zenwritten/...
+    dependencies = { 'rktjmp/lush.nvim' },
     lazy = false,
     priority = 1000,
-    config = function () vim.cmd 'colorscheme rose-pine' end,
+    config = function () vim.cmd 'colorscheme forestbones' end,
   },
   {'nvim-telescope/telescope-fzf-native.nvim', build='make' },
   require 'settings/aerial',
