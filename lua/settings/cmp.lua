@@ -252,11 +252,6 @@ end
 lsp_config.clangd.setup {
   on_attach = on_attach,
   capabilities = capabilities,
-  -- settings = {
-  --   CompileFlags = {
-  --     CompilationDatabase = './build',
-  --   }
-  -- }
 }
 
 lsp_config.bashls.setup{
@@ -280,6 +275,11 @@ lsp_config.rust_analyzer.setup{
 }
 
 lsp_config.sqls.setup{
+  on_attach = on_attach,
+  capabilities = capabilities,
+}
+
+lsp_config.marksman.setup{
   on_attach = on_attach,
   capabilities = capabilities,
 }
