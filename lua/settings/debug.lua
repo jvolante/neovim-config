@@ -11,7 +11,7 @@ return {
 
     -- PDB setup
     if require('utilities').isUnix then
-        dap_python.setup('~/.virtualenvs/debugpy/bin/python')
+        dap_python.setup('python3')
     else
         dap_python.setup('~/AppData/Local/nvim-data/mason/packages/debugpy/venv/Scripts/python')
     end

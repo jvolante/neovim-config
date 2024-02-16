@@ -73,7 +73,8 @@ require('lazy').setup {
     end,
   },
   {
-    'rcarriga/nvim-notify',
+    -- 'rcarriga/nvim-notify',
+    'ls-devs/nvim-notify',
     config = function () vim.notify = require('notify') end,
     lazy = true,
     init = function()
@@ -193,7 +194,7 @@ require('lazy').setup {
       'saadparwaiz1/cmp_luasnip',
       'folke/neodev.nvim',
       'nvim-telescope/telescope.nvim',
-      -- 'jcdickinson/codeium.nvim',
+      'exafunction/codeium.nvim',
     },
     config = function () require('settings/cmp') end,
   },

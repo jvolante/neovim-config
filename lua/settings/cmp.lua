@@ -80,7 +80,16 @@ local icons = {
 
 local cmp = require('cmp')
 local luasnip = require('luasnip')
--- require('codeium').setup{}
+require('codeium').setup {
+  api = {
+    host = "codeium.anduril.dev"
+  },
+  enterprise_mode = true,
+  uname = 'uname',
+  uuidgen = 'uuidgen',
+  curl = 'curl',
+  gzip = 'gzip',
+}
 
 cmp.setup({
   snippet = {
@@ -142,7 +151,7 @@ cmp.setup({
   sources = cmp.config.sources({
     { name = 'nvim_lsp' },
     { name = 'luasnip' }, -- For luasnip users.
-    -- { name = 'codeium' },
+    { name = 'codeium' },
   }, {
     { name = 'buffer' },
   }),
@@ -269,20 +278,24 @@ lsp_config.yamlls.setup{
   capabilities = capabilities,
 }
 
-lsp_config.neocmake.setup{
-  on_attach = on_attach,
-  capabilities = capabilities,
-}
+if vim.fn.executable('neocmake') then
+  lsp_config.neocmake.setup{
+    on_attach = on_attach,
+    capabilities = capabilities,
+  }
+end
 
 lsp_config.rust_analyzer.setup{
   on_attach = on_attach,
   capabilities = capabilities,
 }
 
-lsp_config.sqls.setup{
-  on_attach = on_attach,
-  capabilities = capabilities,
-}
+if vim.fn.executable('taplo') then
+  lsp_config.taplo.setup{
+    on_attach = on_attach,
+    capabilities = capabilities,
+  }
+end
 
 if vim.fn.executable('typst-lsp') then
   lsp_config.typst_lsp.setup{
