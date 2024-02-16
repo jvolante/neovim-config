@@ -261,11 +261,6 @@ end
 lsp_config.clangd.setup {
   on_attach = on_attach,
   capabilities = capabilities,
-  -- settings = {
-  --   CompileFlags = {
-  --     CompilationDatabase = './build',
-  --   }
-  -- }
 }
 
 lsp_config.bashls.setup{
@@ -296,6 +291,11 @@ if vim.fn.executable('taplo') then
     capabilities = capabilities,
   }
 end
+
+lsp_config.marksman.setup{
+  on_attach = on_attach,
+  capabilities = capabilities,
+}
 
 if vim.fn.executable('typst-lsp') then
   lsp_config.typst_lsp.setup{
