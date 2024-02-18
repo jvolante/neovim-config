@@ -80,16 +80,19 @@ local icons = {
 
 local cmp = require('cmp')
 local luasnip = require('luasnip')
-require('codeium').setup {
-  api = {
-    host = "codeium.anduril.dev"
-  },
-  enterprise_mode = true,
-  uname = 'uname',
-  uuidgen = 'uuidgen',
-  curl = 'curl',
-  gzip = 'gzip',
-}
+
+if util.use_codeium() then
+  require('codeium').setup {
+    api = {
+      host = "codeium.anduril.dev"
+    },
+    enterprise_mode = true,
+    uname = 'uname',
+    uuidgen = 'uuidgen',
+    curl = 'curl',
+    gzip = 'gzip',
+  }
+end
 
 cmp.setup({
   snippet = {

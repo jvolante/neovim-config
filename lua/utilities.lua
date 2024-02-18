@@ -120,4 +120,9 @@ function M.get_user_email()
 end
 
 M.parse_git_settings()
+
+function M.use_codeium()
+  return #os.getenv("USE_CODIUM") ~= 0
+end
+
 return M
