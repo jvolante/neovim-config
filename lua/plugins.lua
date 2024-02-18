@@ -228,6 +228,6 @@ require('lazy').setup {
   -- },
   {
     'tpope/vim-eunuch',
-    enabled = require('utilities').isUnix,
+    enabled = util.isUnix,
   },
 }

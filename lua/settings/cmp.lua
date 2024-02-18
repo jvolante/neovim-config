@@ -1,3 +1,4 @@
+local util = require('utilities')
 require('settings/luasnip')
 
 -- Set up on_attach so we can actually use the lsp
