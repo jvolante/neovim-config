@@ -124,4 +124,11 @@ function M.get_cpu_count()
   return tonumber(M.num_cpus:wait())
 end
 
+M.parse_git_settings()
+
+function M.use_codeium()
+  local v = os.getenv("USE_CODIUM")
+  return v ~= nil and #v ~= 0
+end
+
 return M
