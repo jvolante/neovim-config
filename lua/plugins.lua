@@ -74,7 +74,7 @@ require('lazy').setup {
   },
   {
     -- 'rcarriga/nvim-notify',
-    'ls-devs/nvim-notify',
+    'rcarriga/nvim-notify',
     config = function () vim.notify = require('notify') end,
     lazy = true,
     init = function()

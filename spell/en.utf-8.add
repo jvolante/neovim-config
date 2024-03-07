@@ -184,3 +184,8 @@ Argsort
 NeuralNet
 uint8
 HDF5
+Centroids
+multichannel
+blockwise
+highpass
+gdb

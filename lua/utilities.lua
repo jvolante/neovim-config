@@ -116,8 +116,12 @@ function M.get_user_name()
 end
 
 function M.get_user_email()
-  return M.git_settings["user.email"]
+  return M.git_settings["user.email"] or ""
 end
 
-M.parse_git_settings()
+M.num_cpus = vim.system({"nproc", "--all"}, { text = true })
+function M.get_cpu_count()
+  return tonumber(M.num_cpus:wait())
+end
+
 return M
