@@ -226,13 +226,17 @@ lsp_config.pylsp.setup {
         jedi_signature_help = {
           enable = true,
         },
-        pylint = {
-          enabled = true,
-          executable = 'pylint'
-        },
-        -- ruff = {
+        -- pylint = {
         --   enabled = true,
+        --   executable = 'pylint'
         -- },
+        ruff = {
+          enabled = true,
+          formatEnabled = true,
+          executable = 'ruff',
+
+          maxLineLength = 120,
+        },
         pycodestyle = {
           enabled = false,
           ignore = {'E501', 'E231', 'E261'},

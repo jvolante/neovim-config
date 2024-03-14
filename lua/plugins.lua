@@ -147,14 +147,6 @@ require('lazy').setup {
     end,
   },
   {
-    'RaafatTurki/hex.nvim',
-    config = function ()
-      require'hex'.setup()
-    end,
-    enabled = vim.fn.executable('xxd'),
-    cmd = {'HexToggle', 'HexAssemble', 'HexDump'},
-  },
-  {
     'nvim-lualine/lualine.nvim',
     event = 'VeryLazy',
     config = function () require('settings/lualine') end,
@@ -211,7 +203,10 @@ require('lazy').setup {
     'romainl/vim-cool',
     keys = {'/', '<cmd>'},
   },
-  'peterhoeg/vim-qml',
+  {
+    'peterhoeg/vim-qml',
+    ft = { 'qml' },
+  },
   {
     'bkad/CamelCaseMotion',
     keys = {
@@ -230,4 +225,68 @@ require('lazy').setup {
     'tpope/vim-eunuch',
     enabled = util.isUnix,
   },
+  {
+    'Mr-LLLLL/treesitter-outer',
+    dependencies = "nvim-treesitter/nvim-treesitter",
+    -- only load this plug in follow filetypes
+    ft = {
+      "c",
+      "cpp",
+      "elixir",
+      "fennel",
+      "foam",
+      "go",
+      "javascript",
+      "julia",
+      "lua",
+      "nix",
+      "php",
+      "python",
+      "r",
+      "ruby",
+      "rust",
+      "scss",
+      "tsx",
+      "typescript",
+    },
+    -- default config
+    opts = {
+      filetypes = {
+        "c",
+        "cpp",
+        "elixir",
+        "fennel",
+        "foam",
+        "go",
+        "javascript",
+        "julia",
+        "lua",
+        "nix",
+        "php",
+        "python",
+        "r",
+        "ruby",
+        "rust",
+        "scss",
+        "tsx",
+        "typescript",
+      },
+      mode = { 'n', 'v' },
+      prev_outer_key = "[{",
+      next_outer_key = "]}",
+    },
+  },
+  {
+    'gbprod/yanky.nvim',
+    opts = {},
+    keys = {
+      { "p", mode = { 'n', 'x' }, "<Plug>(YankyPutAfter)", },
+      { "P", mode = { 'n', 'x' }, "<Plug>(YankyPutBefore)", },
+      { "gp",mode = { 'n', 'x' }, "<Plug>(YankyGPutAfter)", },
+      { "gP",mode = { 'n', 'x' }, "<Plug>(YankyGPutBefore)", },
+
+      {'<c-n>', mode = { 'n' }, "<Plug>(YankyPreviousEntry)", },
+      {'<c-s-p>', mode = { 'n' }, "<Plug>(YankyNextEntry)", },
+    }
+  }
 }

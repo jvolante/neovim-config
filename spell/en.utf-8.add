@@ -188,4 +188,5 @@ Centroids
 multichannel
 blockwise
 highpass
-gdb
+gdbdataframe
+SensorNoise

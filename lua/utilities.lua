@@ -127,7 +127,7 @@ end
 M.parse_git_settings()
 
 function M.use_codeium()
-  local v = os.getenv("USE_CODIUM")
+  local v = os.getenv("USE_CODEIUM")
   return v ~= nil and #v ~= 0
 end
 
