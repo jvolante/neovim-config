@@ -78,7 +78,7 @@ return {
     })
   end,
   keys = {
-    {'<c-p>', function () require'telescope.builtin'.find_files() end, desc = 'File fuzzy finder'},
+    {'<leader><space>', function () require'telescope.builtin'.find_files() end, desc = 'File fuzzy finder'},
     {'gB', function () require'telescope.builtin'.buffers() end, desc = 'Buffer fuzzy finder'},
     {'<leader>/', function () require'telescope.builtin'.live_grep() end, desc = 'Global search current directory'},
     {'<F1>', function () require'telescope.builtin'.keymaps() end, desc = 'Fuzzy search keymaps'},

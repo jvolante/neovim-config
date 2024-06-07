@@ -269,6 +269,7 @@ end
 lsp_config.clangd.setup {
   on_attach = on_attach,
   capabilities = capabilities,
+  filetypes = { "c", "cpp", "objc", "objcpp", "cuda" } -- remove proto
 }
 
 lsp_config.bashls.setup{
@@ -311,6 +312,11 @@ if vim.fn.executable('typst-lsp') then
     capabilities = capabilities,
   }
 end
+
+require'lspconfig'.bufls.setup{
+  on_attach = on_attach,
+  capabilities = capabilities,
+}
 
 -- Disable LSP highlight, treesitter is better
 for _, group in ipairs(vim.fn.getcompletion("@lsp", "highlight")) do

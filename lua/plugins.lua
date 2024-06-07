@@ -201,7 +201,7 @@ require('lazy').setup {
   'tpope/vim-repeat',
   {
     'romainl/vim-cool',
-    keys = {'/', '<cmd>'},
+    keys = {'/', '<cmd>', '<s-8>', '<s-3>'},
   },
   {
     'peterhoeg/vim-qml',
@@ -286,7 +286,7 @@ require('lazy').setup {
       { "gP",mode = { 'n', 'x' }, "<Plug>(YankyGPutBefore)", },
 
       {'<c-n>', mode = { 'n' }, "<Plug>(YankyPreviousEntry)", },
-      {'<c-s-p>', mode = { 'n' }, "<Plug>(YankyNextEntry)", },
+      {'<c-p>', mode = { 'n' }, "<Plug>(YankyNextEntry)", },
     }
-  }
+  },
 }

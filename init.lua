@@ -15,7 +15,7 @@ end
 -- these options
 g.mapleader = ","
 
-o.mouse = "a"
+o.mouse = "nv"
 o.mousemodel = "extend"
 o.autoread = true
 o.swapfile = false
