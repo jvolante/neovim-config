@@ -119,7 +119,12 @@ function M.get_user_email()
   return M.git_settings["user.email"] or ""
 end
 
-M.num_cpus = vim.system({"nproc", "--all"}, { text = true })
+if vim.version().minor > 9 then
+  M.num_cpus = vim.system({"nproc", "--all"}, { text = true })
+else
+  M.num_cpus = 8
+end
+
 function M.get_cpu_count()
   return tonumber(M.num_cpus:wait())
 end
