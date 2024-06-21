@@ -25,6 +25,8 @@ return {
             ['<ESC>'] = actions.close,
             ['<c-CR>'] = actions.select_vertical,
             ['<s-CR>'] = actions.select_horizontal,
+            ['<c-v>'] = actions.select_vertical,
+            ['<c-s>'] = actions.select_horizontal,
             ['<c-q>'] = function (buffnr)
               vim.cmd('cexpr []')
               actions.smart_add_to_qflist(buffnr)
