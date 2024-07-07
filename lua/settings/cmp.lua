@@ -79,6 +79,8 @@ local icons = {
   TypeParameter = "",
 }
 
+require'neogen'.setup { snippet_engine = "luasnip" }
+
 local cmp = require('cmp')
 local luasnip = require('luasnip')
 

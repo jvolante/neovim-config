@@ -31,10 +31,16 @@ o.cursorline = true
 o.lazyredraw = true
 o.termguicolors = true
 o.signcolumn = 'yes'
-o.undodir = o.undodir .. ',/tmp/nvim'
+o.undodir = o.undodir .. ',$HOME/local/state/nvim/undo/'
 o.undofile = true
 o.spelllang = "en_us"
 o.spell = true
+o.inccommand = 'split'
+
+vim.opt.wildignore:append({'.javac', 'node_modules', '*.pyc', '.aux', '.out', '.toc', '.o', '.obj', '.dll', '.exe', '.so', '.a', '.lib', '.pyc', '.pyo', '.pyd', '.swp', '.swo', '.class', '.DS_Store', '.git', '.hg', '.orig',})
+vim.opt.suffixesadd:append({'.java', '.rs'})
+
+vim.opt.diffopt:append("linematch:50")
 
 -- Load plugins and plugin settings
 require('plugins')

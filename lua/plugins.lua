@@ -186,6 +186,7 @@ require('lazy').setup {
       'saadparwaiz1/cmp_luasnip',
       'folke/neodev.nvim',
       'nvim-telescope/telescope.nvim',
+      'danymat/neogen',
       {'exafunction/codeium.nvim', enable = util.use_codeium()},
     },
     config = function () require('settings/cmp') end,
@@ -288,5 +289,19 @@ require('lazy').setup {
       {'<c-n>', mode = { 'n' }, "<Plug>(YankyPreviousEntry)", },
       {'<c-p>', mode = { 'n' }, "<Plug>(YankyNextEntry)", },
     }
+  },
+  {
+    'jiaoshijie/undotree',
+    dependencies = 'nvim-lua/plenary.nvim',
+    config = function ()
+      local undotree = require('undotree')
+      undotree.setup {}
+
+      vim.api.nvim_create_user_command('Undotree',
+        function ()
+          undotree.toggle()
+        end, {})
+    end,
+    cmd = { 'Undotree' },
   },
 }
