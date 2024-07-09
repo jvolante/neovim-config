@@ -186,6 +186,7 @@ require('lazy').setup {
       'saadparwaiz1/cmp_luasnip',
       'folke/neodev.nvim',
       'nvim-telescope/telescope.nvim',
+      'danymat/neogen',
       {'exafunction/codeium.nvim', enable = util.use_codeium()},
     },
     config = function () require('settings/cmp') end,
@@ -297,6 +298,20 @@ require('lazy').setup {
     },
     cmd = {"Octo"},
     config = function() require('octo').setup() end,
-    enabled = vim.fn.executable('git') & vim.fn.executable('gh'),
+    enabled = vim.fn.executable('git') and vim.fn.executable('gh'),
+  },
+  {
+    'jiaoshijie/undotree',
+    dependencies = 'nvim-lua/plenary.nvim',
+    config = function ()
+      local undotree = require('undotree')
+      undotree.setup {}
+
+      vim.api.nvim_create_user_command('Undotree',
+        function ()
+          undotree.toggle()
+        end, {})
+    end,
+    cmd = { 'Undotree' },
   },
 }
