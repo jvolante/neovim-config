@@ -289,4 +289,14 @@ require('lazy').setup {
       {'<c-p>', mode = { 'n' }, "<Plug>(YankyNextEntry)", },
     }
   },
+  {
+    'pwntester/octo.nvim',
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      'nvim-telescope/telescope.nvim',
+    },
+    cmd = {"Octo"},
+    config = function() require('octo').setup() end,
+    enabled = vim.fn.executable('git') & vim.fn.executable('gh'),
+  },
 }
