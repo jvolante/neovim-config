@@ -81,6 +81,8 @@ local icons = {
 
 require'neogen'.setup { snippet_engine = "luasnip" }
 
+vim.keymap.set('n', '<leader>dg', function () require'neogen'.generate{} end, { noremap = true, silent = true, desc = 'Generate Documentation' })
+
 local cmp = require('cmp')
 local luasnip = require('luasnip')
 
