@@ -90,6 +90,9 @@ require('lazy').setup {
     dependencies = {'ggandor/leap-spooky.nvim'},
     config = function ()
       require('leap-spooky').setup()
+      local leap = require('leap')
+      leap.opts.special_keys.prev_target = '<backspace>'
+      leap.opts.special_keys.prev_group = '<backspace>'
     end,
     keys = {
       { 's', '<Plug>(leap-forward)', mode = { 'n', 'v', 'o' }, desc = 'Leap search forward' },
