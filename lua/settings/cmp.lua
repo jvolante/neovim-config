@@ -89,7 +89,7 @@ local luasnip = require('luasnip')
 if util.use_codeium() then
   require('codeium').setup {
     api = {
-      host = "codeium.anduril.dev"
+      host = "codeium.itools.anduril.dev"
     },
     enterprise_mode = true,
     uname = 'uname',

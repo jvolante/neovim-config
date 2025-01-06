@@ -9,6 +9,11 @@ if util.isUnix then
   g.python3_host_prog = 'python3'
 else
   g.python3_host_prog = 'python'
+
+  -- Stop caffeine on windows from being weird
+  vim.keymap.set({ 'n', 'v', 'o', 's', 'i', 'c', 't' }, '<F15>', '', {desc = 'noop Fix behavior with caffine'})
+  vim.keymap.set({ 'n', 'v', 'o', 's', 'i', 'c', 't' }, '<c-F15>', '', {desc = 'noop Fix behavior with caffine'})
+  vim.keymap.set({ 'n', 'v', 'o', 's', 'i', 'c', 't' }, '<s-F15>', '', {desc = 'noop Fix behavior with caffine'})
 end
 
 -- Super important stuff to do first, loading plugins may change
@@ -55,11 +60,6 @@ vim.keymap.set('n', '<c-l>', '<c-w>l', {desc = 'Jump window right'})
 vim.keymap.set('n', '<c-q>', '<cmd>q<cr>', {desc = 'Close window'})
 
 vim.keymap.set('n', '<F5>', '<cmd>e!<cr>', {desc = 'Reload buffer'})
-
--- Stop caffeine on windows from being weird
-vim.keymap.set({ 'n', 'v', 'o', 's', 'i', 'c', 't' }, '<F15>', '', {desc = 'noop Fix behavior with caffine'})
-vim.keymap.set({ 'n', 'v', 'o', 's', 'i', 'c', 't' }, '<c-F15>', '', {desc = 'noop Fix behavior with caffine'})
-vim.keymap.set({ 'n', 'v', 'o', 's', 'i', 'c', 't' }, '<s-F15>', '', {desc = 'noop Fix behavior with caffine'})
 
 -- make terminal mode less annoying
 vim.keymap.set('t', '<c-\\>', '<c-\\><c-N>', {desc = 'Leave insert terminal mode'})
