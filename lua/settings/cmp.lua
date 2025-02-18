@@ -310,14 +310,14 @@ lsp_config.marksman.setup{
   capabilities = capabilities,
 }
 
-if vim.fn.executable('typst-lsp') then
-  lsp_config.typst_lsp.setup{
+if vim.fn.executable('tinymist') then
+  lsp_config.tinymist.setup{
     on_attach = on_attach,
     capabilities = capabilities,
   }
 end
 
-require'lspconfig'.bufls.setup{
+require'lspconfig'.buf_ls.setup{
   on_attach = on_attach,
   capabilities = capabilities,
 }
