@@ -34,7 +34,6 @@ o.linebreak = true
 o.number = false
 o.cursorline = true
 o.lazyredraw = true
-o.termguicolors = true
 o.signcolumn = 'yes'
 o.undodir = o.undodir .. ',' .. os.getenv('HOME') .. '/.local/state/nvim/undo/'
 o.undofile = true

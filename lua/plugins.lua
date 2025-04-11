@@ -164,17 +164,6 @@ require('lazy').setup {
     config = function () require'settings/treesitter' end,
     build = ':TSUpdate',
   },
-  {
-    'numToStr/Comment.nvim',
-    dependencies = 'nvim-treesitter/nvim-treesitter',
-    config = function () require('Comment').setup() end,
-    keys = {
-      {'gc', mode = {'v', 'n'}, desc = 'Comment toggle linewise'},
-      {'gb', mode = {'v', 'n'}, desc = 'Comment toggle blockwise'},
-      {'gco', desc = 'Comment insert below'},
-      {'gcO', desc = 'Comment insert above'},
-    },
-  },
   require('settings/neogit'),
   require('settings/telescope'),
 
