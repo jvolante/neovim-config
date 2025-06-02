@@ -75,7 +75,7 @@ require('lazy').setup {
   {
     -- 'rcarriga/nvim-notify',
     'rcarriga/nvim-notify',
-    config = function () vim.notify = require('notify') end,
+    config = function () vim.notify = require('notify'); vim.notify.setup({ background_colour = "#000000" }) end,
     lazy = true,
     init = function()
       ---@diagnostic disable-next-line: duplicate-set-field

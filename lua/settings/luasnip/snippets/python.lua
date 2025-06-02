@@ -35,7 +35,7 @@ ls.add_snippets('python', {
     f(copy, 2), t({'', indent .. "'''", indent}),
     i(5, 'body')}),
   s("main", {
-    t({"def main():",
+    t({"def main() -> None:",
         indent .. "from argparse import ArgumentParser",
         indent .. "parser = ArgumentParser(description=__doc__)", '', indent}),
         i(1, 'add arguments'), t({'', '', indent .. "args = parser.parse_args()", '', indent}),
@@ -47,10 +47,13 @@ ls.add_snippets('python', {
     }),
   s("partial", {t("from functools import partial")}),
   s("numpy", {t("import numpy as np")}),
+  s("cupy", {t("import cupy as cp")}),
   s("pandas", {t("import pandas as pd")}),
+  s("polars", {t("import polars as pl")}),
   s("pyplot", {t("import matplotlib.pyplot as plt")}),
   s("path", {t("from pathlib import Path")}),
   s("executor_import", {t("from concurrent.futures import "), c(1, {t("Thread"), t("Process")}), t("PoolExecutor")}),
   s("__author__", {t("__author__ = \""), f(utils.get_user_name), t(" <"), f(utils.get_user_email), t(">\"")}), --TODO change to parse git global user.name and user.email
+  s("numpy_generator", {t("generator = np.random.Generator()")}),
   -- s("json_load", {t("with open("), i(1, "json_path"), t(") as f:"), }),
 })

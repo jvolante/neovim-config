@@ -286,6 +286,13 @@ lsp_config.yamlls.setup{
   capabilities = capabilities,
 }
 
+if vim.fn.executable('glsl_analyzer') then
+  lsp_config.glsl_analyzer.setup{
+    on_attach = on_attach,
+    capabilities = capabilities,
+  }
+end
+
 if vim.fn.executable('neocmake') then
   lsp_config.neocmake.setup{
     on_attach = on_attach,
@@ -296,6 +303,12 @@ end
 lsp_config.rust_analyzer.setup{
   on_attach = on_attach,
   capabilities = capabilities,
+  settings = {
+    ["rust-analyzer"] = {
+      checkOnSave = { command = 'clippy' },
+      procMacro = { enable = true },
+    },
+  }
 }
 
 if vim.fn.executable('taplo') then
