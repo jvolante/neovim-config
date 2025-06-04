@@ -40,6 +40,7 @@ o.undofile = true
 o.spelllang = "en_us"
 o.spell = true
 o.inccommand = 'split'
+o.termguicolors = true
 
 vim.opt.wildignore:append({'.javac', 'node_modules', '*.pyc', '.aux', '.out', '.toc', '.o', '.obj', '.dll', '.exe', '.so', '.a', '.lib', '.pyc', '.pyo', '.pyd', '.swp', '.swo', '.class', '.DS_Store', '.git', '.hg', '.orig', '*.lock'})
 vim.opt.suffixesadd:append({'.java', '.rs'})
