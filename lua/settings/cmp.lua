@@ -286,13 +286,6 @@ lsp_config.yamlls.setup{
   capabilities = capabilities,
 }
 
-if vim.fn.executable('glsl_analyzer') then
-  lsp_config.glsl_analyzer.setup{
-    on_attach = on_attach,
-    capabilities = capabilities,
-  }
-end
-
 if vim.fn.executable('neocmake') then
   lsp_config.neocmake.setup{
     on_attach = on_attach,
@@ -330,7 +323,22 @@ if vim.fn.executable('tinymist') then
   }
 end
 
-require'lspconfig'.buf_ls.setup{
+lsp_config.jqls.setup{
+  on_attach = on_attach,
+  capabilities = capabilities,
+}
+
+lsp_config.jsonls.setup{
+  on_attach = on_attach,
+  capabilities = capabilities,
+}
+
+lsp_config.glsl_analyzer.setup{
+  on_attach = on_attach,
+  capabilities = capabilities,
+}
+
+lsp_config.buf_ls.setup{
   on_attach = on_attach,
   capabilities = capabilities,
 }
