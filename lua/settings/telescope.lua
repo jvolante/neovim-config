@@ -18,6 +18,7 @@ return {
         }
       },
       defaults = {
+        file_ignore_patterns = {'%.javac$', '%.pyc$', '%.aux$', '%.out$', '%.toc$', '%.o$', '%.obj$', '%.dll$', '%.exe$', '%.so$', '%.a$', '%.lib$', '%.pyc$', '%.pyo$', '%.pyd$', '%.swp$', '%.swo$', '%.class$', '%.DS_Store$', '%.git$', '%.hg$', '%.orig$', '%.lock$'},
         mappings = {
           i = {
             ['<C-j>'] = actions.move_selection_next,
