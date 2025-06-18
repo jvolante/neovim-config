@@ -62,26 +62,26 @@ local icons = {
   Interface = "",
   Module = "",
   Property = "ﰠ",
-  Unit = "塞",
+  Unit = "󰭍",
   Value = "",
   Enum = "",
-  Keyword = "廓",
+  Keyword = "",
   Snippet = "",
   Color = "",
-  File = "",
-  Reference = "",
+  File = "",
+  Reference = "",
   Folder = "",
   EnumMember = "",
   Constant = "",
-  Struct = "פּ",
+  Struct = "",
   Event = "",
   Operator = "",
-  TypeParameter = "",
+  TypeParameter = "",
 }
 
 require'neogen'.setup { snippet_engine = "luasnip" }
 
-vim.keymap.set('n', '<leader>dg', function () require'neogen'.generate{} end, { noremap = true, silent = true, desc = 'Generate Documentation' })
+vim.keymap.set('n', '<leader>gd', function () require'neogen'.generate{} end, { noremap = true, silent = true, desc = 'Generate Documentation' })
 
 local cmp = require('cmp')
 local luasnip = require('luasnip')
