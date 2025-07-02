@@ -95,9 +95,8 @@ require('lazy').setup {
       leap.opts.special_keys.prev_group = '<backspace>'
     end,
     keys = {
-      { 's', '<Plug>(leap-forward)', mode = { 'n', 'v', 'o' }, desc = 'Leap search forward' },
-      { 'S', '<Plug>(leap-backward)', mode = { 'n', 'v', 'o' }, desc = 'Leap search backward' },
-      { 'gs', '<Plug>(leap-cross-window)', mode = { 'n', 'v', 'o' }, desc = 'Leap search cross window' },
+      { 's', '<Plug>(leap-anywhere)', mode = { 'n' }, desc = 'Leap motion for normal mode (cross-window)' },
+      { 's', '<Plug>(leap)', mode = { 'v', 'o' }, desc = 'Leap motion for other modes (within-window)' },
       { 'i', mode = { 'o' }, },
       { 'a', mode = { 'o' }, },
     },
