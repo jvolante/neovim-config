@@ -141,10 +141,13 @@ require('lazy').setup {
     'folke/persistence.nvim',
     config = function ()
       local persistence = require('persistence')
-      persistence.setup {}
+      persistence.setup {
+        need = 2,
+        branch = true,
+      }
 
       vim.api.nvim_create_user_command('Restore', function()
-          persistence.load {last = true}
+          persistence.load()
       end, {})
     end,
   },

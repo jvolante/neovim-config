@@ -42,7 +42,7 @@ o.spell = true
 o.inccommand = 'split'
 o.termguicolors = true -- fixes colors over some ssh connections
 
-vim.opt.wildignore:append({'*.javac', 'node_modules', '*.aux', '*.out', '*.toc', '*.o', '*.obj', '*.dll', '*.exe', '*.so', '*.a', '*.lib', '*.pyc', '*.pyo', '*.pyd', '*.swp', '*.swo', '*.class', '.DS_Store', '.git', '.hg', '.orig', '*.lock'})
+vim.opt.wildignore:append({'*.javac', 'node_modules', '*.aux', '*.out', '*.toc', '*.o', '*.obj', '*.dll', '*.exe', '*.so', '*.a', '*.lib', '*.pyc', '*.pyo', '*.pyd', '*.swp', '*.swo', '*.class', '.DS_Store', '.git', '.hg', '.orig', '*.lock', '*.onnx'})
 vim.opt.suffixesadd:append({'.java', '.rs'})
 
 vim.opt.diffopt:append("linematch:50")
