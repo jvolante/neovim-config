@@ -162,6 +162,7 @@ require('lazy').setup {
     dependencies = {
       'nvim-treesitter/nvim-treesitter-textobjects',
       'RRethy/nvim-treesitter-textsubjects',
+      'OXY2DEV/markview.nvim',
     },
     config = function () require'settings/treesitter' end,
     build = ':TSUpdate',
