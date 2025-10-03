@@ -14,6 +14,7 @@
   "leap.nvim": { "branch": "main", "commit": "8b03b5d62d11cd9da5ea8be62ab8e9ff3fabab8f" },
   "lualine.nvim": { "branch": "master", "commit": "b8c23159c0161f4b89196f74ee3a6d02cdc3a955" },
   "lush.nvim": { "branch": "main", "commit": "1be16d9002f8b2e8973a19ceac199ad394dea76a" },
+  "markview.nvim": { "branch": "main", "commit": "6d63416c86ed1be16ad66a042ae7d2b15c53152e" },
   "neodev.nvim": { "branch": "main", "commit": "46aa467dca16cf3dfe27098042402066d2ae242d" },
   "neogen": { "branch": "main", "commit": "d7f9461727751fb07f82011051338a9aba07581d" },
   "neogit": { "branch": "master", "commit": "49d0527143fe748196ae9a20b8c9ff54cbf45fab" },
