@@ -6,8 +6,6 @@ require('settings/luasnip')
 -- attached LSP
 
 local on_attach = function(_, bufnr)
-  vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
-
   local opts = { noremap = true, silent = true, buffer = bufnr, desc = 'LSP Go to declaration' }
   vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
   opts['desc'] = 'LSP Go to deffinition'
@@ -186,12 +184,14 @@ neodev.setup {}
 -- Make sure some lsps are installed and set them up
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
-local lsp_config = require('lspconfig')
-
--- NEW
-lsp_config.lua_ls.setup{
+-- Define default configuration for all servers
+vim.lsp.config('*', {
   on_attach = on_attach,
   capabilities = capabilities,
+})
+
+-- Define specific server configurations
+vim.lsp.config('lua_ls', {
   settings = {
     Lua = {
       completion = {
@@ -214,11 +214,9 @@ lsp_config.lua_ls.setup{
       traceFieldInject = true,
     },
   }
-}
+})
 
-lsp_config.pylsp.setup {
-  on_attach = on_attach,
-  capabilities = capabilities,
+vim.lsp.config('pylsp', {
   settings = {
     pylsp = {
       plugins = {
@@ -256,94 +254,44 @@ lsp_config.pylsp.setup {
       },
     },
   }
-}
+})
 
-if vim.fn.executable('nixd') then
-  lsp_config.nixd.setup {
-    on_attach = on_attach,
-    capabilities = capabilities,
-  }
-else
-  lsp_config.nil_ls.setup {
-    on_attach = on_attach,
-    capabilities = capabilities,
-  }
-end
+-- Only configure servers that need specific settings beyond the defaults
 
-lsp_config.clangd.setup {
-  on_attach = on_attach,
-  capabilities = capabilities,
+vim.lsp.config('clangd', {
   filetypes = { "c", "cpp", "objc", "objcpp", "cuda" } -- remove proto
-}
+})
 
-lsp_config.bashls.setup{
-  on_attach = on_attach,
-  capabilities = capabilities,
-}
-
-lsp_config.yamlls.setup{
-  on_attach = on_attach,
-  capabilities = capabilities,
-}
-
-if vim.fn.executable('neocmake') then
-  lsp_config.neocmake.setup{
-    on_attach = on_attach,
-    capabilities = capabilities,
-  }
-end
-
-lsp_config.rust_analyzer.setup{
-  on_attach = on_attach,
-  capabilities = capabilities,
+vim.lsp.config('rust_analyzer', {
   settings = {
     ["rust-analyzer"] = {
       checkOnSave = { command = 'clippy' },
       procMacro = { enable = true },
     },
   }
-}
-
-if vim.fn.executable('taplo') then
-  lsp_config.taplo.setup{
-    on_attach = on_attach,
-    capabilities = capabilities,
-  }
-end
-
-lsp_config.marksman.setup{
-  on_attach = on_attach,
-  capabilities = capabilities,
-}
-
-if vim.fn.executable('tinymist') then
-  lsp_config.tinymist.setup{
-    on_attach = on_attach,
-    capabilities = capabilities,
-  }
-end
-
-lsp_config.jqls.setup{
-  on_attach = on_attach,
-  capabilities = capabilities,
-}
-
-lsp_config.jsonls.setup{
-  on_attach = on_attach,
-  capabilities = capabilities,
-}
-
-lsp_config.glsl_analyzer.setup{
-  on_attach = on_attach,
-  capabilities = capabilities,
-}
-
-lsp_config.buf_ls.setup{
-  on_attach = on_attach,
-  capabilities = capabilities,
-}
+})
 
 -- Disable LSP highlight, treesitter is better
 for _, group in ipairs(vim.fn.getcompletion("@lsp", "highlight")) do
   vim.api.nvim_set_hl(0, group, {})
 end
+
+-- Enable all LSP servers with silent=true to avoid error messages for missing servers
+vim.lsp.enable({
+  'lua_ls',
+  'pylsp',
+  'clangd',
+  'bashls',
+  'yamlls',
+  'rust_analyzer',
+  'marksman',
+  'jqls',
+  'jsonls',
+  'glsl_analyzer',
+  'buf_ls',
+  'nixd',
+  'nil_ls',
+  'neocmake',
+  'taplo',
+  'tinymist'
+}, true) -- The true here enables silent mode
