@@ -136,4 +136,43 @@ function M.use_codeium()
   return v ~= nil and #v ~= 0
 end
 
+-- Generate GitHub link for the given file and line
+function M.generate_github_link(file_path, line_number)
+  -- Get the current file path relative to the git repo
+  local repo_root = vim.fn.system("git rev-parse --show-toplevel"):gsub("\n", "")
+  local relative_path = file_path:gsub("^" .. vim.pesc(repo_root) .. "/", "")
+
+  -- Get the current branch name
+  local branch = vim.fn.system("git rev-parse --abbrev-ref HEAD"):gsub("\n", "")
+
+  -- Get the remote URL
+  local remote_url = vim.fn.system("git config --get remote.origin.url"):gsub("\n", "")
+
+  -- Transform git@ style URLs to https:// style
+  local github_base_url
+  if remote_url:match("^git@") then
+    -- Convert git@github.com:user/repo.git to https://github.com/user/repo
+    github_base_url = remote_url:gsub("^git@([^:]+):", "https://%1/")
+    github_base_url = github_base_url:gsub("%.git$", "")
+  else
+    -- Handle https:// style URLs
+    github_base_url = remote_url:gsub("%.git$", "")
+  end
+
+  -- Generate the GitHub link
+  return github_base_url .. "/blob/" .. branch .. "/" .. relative_path .. "#L" .. line_number
+end
+
+-- Copy GitHub link to current file:line to clipboard
+function M.copy_github_link()
+  local file_path = vim.fn.expand("%:p")
+  local line_number = vim.fn.line(".")
+
+  local github_link = M.generate_github_link(file_path, line_number)
+
+  -- Copy to clipboard
+  vim.fn.setreg("+", github_link)
+  vim.notify("GitHub link copied to clipboard: " .. github_link, vim.log.levels.INFO)
+end
+
 return M
