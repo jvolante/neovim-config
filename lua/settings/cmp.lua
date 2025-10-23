@@ -5,7 +5,7 @@ require('settings/luasnip')
 -- sets up a bunch of keymaps for a buffer that has an
 -- attached LSP
 
-local on_attach = function(_, bufnr)
+local on_attach = function(client, bufnr)
   local opts = { noremap = true, silent = true, buffer = bufnr, desc = 'LSP Go to declaration' }
   vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
   opts['desc'] = 'LSP Go to deffinition'
@@ -192,6 +192,8 @@ vim.lsp.config('*', {
 
 -- Define specific server configurations
 vim.lsp.config('lua_ls', {
+  on_attach = on_attach,
+  capabilities = capabilities,
   settings = {
     Lua = {
       completion = {
@@ -217,6 +219,8 @@ vim.lsp.config('lua_ls', {
 })
 
 vim.lsp.config('pylsp', {
+  on_attach = on_attach,
+  capabilities = capabilities,
   settings = {
     pylsp = {
       plugins = {
@@ -259,10 +263,14 @@ vim.lsp.config('pylsp', {
 -- Only configure servers that need specific settings beyond the defaults
 
 vim.lsp.config('clangd', {
+  on_attach = on_attach,
+  capabilities = capabilities,
   filetypes = { "c", "cpp", "objc", "objcpp", "cuda" } -- remove proto
 })
 
 vim.lsp.config('rust_analyzer', {
+  on_attach = on_attach,
+  capabilities = capabilities,
   settings = {
     ["rust-analyzer"] = {
       checkOnSave = { command = 'clippy' },
