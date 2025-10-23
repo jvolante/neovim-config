@@ -159,7 +159,7 @@ geo
 iteratively
 interp
 normalizer
-sqrtw2p
+sqrt
 stdev
 stdevs
 dataset
@@ -212,7 +212,6 @@ DNN
 SNR.
 catenary
 de
-Anduril
 LIDAR
 IMU
 LWIR
@@ -232,3 +231,4 @@ FFT
 covariance
 jq
 linter
+namespace
