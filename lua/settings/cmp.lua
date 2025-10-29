@@ -11,7 +11,7 @@ local on_attach = function(client, bufnr)
   opts['desc'] = 'LSP Go to deffinition'
   vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
   opts['desc'] = 'LSP Go to header'
-  vim.keymap.set('n', 'gh', '<cmd>ClangdSwitchSourceHeader<CR>', opts)
+  vim.keymap.set('n', 'gh', '<cmd>LspClangdSwitchSourceHeader<CR>', opts)
   opts['desc'] = 'LSP Show symbol info'
   vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
   opts['desc'] = 'LSP Go to implementation'
@@ -206,6 +206,9 @@ neodev.setup {}
 
 -- Make sure some lsps are installed and set them up
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
+
+-- Set up lspconfig first to get commands
+local lspconfig = require('lspconfig')
 
 -- Define default configuration for all servers
 vim.lsp.config('*', {
