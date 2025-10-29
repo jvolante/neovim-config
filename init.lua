@@ -19,6 +19,7 @@ end
 -- Super important stuff to do first, loading plugins may change
 -- these options
 g.mapleader = ","
+g.maplocalleader = ",,"
 
 o.mouse = "nv"
 o.mousemodel = "extend"
