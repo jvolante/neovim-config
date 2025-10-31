@@ -104,7 +104,7 @@ local chars = { 'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p',
 
 for _, char in ipairs(chars) do
   -- This makes each character behave like it would in insert mode when in select mode
-  vim.keymap.set('s', char, 'c' .. char, { noremap = true })
+  vim.keymap.set('s', char, char, { noremap = true })
 end
 
 if util.use_codeium() then
