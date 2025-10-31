@@ -69,6 +69,7 @@ vim.keymap.set('t', '<c-\\>', '<c-\\><c-N>', {desc = 'Leave insert terminal mode
 vim.keymap.set('i', '<c-l>', '<c-r>"', {desc = 'Insert mode put'})
 
 vim.keymap.set('n', '<leader>ll', util.copy_github_link, {desc = 'Copy link to current line for forge'})
+vim.keymap.set('n', '<leader>dr', util.convert_deg_to_rad, {desc = 'Convert degrees to radians under cursor'})
 
 vim.api.nvim_create_user_command('Config',
   function ()

@@ -175,4 +175,62 @@ function M.copy_github_link()
   vim.notify("GitHub link copied to clipboard: " .. github_link, vim.log.levels.INFO)
 end
 
+-- Convert degrees to radians
+function M.deg_to_rad(degrees)
+  return degrees * (math.pi / 180)
+end
+
+-- Convert radians to degrees
+function M.rad_to_deg(radians)
+  return radians * (180 / math.pi)
+end
+
+-- Get number under cursor, including scientific notation
+-- Returns: number_str, number, start_pos, end_pos or nil if no number found
+function M.get_number_under_cursor()
+  local line = vim.fn.getline('.')
+  local col = vim.fn.col('.')
+
+  -- Match scientific notation or regular numbers
+  -- This pattern matches: digits, decimal point, optional exponent (e/E followed by optional sign and digits)
+  local before_pattern = '[%d%.eE%+%-]+$'
+  local after_pattern = '^[%d%.eE%+%-]+'
+
+  local before = line:sub(1, col - 1):match(before_pattern) or ''
+  local after = line:sub(col):match(after_pattern) or ''
+  local number_str = before .. after
+
+  if number_str == '' then
+    vim.notify('No number under cursor', vim.log.levels.WARN)
+    return nil
+  end
+
+  local number = tonumber(number_str)
+  if not number then
+    vim.notify('Invalid number under cursor', vim.log.levels.WARN)
+    return nil
+  end
+
+  local start_pos = col - #before
+  local end_pos = col - 1 + #after
+
+  return number_str, number, start_pos, end_pos
+end
+
+-- Convert the number under cursor from degrees to radians
+function M.convert_deg_to_rad()
+  local number_str, number, start_pos, end_pos = M.get_number_under_cursor()
+
+  if not number then
+    return
+  end
+
+  local radians = M.deg_to_rad(number)
+  local radians_str = string.format('%.6f', radians)
+
+  -- Replace the number under cursor with the converted value
+  vim.api.nvim_buf_set_text(0, vim.fn.line('.') - 1, start_pos - 1, vim.fn.line('.') - 1, end_pos, {radians_str})
+  vim.notify(string.format('%s° = %s rad', number_str, radians_str), vim.log.levels.INFO)
+end
+
 return M
