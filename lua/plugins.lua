@@ -106,6 +106,8 @@ require('lazy').setup {
     config = function ()
       require("nvim-web-devicons").setup()
     end,
+    lazy = false,
+    priority = 100000,
   },
   {
     'gbprod/substitute.nvim',
