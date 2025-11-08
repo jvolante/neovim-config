@@ -4,7 +4,11 @@ local function blame()
   return blame
 end
 
-require'lualine'.setup {
+local lsp_progress = require'lsp-progress'
+lsp_progress.setup()
+
+local lualine = require'lualine'
+lualine.setup {
   options = {
     icons_enabled = true,
     theme = 'everforest',
@@ -20,7 +24,9 @@ require'lualine'.setup {
     lualine_a = {'mode'},
     lualine_b = {'branch', {'diagnostics', sources={'nvim_diagnostic'}}},
     lualine_c = {'filename', 'aerial'},
-    lualine_x = {'overseer'},
+    lualine_x = {'overseer', function ()
+      return lsp_progress.progress()
+    end},
     lualine_y = {'filetype'},
     lualine_z = {blame, 'location'}
   },
@@ -35,3 +41,10 @@ require'lualine'.setup {
   tabline = {},
   extensions = {}
 }
+
+vim.api.nvim_create_augroup("lualine_augroup", { clear = true })
+vim.api.nvim_create_autocmd("User", {
+  group = "lualine_augroup",
+  pattern = "LspProgressStatusUpdated",
+  callback = lualine.refresh,
+})

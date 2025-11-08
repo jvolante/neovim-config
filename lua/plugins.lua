@@ -160,6 +160,9 @@ require('lazy').setup {
   },
   {
     'nvim-lualine/lualine.nvim',
+    dependencies = {
+      'linrongbin16/lsp-progress.nvim',
+    },
     event = 'VeryLazy',
     config = function () require('settings/lualine') end,
   },
