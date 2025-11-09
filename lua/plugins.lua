@@ -207,7 +207,7 @@ require('lazy').setup {
   'tpope/vim-repeat',
   {
     'romainl/vim-cool',
-    keys = {'/', '<cmd>', '<s-8>', '<s-3>'},
+    keys = {'/', '<cmd>', '*', '#'},
   },
   {
     'peterhoeg/vim-qml',
