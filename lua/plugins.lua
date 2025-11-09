@@ -182,19 +182,17 @@ require('lazy').setup {
 
   -- Autocomplete stuff
   {
-    'hrsh7th/nvim-cmp',
+    'saghen/blink.cmp',
     dependencies = {
       'neovim/nvim-lspconfig',
-      'hrsh7th/cmp-nvim-lsp',
-      'hrsh7th/cmp-buffer',
       'L3MON4D3/LuaSnip',
-      'saadparwaiz1/cmp_luasnip',
       'folke/neodev.nvim',
       'nvim-telescope/telescope.nvim',
       'danymat/neogen',
       {'exafunction/codeium.nvim', enable = util.use_codeium()},
     },
     config = function () require('settings/cmp') end,
+    version = '1.*',
   },
 
   require'settings/debug',
