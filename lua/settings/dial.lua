@@ -19,9 +19,9 @@ return {
     }
   end,
   keys = {
-    {'<c-a>', '<Plug>(dial-increment)', mode = {'n', 'v'}, desc = 'increment text under cursor'},
-    {'<c-x>', '<Plug>(dial-decrement)', mode = {'n', 'v'}, desc = 'decrement text under cursor'},
-    {'g<c-a>', 'g<Plug>(dial-increment)', mode = 'v', desc = 'increment selected lines to form a sequence'},
-    {'g<c-x>', 'g<Plug>(dial-decrement)', mode = 'v', desc = 'decrement selected lines to form a sequence'},
+    {'<c-a>', '<Plug>(dial-increment)', mode = {'n', 'x'}, desc = 'increment text under cursor'},
+    {'<c-x>', '<Plug>(dial-decrement)', mode = {'n', 'x'}, desc = 'decrement text under cursor'},
+    {'g<c-a>', 'g<Plug>(dial-increment)', mode = 'x', desc = 'increment selected lines to form a sequence'},
+    {'g<c-x>', 'g<Plug>(dial-decrement)', mode = 'x', desc = 'decrement selected lines to form a sequence'},
   },
 }

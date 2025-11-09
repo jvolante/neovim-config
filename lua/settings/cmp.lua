@@ -96,16 +96,16 @@ luasnip.setup({
   ft_func = nil -- To fix issue with normal mode keys in insert mode
 })
 
--- Set up select mode mappings to prevent normal mode keys from triggering
--- This creates insert-mode like behavior when editing snippet placeholders
-local chars = { 'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z',
-                'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',
-                '0','1','2','3','4','5','6','7','8','9','`','-','=','[',']',';',',','.','/',' ' }
-
-for _, char in ipairs(chars) do
-  -- This makes each character behave like it would in insert mode when in select mode
-  vim.keymap.set('s', char, char, { noremap = true })
-end
+-- -- Set up select mode mappings to prevent normal mode keys from triggering
+-- -- This creates insert-mode like behavior when editing snippet placeholders
+-- local chars = { 'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z',
+--                 'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',
+--                 '0','1','2','3','4','5','6','7','8','9','`','-','=','[',']',';',',','.','/',' ' }
+--
+-- for _, char in ipairs(chars) do
+--   -- This makes each character behave like it would in insert mode when in select mode
+--   vim.keymap.set('s', char, char, { noremap = true })
+-- end
 
 if util.use_codeium() then
   require('codeium').setup {
