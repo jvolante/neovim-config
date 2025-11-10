@@ -96,12 +96,19 @@ require('lazy').setup {
     end,
     keys = {
       { 's', '<Plug>(leap-anywhere)', mode = { 'n' }, desc = 'Leap motion for normal mode (cross-window)' },
-      { 's', '<Plug>(leap)', mode = { 'v', 'o' }, desc = 'Leap motion for other modes (within-window)' },
+      { 's', '<Plug>(leap)', mode = { 'x', 'o' }, desc = 'Leap motion for other modes (within-window)' },
       { 'i', mode = { 'o' }, },
       { 'a', mode = { 'o' }, },
     },
   },
-  'kyazdani42/nvim-web-devicons',
+  {
+    'kyazdani42/nvim-web-devicons',
+    config = function ()
+      require("nvim-web-devicons").setup()
+    end,
+    lazy = false,
+    priority = 100000,
+  },
   {
     'gbprod/substitute.nvim',
     config = function ()
@@ -153,6 +160,9 @@ require('lazy').setup {
   },
   {
     'nvim-lualine/lualine.nvim',
+    dependencies = {
+      'linrongbin16/lsp-progress.nvim',
+    },
     event = 'VeryLazy',
     config = function () require('settings/lualine') end,
   },
@@ -172,19 +182,17 @@ require('lazy').setup {
 
   -- Autocomplete stuff
   {
-    'hrsh7th/nvim-cmp',
+    'saghen/blink.cmp',
     dependencies = {
       'neovim/nvim-lspconfig',
-      'hrsh7th/cmp-nvim-lsp',
-      'hrsh7th/cmp-buffer',
       'L3MON4D3/LuaSnip',
-      'saadparwaiz1/cmp_luasnip',
       'folke/neodev.nvim',
       'nvim-telescope/telescope.nvim',
       'danymat/neogen',
       {'exafunction/codeium.nvim', enable = util.use_codeium()},
     },
     config = function () require('settings/cmp') end,
+    version = '1.*',
   },
 
   require'settings/debug',
@@ -197,7 +205,7 @@ require('lazy').setup {
   'tpope/vim-repeat',
   {
     'romainl/vim-cool',
-    keys = {'/', '<cmd>', '<s-8>', '<s-3>'},
+    keys = {'/', '<cmd>', '*', '#'},
   },
   {
     'peterhoeg/vim-qml',
@@ -206,8 +214,8 @@ require('lazy').setup {
   {
     'bkad/CamelCaseMotion',
     keys = {
-      {'W', '<Plug>CamelCaseMotion_w', mode = { 'n', 'v', 'o' }, desc = 'Camelcase forward word motion'},
-      {'B', '<Plug>CamelCaseMotion_b', mode = { 'n', 'v', 'o' }, desc = 'Camelcase backward word motion'},
+      {'W', '<Plug>CamelCaseMotion_w', mode = { 'n', 'x', 'o' }, desc = 'Camelcase forward word motion'},
+      {'B', '<Plug>CamelCaseMotion_b', mode = { 'n', 'x', 'o' }, desc = 'Camelcase backward word motion'},
     },
   },
   -- {
@@ -267,7 +275,7 @@ require('lazy').setup {
         "tsx",
         "typescript",
       },
-      mode = { 'n', 'v' },
+      mode = { 'n', 'x' },
       prev_outer_key = "[{",
       next_outer_key = "]}",
     },

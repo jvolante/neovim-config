@@ -81,7 +81,6 @@ require'neogen'.setup { snippet_engine = "luasnip" }
 
 vim.keymap.set('n', '<leader>gd', function () require'neogen'.generate{} end, { noremap = true, silent = true, desc = 'Generate Documentation' })
 
-local cmp = require('cmp')
 local luasnip = require('luasnip')
 
 -- Configure LuaSnip to prevent normal mode keys from triggering in snippet editing mode
@@ -96,17 +95,6 @@ luasnip.setup({
   ft_func = nil -- To fix issue with normal mode keys in insert mode
 })
 
--- Set up select mode mappings to prevent normal mode keys from triggering
--- This creates insert-mode like behavior when editing snippet placeholders
-local chars = { 'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z',
-                'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',
-                '0','1','2','3','4','5','6','7','8','9','`','-','=','[',']',';',',','.','/',' ' }
-
-for _, char in ipairs(chars) do
-  -- This makes each character behave like it would in insert mode when in select mode
-  vim.keymap.set('s', char, char, { noremap = true })
-end
-
 if util.use_codeium() then
   require('codeium').setup {
     api = {
@@ -120,95 +108,159 @@ if util.use_codeium() then
   }
 end
 
-cmp.setup({
-  snippet = {
-    -- REQUIRED - you must specify a snippet engine
-    expand = function(args)
-      luasnip.lsp_expand(args.body) -- For `luasnip` users.
-    end,
+local blink = require('blink.cmp')
+
+blink.setup {
+  -- Disable cmdline
+  cmdline = { enabled = false },
+
+  completion = {
+    keyword = { range = 'prefix' },
+
+    accept = { auto_brackets = { enabled = false }, },
+
+    -- Don't select by default, auto insert on selection
+    list = { selection = { preselect = false, auto_insert = true } },
+
+    -- Show documentation when selecting a completion item
+    documentation = { auto_show = true, auto_show_delay_ms = 300 },
+
+    -- Display a preview of the selected item on the current line
+    ghost_text = { enabled = true },
   },
 
-  mapping = {
-    ['<C-n>'] = function ()
-      if luasnip.choice_active() then
-        luasnip.change_choice(1)
-      else
-        cmp.select_next_item()
-      end
-    end,
-    ['<C-p>'] = cmp.mapping.select_prev_item(),
-    ['<C-b>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
-    ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
-    ['<C-Space>'] = cmp.mapping(function (fallback)
-      if luasnip.expand_or_jumpable() then
-        luasnip.expand_or_jump()
-      elseif not cmp.visible() then
-        cmp.complete()
-      elseif cmp.get_selected_entry() ~= nil then
-        cmp.confirm({ select = true })
-      else
-        --fallback()
-      end
-    end, { 'i', 'c' }),
-    ['<C-y>'] = cmp.config.disable, -- Specify `cmp.config.disable` if you want to remove the default `<C-y>` mapping.
-    ['<C-e>'] = cmp.mapping({
-      i = cmp.mapping.abort(),
-      c = cmp.mapping.close(),
-    }),
-    -- Expanded tab behavior to make cmp and luasnip work
-    -- seamlessly
-    ['<tab>'] = cmp.mapping(function (fallback)
-      if cmp.visible() then
-        cmp.confirm({ select = true })
-      else
-        fallback()
-      end
-    end, {'i', 's'}),
-
-    ['<s-tab>'] = cmp.mapping(function (fallback)
-      if luasnip.jumpable(-1) then
-        luasnip.jump(-1)
-      else
-        fallback()
-      end
-    end, { 'i', 's' }),
+  sources = {
+    -- Remove 'buffer' if you don't want text completions, by default it's only enabled when LSP returns no items
+    default = { 'lsp', 'path', 'snippets', 'buffer' },
   },
 
-  -- window = {
-  -- },
+  -- Use a preset for snippets, check the snippets documentation for more information
+  snippets = { preset = 'luasnip' },
 
-  sources = cmp.config.sources({
-    { name = 'nvim_lsp' },
-    { name = 'luasnip' }, -- For luasnip users.
-    { name = 'codeium' },
-  }, {
-    { name = 'buffer' },
-  }),
+  -- Experimental signature help support
+  signature = { enabled = true },
 
-  experimental = {
-    ghost_text = true,
-    native_menu = false,
+  keymap = {
+    preset = 'none',
+
+    ['<C-n>'] = {
+      function ()
+        if luasnip.choice_active() then
+          vim.schedule(function()
+            luasnip.change_choice(1)
+          end)
+          return true
+        end
+      end,
+      'select_next',
+      'show_and_insert',
+    },
+    ['<C-p>'] = {
+      function ()
+        if luasnip.choice_active() then
+          vim.schedule(function()
+            luasnip.change_choice(-1)
+          end)
+          return true
+        end
+      end,
+      'select_prev',
+    },
+    ['<tab>'] = { 'select_and_accept', 'fallback', },
+    ['<C-b>'] = { 'scroll_documentation_up' },
+    ['<C-f>'] = { 'scroll_documentation_down' },
+    ['<C-Space>'] = { 'snippet_forward', 'select_and_accept', 'show', },
+    ['<s-tab>'] = { 'snippet_backward', 'fallback', },
+    ['<C-e>'] = { 'cancel' },
   },
-
-  formatting = {
-    fields = { "kind", "abbr", "menu" },
-    format = function (_, vim_item)
-      vim_item.menu = vim_item.kind
-      vim_item.kind = icons[vim_item.kind]
-
-      return vim_item
-    end,
-  }
-})
+}
+-- local cmp = require('cmp')
+-- cmp.setup({
+--   snippet = {
+--     -- REQUIRED - you must specify a snippet engine
+--     expand = function(args)
+--       luasnip.lsp_expand(args.body) -- For `luasnip` users.
+--     end,
+--   },
+--
+--   mapping = {
+--     ['<C-n>'] = function ()
+--       if luasnip.choice_active() then
+--         luasnip.change_choice(1)
+--       else
+--         cmp.select_next_item()
+--       end
+--     end,
+--     ['<C-p>'] = cmp.mapping.select_prev_item(),
+--     ['<C-b>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
+--     ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
+--     ['<C-Space>'] = cmp.mapping(function (fallback)
+--       if luasnip.expand_or_jumpable() then
+--         luasnip.expand_or_jump()
+--       elseif not cmp.visible() then
+--         cmp.complete()
+--       elseif cmp.get_selected_entry() ~= nil then
+--         cmp.confirm({ select = true })
+--       else
+--         --fallback()
+--       end
+--     end, { 'i', 'c' }),
+--     ['<C-y>'] = cmp.config.disable, -- Specify `cmp.config.disable` if you want to remove the default `<C-y>` mapping.
+--     ['<C-e>'] = cmp.mapping({
+--       i = cmp.mapping.abort(),
+--       c = cmp.mapping.close(),
+--     }),
+--     -- Expanded tab behavior to make cmp and luasnip work
+--     -- seamlessly
+--     ['<tab>'] = cmp.mapping(function (fallback)
+--       if cmp.visible() then
+--         cmp.confirm({ select = true })
+--       else
+--         fallback()
+--       end
+--     end, {'i', 's'}),
+--
+--     ['<s-tab>'] = cmp.mapping(function (fallback)
+--       if luasnip.jumpable(-1) then
+--         luasnip.jump(-1)
+--       else
+--         fallback()
+--       end
+--     end, { 'i', 's' }),
+--   },
+--
+--   -- window = {
+--   -- },
+--
+--   sources = cmp.config.sources({
+--     { name = 'nvim_lsp' },
+--     { name = 'luasnip' }, -- For luasnip users.
+--     { name = 'codeium' },
+--   }, {
+--     { name = 'buffer' },
+--   }),
+--
+--   experimental = {
+--     ghost_text = true,
+--     native_menu = false,
+--   },
+--
+--   formatting = {
+--     fields = { "kind", "abbr", "menu" },
+--     format = function (_, vim_item)
+--       vim_item.menu = vim_item.kind
+--       vim_item.kind = icons[vim_item.kind]
+--
+--       return vim_item
+--     end,
+--   }
+-- })
 
 local neodev = require('neodev')
 neodev.setup {}
 
 -- Make sure some lsps are installed and set them up
-local capabilities = require('cmp_nvim_lsp').default_capabilities()
-
--- Set up lspconfig first to get commands
-local lspconfig = require('lspconfig')
+local capabilities = blink.get_lsp_capabilities()
 
 -- Define default configuration for all servers
 vim.lsp.config('*', {
@@ -299,7 +351,7 @@ vim.lsp.config('rust_analyzer', {
   capabilities = capabilities,
   settings = {
     ["rust-analyzer"] = {
-      checkOnSave = { command = 'clippy' },
+      check = { command = 'clippy' },
       procMacro = { enable = true },
     },
   }
