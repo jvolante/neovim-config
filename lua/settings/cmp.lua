@@ -95,6 +95,7 @@ luasnip.setup({
   ft_func = nil -- To fix issue with normal mode keys in insert mode
 })
 
+local codium_blink_opts = {}
 if util.use_codeium() then
   require('codeium').setup {
     api = {
@@ -106,11 +107,24 @@ if util.use_codeium() then
     curl = 'curl',
     gzip = 'gzip',
   }
+
+  codium_blink_opts = {
+    sources = {
+      default = {  'lsp', 'path', 'snippets', 'buffer', 'codeium' },
+      providers = {
+        codeium = {
+          name = 'codeium',
+          module = 'blink.compat.source',
+        },
+      },
+    },
+  }
+
 end
 
 local blink = require('blink.cmp')
 
-blink.setup {
+local blink_opts = {
   -- Disable cmdline
   cmdline = { enabled = false },
 
@@ -174,6 +188,9 @@ blink.setup {
     ['<C-e>'] = { 'cancel' },
   },
 }
+
+blink.setup(vim.tbl_deep_extend('force', blink_opts, codium_blink_opts))
+
 -- local cmp = require('cmp')
 -- cmp.setup({
 --   snippet = {
