@@ -128,7 +128,7 @@ require('lazy').setup {
             fn.getbufvar(buf, "&modifiable") == 1 and
             fn.bufname(buf) ~= nil and
             #fn.bufname(buf) > 0 and
-            utils.not_in(fn.getbufvar(buf, "&filetype"), {}) then
+            utils.not_in(fn.getbufvar(buf, "&filetype"), {"gitcommit"}) then
             return true -- met condition(s), can save
           end
           return false -- can't save
