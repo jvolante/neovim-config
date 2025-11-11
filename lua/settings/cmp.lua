@@ -48,34 +48,6 @@ local on_attach = function(client, bufnr)
   vim.api.nvim_buf_create_user_command(bufnr, 'Format', function () vim.lsp.buf.format({async = false, timeout_ms = 5000,}) end, {})
 end
 
--- Setup nvim-cmp.
-local icons = {
-  Text = "",
-  Method = "",
-  Function = "",
-  Constructor = "⌘",
-  Field = "ﰠ",
-  Variable = "",
-  Class = "ﴯ",
-  Interface = "",
-  Module = "",
-  Property = "ﰠ",
-  Unit = "󰭍",
-  Value = "",
-  Enum = "",
-  Keyword = "",
-  Snippet = "",
-  Color = "",
-  File = "",
-  Reference = "",
-  Folder = "",
-  EnumMember = "",
-  Constant = "",
-  Struct = "",
-  Event = "",
-  Operator = "",
-  TypeParameter = "",
-}
 
 require'neogen'.setup { snippet_engine = "luasnip" }
 
@@ -190,7 +162,35 @@ local blink_opts = {
 }
 
 blink.setup(vim.tbl_deep_extend('force', blink_opts, codium_blink_opts))
-
+-- -- Setup nvim-cmp.
+-- local icons = {
+--   Text = "",
+--   Method = "",
+--   Function = "",
+--   Constructor = "⌘",
+--   Field = "ﰠ",
+--   Variable = "",
+--   Class = "ﴯ",
+--   Interface = "",
+--   Module = "",
+--   Property = "ﰠ",
+--   Unit = "󰭍",
+--   Value = "",
+--   Enum = "",
+--   Keyword = "",
+--   Snippet = "",
+--   Color = "",
+--   File = "",
+--   Reference = "",
+--   Folder = "",
+--   EnumMember = "",
+--   Constant = "",
+--   Struct = "",
+--   Event = "",
+--   Operator = "",
+--   TypeParameter = "",
+-- }
+--
 -- local cmp = require('cmp')
 -- cmp.setup({
 --   snippet = {
