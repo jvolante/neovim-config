@@ -8,16 +8,6 @@ function M.isTable(x)
   return type(x) == 'table'
 end
 
-function M.setupIndent(tabstop, scope)
-  scope.tabstop = tabstop
-  scope.shiftwidth = tabstop
-  scope.softtabstop = tabstop
-  scope.expandtab = true
-
-  -- Make the breakindent shift double the normal shift
-  scope.breakindentopt = 'shift:' .. tostring(scope.tabstop * 2)
-end
-
 function M.table_update(table, table2)
   for key, val in ipairs(table2) do
     table[key] = val
