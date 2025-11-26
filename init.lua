@@ -43,6 +43,12 @@ o.spell = true
 o.inccommand = 'split'
 o.termguicolors = true -- fixes colors over some ssh connections
 
+o.tabstop = 2
+o.shiftwidth = 0
+o.softtabstop = 0
+o.expandtab = true
+o.breakindentopt = 'shift:' .. tostring(o.tabstop * 2)
+
 vim.opt.wildignore:append({'*.javac', 'node_modules', '*.aux', '*.out', '*.toc', '*.o', '*.obj', '*.dll', '*.exe', '*.so', '*.a', '*.lib', '*.pyc', '*.pyo', '*.pyd', '*.swp', '*.swo', '*.class', '.DS_Store', '.git', '.hg', '.orig', '*.lock', '*.onnx'})
 vim.opt.suffixesadd:append({'.java', '.rs'})
 
