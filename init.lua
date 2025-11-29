@@ -100,9 +100,20 @@ vim.api.nvim_create_autocmd("FileType", {
   command = 'set foldlevel=2'
 })
 
-if vim.g.neovide then
-  vim.g.neovide_cursor_animation_length = 0
-end
+vim.api.nvim_create_autocmd("VimEnter", {
+  pattern = "*",
+  callback = function() vim.schedule(function()
+    if vim.fn.filereadable(util.spell_add_file) == 1 then
+      local add_mtime = vim.fn.getftime(util.spell_add_file)
+      local spl_mtime = vim.fn.getftime(util.spell_spl_file)
+ 
+      -- Run mkspell! only if .add is newer than .add.spl or .add.spl doesn't exist
+      if add_mtime > spl_mtime or spl_mtime == -1 then
+        vim.cmd(util.mkspell_cmd)
+      end
+    end
+  end) end,
+})
 
 local proj_settings = require('functionality.project_settings')
 

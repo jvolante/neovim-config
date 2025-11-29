@@ -218,4 +218,9 @@ function M.convert_deg_to_rad()
   vim.notify(string.format('%s° = %s rad', number_str, radians_str), vim.log.levels.INFO)
 end
 
+-- Paths and command for spell file generation.
+M.spell_add_file = vim.fn.fnameescape(vim.fn.stdpath('config') .. '/spell/en.utf-8.add')
+M.spell_spl_file = M.spell_add_file .. '.spl'
+M.mkspell_cmd = "silent! mkspell! " .. M.spell_spl_file .. " " .. M.spell_add_file
+
 return M

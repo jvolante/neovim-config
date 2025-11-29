@@ -382,11 +382,6 @@ vim.lsp.config('rust_analyzer', {
 -- This 'debouncing' prevents the regeneration command from running too frequently
 -- if multiple words are added in quick succession.
 
--- Paths and command for spell file generation.
-local spell_add_file = vim.fn.fnameescape(vim.fn.stdpath('config') .. '/spell/en.utf-8.add')
-local spell_spl_file = spell_add_file .. '.spl'
-local mkspell_cmd = "silent! mkspell! " .. spell_spl_file .. " " .. spell_add_file
-
 -- State for the watcher and debouncing logic.
 local spell_watcher_started = false
 local regeneration_timer = nil
@@ -394,7 +389,7 @@ local spell_watcher = vim.loop.new_fs_event()
 
 -- Function to run the regeneration and reset the timer.
 local function run_regeneration()
-  vim.cmd(mkspell_cmd)
+  vim.cmd(util.mkspell_cmd)
   regeneration_timer = nil -- Reset timer to allow for future regenerations.
 end
 
