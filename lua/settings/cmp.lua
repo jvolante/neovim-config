@@ -1,7 +1,7 @@
 local util = require('utilities')
 require('settings/luasnip')
 
--- Set up on_attach so we can actually use the lsp
+-- Set up on_attach so we can actually use the LSP
 -- sets up a bunch of keymaps for a buffer that has an
 -- attached LSP
 
@@ -45,13 +45,15 @@ local on_attach = function(client, bufnr)
   opts['desc'] = 'LSP Fuzzy search symbols in this document'
   vim.keymap.set('n', '<leader>so', ts.lsp_document_symbols, opts)
 
-  vim.api.nvim_buf_create_user_command(bufnr, 'Format', function () vim.lsp.buf.format({async = false, timeout_ms = 5000,}) end, {})
+  vim.api.nvim_buf_create_user_command(bufnr, 'Format',
+    function() vim.lsp.buf.format({ async = false, timeout_ms = 5000, }) end, {})
 end
 
 
-require'neogen'.setup { snippet_engine = "luasnip" }
+require 'neogen'.setup { snippet_engine = "luasnip" }
 
-vim.keymap.set('n', '<leader>gd', function () require'neogen'.generate{} end, { noremap = true, silent = true, desc = 'Generate Documentation' })
+vim.keymap.set('n', '<leader>gd', function() require 'neogen'.generate {} end,
+  { noremap = true, silent = true, desc = 'Generate Documentation' })
 
 local luasnip = require('luasnip')
 
@@ -59,7 +61,7 @@ local luasnip = require('luasnip')
 luasnip.setup({
   region_check_events = "InsertEnter",
   delete_check_events = "InsertLeave",
-  store_selection_keys = "<Tab>",  -- Use Tab instead of default <c-k>
+  store_selection_keys = "<Tab>", -- Use Tab instead of default <c-k>
   enable_autosnippets = true,
   -- This fixes the issue with normal mode keys triggering when editing snippet placeholders
   history = true,
@@ -82,7 +84,7 @@ if util.use_codeium() then
 
   codium_blink_opts = {
     sources = {
-      default = {  'lsp', 'path', 'snippets', 'buffer', 'codeium' },
+      default = { 'lsp', 'path', 'snippets', 'buffer', 'codeium' },
       providers = {
         codeium = {
           name = 'codeium',
@@ -91,7 +93,6 @@ if util.use_codeium() then
       },
     },
   }
-
 end
 
 local blink = require('blink.cmp')
@@ -130,7 +131,7 @@ local blink_opts = {
     preset = 'none',
 
     ['<C-n>'] = {
-      function ()
+      function()
         if luasnip.choice_active() then
           vim.schedule(function()
             luasnip.change_choice(1)
@@ -142,7 +143,7 @@ local blink_opts = {
       'show_and_insert',
     },
     ['<C-p>'] = {
-      function ()
+      function()
         if luasnip.choice_active() then
           vim.schedule(function()
             luasnip.change_choice(-1)
@@ -322,7 +323,7 @@ vim.lsp.config('pylsp', {
         jedi_completion = {
           eager = true,
           include_params = true,
-          cache_for = {'numpy', 'pandas', 'tensorflow', 'torch', 'matplotlib', 'sklearn', 'scipy'},
+          cache_for = { 'numpy', 'pandas', 'tensorflow', 'torch', 'matplotlib', 'sklearn', 'scipy' },
         },
         jedi_signature_help = {
           enable = true,
@@ -340,7 +341,7 @@ vim.lsp.config('pylsp', {
         },
         pycodestyle = {
           enabled = false,
-          ignore = {'E501', 'E231', 'E261'},
+          ignore = { 'E501', 'E231', 'E261' },
           maxLineLength = 150,
           yapf = {
             enabled = true,
@@ -374,6 +375,82 @@ vim.lsp.config('rust_analyzer', {
   }
 })
 
+-- Harper-ls configuration for automatic spell file regeneration.
+-- This setup creates a single, long-lived file watcher when harper-ls first starts.
+-- When the dictionary file is changed (e.g., by using 'zg'), this watcher
+-- schedules the .spl spell file to be regenerated after a 30-second delay.
+-- This 'debouncing' prevents the regeneration command from running too frequently
+-- if multiple words are added in quick succession.
+
+-- Paths and command for spell file generation.
+local spell_add_file = vim.fn.fnameescape(vim.fn.stdpath('config') .. '/spell/en.utf-8.add')
+local spell_spl_file = spell_add_file .. '.spl'
+local mkspell_cmd = "silent! mkspell! " .. spell_spl_file .. " " .. spell_add_file
+
+-- State for the watcher and debouncing logic.
+local spell_watcher_started = false
+local regeneration_timer = nil
+local spell_watcher = vim.loop.new_fs_event()
+
+-- Function to run the regeneration and reset the timer.
+local function run_regeneration()
+  vim.cmd(mkspell_cmd)
+  regeneration_timer = nil -- Reset timer to allow for future regenerations.
+end
+
+-- Callback for when the spell dictionary file changes.
+local function on_spell_change(err, filename, status)
+  if err then
+    vim.notify("Error watching spell file: " .. err, vim.log.levels.ERROR)
+    return
+  end
+
+  -- We only care about changes to the .add file, not the .spl file we generate.
+  -- This prevents an infinite loop of regenerations.
+  if not filename or filename ~= vim.fn.fnamemodify(spell_add_file, ":t") then
+    return
+  end
+
+  -- If a regeneration is not already scheduled, schedule one.
+  -- This debounces regeneration to at most once every 30 seconds.
+  if not regeneration_timer then
+    regeneration_timer = vim.defer_fn(run_regeneration, 30000)
+  end
+end
+
+vim.lsp.config('harper_ls', {
+  on_attach = function(client, bufnr)
+    on_attach(client, bufnr)
+    -- Don't run vim's spellcheck when Harper is running.
+    vim.api.nvim_buf_set_option(bufnr, 'spell', false)
+
+    -- Start the file watcher the first time harper_ls attaches to a buffer.
+    if not spell_watcher_started then
+      local spell_dir = vim.fn.fnamemodify(spell_add_file, ":h")
+      spell_watcher:start(spell_dir, {}, vim.schedule_wrap(on_spell_change))
+      spell_watcher_started = true
+    end
+
+    -- Emulate important parts of the normal spell functionality.
+    local opts = { noremap = true, silent = true, buffer = bufnr, desc = 'Correct spelling' }
+    vim.keymap.set('n', 'z=',
+      function() vim.lsp.buf.code_action({ filter = function(action) return action.title:find("^Replace with") ~= nil end }) end,
+      opts)
+    opts["desc"] = 'Add to user dictionary'
+    vim.keymap.set('n', 'zg',
+      function()
+        -- Just apply the code action. The file watcher will handle regeneration.
+        vim.lsp.buf.code_action({ filter = function(action) return action.title:find("^Add") ~= nil and action.title:find("to the user dictionary.") ~= nil end, apply = true })
+      end, opts)
+  end,
+  capabilities = capabilities,
+  settings = {
+    ["harper-ls"] = {
+      userDictPath = spell_add_file,
+    },
+  }
+})
+
 -- Disable LSP highlight, treesitter is better
 for _, group in ipairs(vim.fn.getcompletion("@lsp", "highlight")) do
   vim.api.nvim_set_hl(0, group, {})
@@ -396,5 +473,6 @@ vim.lsp.enable({
   'nil_ls',
   'neocmake',
   'taplo',
-  'tinymist'
+  'tinymist',
+  'harper_ls',
 }, true) -- The true here enables silent mode
