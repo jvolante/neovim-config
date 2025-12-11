@@ -74,6 +74,11 @@ vim.keymap.set('t', '<c-\\>', '<c-\\><c-N>', {desc = 'Leave insert terminal mode
 -- easy put while in insert mode
 vim.keymap.set('i', '<c-l>', '<c-r>"', {desc = 'Insert mode put'})
 
+-- insert current date and time
+vim.keymap.set('i', '<c-d>', function()
+  return os.date('%Y-%m-%d %I:%M %p')
+end, {expr = true, desc = 'Insert current date and time'})
+
 vim.keymap.set('n', '<leader>ll', util.copy_github_link, {desc = 'Copy link to current line for forge'})
 vim.keymap.set('n', '<leader>dr', util.convert_deg_to_rad, {desc = 'Convert degrees to radians under cursor'})
 
