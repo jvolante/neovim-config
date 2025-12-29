@@ -91,6 +91,7 @@ require('lazy').setup {
     config = function ()
       require('leap-spooky').setup()
       local leap = require('leap')
+      leap.opts.case_sensitive = false
       leap.opts.special_keys.prev_target = '<backspace>'
       leap.opts.special_keys.prev_group = '<backspace>'
     end,
