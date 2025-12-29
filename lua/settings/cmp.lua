@@ -470,4 +470,5 @@ vim.lsp.enable({
   'taplo',
   'tinymist',
   'harper_ls',
+  'ty',
 }, true) -- The true here enables silent mode
