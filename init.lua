@@ -82,6 +82,91 @@ end, {expr = true, desc = 'Insert current date and time'})
 vim.keymap.set('n', '<leader>ll', util.copy_github_link, {desc = 'Copy link to current line for forge'})
 vim.keymap.set('n', '<leader>dr', util.convert_deg_to_rad, {desc = 'Convert degrees to radians under cursor'})
 
+-- Open vertical split terminal running Claude to implement TODOs
+-- Claude edits a temporary copy of the project, then changes are merged via diff patch
+vim.keymap.set('n', '<leader>ct', function()
+  local current_file = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ':.')
+  local cwd = vim.fn.getcwd()
+
+  -- Create temporary directory and copy project using copy-on-write if available
+  local temp_dir = vim.fn.tempname() .. '_project'
+  vim.fn.mkdir(temp_dir, 'p')
+
+  -- Use cp --reflink=auto for COW support (fast on btrfs/XFS, falls back to regular copy)
+  vim.notify('Copying project to temporary directory...', vim.log.levels.INFO)
+  local copy_result = vim.fn.system('cp -r --reflink=auto "' .. cwd .. '/." "' .. temp_dir .. '/"')
+
+  if vim.v.shell_error ~= 0 then
+    vim.notify('Failed to copy project: ' .. copy_result, vim.log.levels.ERROR)
+    vim.fn.delete(temp_dir, 'rf')
+    return
+  end
+
+  local temp_file = temp_dir .. '/' .. current_file
+
+  vim.cmd('vsplit | enew')
+  local win = vim.api.nvim_get_current_win()
+  vim.fn.termopen('cd "' .. temp_dir .. '" && claude "Implement any TODOs you find in ' .. current_file .. '"', {
+    on_exit = function(job_id, exit_code, event)
+      vim.notify('Claude finished, merging changes...', vim.log.levels.INFO)
+
+      -- Find all modified files by comparing directories
+      local diff_cmd = 'diff -ruN "' .. cwd .. '" "' .. temp_dir .. '" | grep "^diff " | sed "s|^diff -ruN ||" | awk \'{print $1}\' | sed "s|' .. vim.fn.escape(cwd, '/') .. '/||"'
+      local changed_files = vim.fn.systemlist(diff_cmd)
+
+      local patches_applied = 0
+      local patches_failed = 0
+
+      -- Generate and apply patches for each changed file
+      for _, rel_file in ipairs(changed_files) do
+        local orig_file = cwd .. '/' .. rel_file
+        local temp_file_path = temp_dir .. '/' .. rel_file
+
+        -- Skip if temp file doesn't exist (deleted file) or orig doesn't exist (new file)
+        if vim.fn.filereadable(temp_file_path) == 1 and vim.fn.filereadable(orig_file) == 1 then
+          local diff_output = vim.fn.system('diff -u "' .. orig_file .. '" "' .. temp_file_path .. '"')
+
+          if vim.v.shell_error ~= 0 and diff_output ~= '' then
+            local patch_result = vim.fn.system('patch "' .. orig_file .. '"', diff_output)
+
+            if vim.v.shell_error == 0 then
+              patches_applied = patches_applied + 1
+            else
+              patches_failed = patches_failed + 1
+              vim.notify('Failed to patch ' .. rel_file .. ': ' .. patch_result, vim.log.levels.WARN)
+            end
+          end
+        elseif vim.fn.filereadable(temp_file_path) == 1 then
+          -- New file created
+          vim.fn.system('cp "' .. temp_file_path .. '" "' .. orig_file .. '"')
+          patches_applied = patches_applied + 1
+        end
+      end
+
+      -- Clean up temp directory
+      vim.fn.delete(temp_dir, 'rf')
+
+      -- Reload buffers to show changes
+      vim.cmd('checktime')
+
+      if patches_applied > 0 then
+        vim.notify('Merged ' .. patches_applied .. ' file(s) from Claude', vim.log.levels.INFO)
+      else
+        vim.notify('No changes to merge', vim.log.levels.INFO)
+      end
+
+      if patches_failed > 0 then
+        vim.notify('Failed to merge ' .. patches_failed .. ' file(s)', vim.log.levels.WARN)
+      end
+
+      if vim.api.nvim_win_is_valid(win) then
+        vim.api.nvim_win_close(win, true)
+      end
+    end
+  })
+  vim.cmd('startinsert')
+end, {desc = 'Run Claude TODO implementation with diff merge'})
+
 vim.api.nvim_create_user_command('Config',
   function ()
     if vim.fn.bufname("%") ~= '' then
