@@ -180,6 +180,22 @@ require('lazy').setup {
   },
   require('settings/neogit'),
   require('settings/telescope'),
+  {
+    'yetone/avante.nvim',
+    event = 'VeryLazy',
+    version = false,
+    build = 'make',
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      'MunifTanjim/nui.nvim',
+      'nvim-telescope/telescope.nvim',
+      'saghen/blink.cmp',
+      'Kaiser-Yang/blink-cmp-avante', -- Native blink.cmp integration for avante
+      'stevearc/dressing.nvim',
+      'nvim-tree/nvim-web-devicons',
+    },
+    config = function () require('settings/avante') end,
+  },
 
   -- Autocomplete stuff
   {

@@ -84,11 +84,17 @@ if util.use_codeium() then
 
   codium_blink_opts = {
     sources = {
-      default = { 'lsp', 'path', 'snippets', 'buffer', 'codeium' },
+      default = { 'lsp', 'path', 'snippets', 'buffer', 'codeium', 'avante' },
       providers = {
         codeium = {
           name = 'codeium',
           module = 'blink.compat.source',
+        },
+        avante = {
+          name = 'Avante',
+          module = 'blink-cmp-avante',
+          score_offset = 1000,
+          opts = {},
         },
       },
     },
@@ -118,7 +124,16 @@ local blink_opts = {
 
   sources = {
     -- Remove 'buffer' if you don't want text completions, by default it's only enabled when LSP returns no items
-    default = { 'lsp', 'path', 'snippets', 'buffer' },
+    default = { 'lsp', 'path', 'snippets', 'buffer', 'avante' },
+    
+    providers = {
+      avante = {
+        name = 'Avante',
+        module = 'blink-cmp-avante',
+        score_offset = 1000, -- show at a higher priority than lsp
+        opts = {},
+      },
+    },
   },
 
   -- Use a preset for snippets, check the snippets documentation for more information
