@@ -90,6 +90,6 @@ vim.o.foldexpr = 'nvim_treesitter#foldexpr()'
 require('markview').setup {
   preview = {
     icon_provider = "devicons",
-    filetypes = { "markdown", "quarto", "rmd", "typst", "Avante" }, -- Add Avante while keeping all default filetypes
+    filetypes = { "markdown", "quarto", "rmd", "Avante" }, -- Add Avante while keeping all default filetypes
   },
 }
