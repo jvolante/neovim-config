@@ -84,33 +84,6 @@ end, { expr = true, desc = 'Insert current date and time' })
 vim.keymap.set('n', '<leader>ll', util.copy_github_link, { desc = 'Copy link to current line for forge' })
 vim.keymap.set('n', '<leader>dr', util.convert_deg_to_rad, { desc = 'Convert degrees to radians under cursor' })
 
--- Use Avante with OpenCode to resolve all TODOs in the current file
-vim.keymap.set('n', '<leader>ct', function()
-  local current_file = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ':.')
-
-  -- Check if the file has a name
-  if current_file == '' then
-    vim.notify('No file in current buffer', vim.log.levels.WARN)
-    return
-  end
-
-  -- Construct the prompt to ask Avante to resolve TODOs
-  local prompt = string.format(
-    'Please find and resolve all TODO comments in this file (%s). ' ..
-    'For each item:\n' ..
-    '1. Implement the required functionality\n' ..
-    '2. Remove or update the comment appropriately\n' ..
-    '3. Ensure the implementation follows the existing code style and patterns\n\n' ..
-    'If there are no TODOs, let me know.',
-    current_file
-  )
-
-  -- Call Avante API to open sidebar with the question
-  require('avante.api').ask({
-    question = prompt
-  })
-end, { desc = 'Ask Avante to resolve all TODOs in current file' })
-
 vim.api.nvim_create_user_command('Config',
   function()
     if vim.fn.bufname("%") ~= '' then

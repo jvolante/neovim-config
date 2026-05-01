@@ -115,9 +115,8 @@ function M.get_cpu_count()
   return tonumber(M.num_cpus:wait())
 end
 
-
-function M.use_codeium()
-  local v = os.getenv("USE_CODEIUM")
+function M.use_llm()
+  local v = os.getenv("NVIM_USE_LLM")
   return v ~= nil and #v ~= 0
 end
 
@@ -125,7 +124,20 @@ end
 function M.generate_github_link(file_path, line_number)
   -- Get the current file path relative to the git repo
   local repo_root = vim.fn.system("git rev-parse --show-toplevel"):gsub("\n", "")
-  local relative_path = file_path:gsub("^" .. vim.pesc(repo_root) .. "/", "")
+  
+  -- Resolve the file path to an absolute path
+  local abs_file_path = vim.fn.resolve(file_path)
+  
+  -- Compute relative path from repo root
+  local relative_path
+  if abs_file_path:sub(1, #repo_root) == repo_root then
+    -- File is within the repo
+    relative_path = abs_file_path:sub(#repo_root + 2)  -- +2 to skip the '/'
+  else
+    -- File is outside the repo, notify and return nil
+    vim.notify("File is outside the git repository: " .. abs_file_path, vim.log.levels.ERROR)
+    return nil
+  end
 
   -- Get the current branch name
   local branch = vim.fn.system("git rev-parse --abbrev-ref HEAD"):gsub("\n", "")

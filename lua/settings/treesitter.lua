@@ -93,3 +93,20 @@ require('markview').setup {
     filetypes = { "markdown", "quarto", "rmd", "Avante" }, -- Add Avante while keeping all default filetypes
   },
 }
+
+-- Disable markview preview when entering any non-rendered mode so it doesn't
+-- auto-restore on return to normal mode. Re-enable manually (e.g. :Markview).
+local rendered_modes = { n = true, no = true, c = true }
+vim.api.nvim_create_autocmd("ModeChanged", {
+  pattern = "*",
+  callback = function(args)
+    local new_mode = vim.v.event.new_mode
+    if rendered_modes[new_mode] then
+      return
+    end
+    local state = require("markview.state")
+    if state.enabled() and state.buf_attached(args.buf) then
+      require("markview.actions").disable(args.buf)
+    end
+  end,
+})

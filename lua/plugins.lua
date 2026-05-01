@@ -86,7 +86,7 @@ require('lazy').setup {
     end,
   },
   {
-    'ggandor/leap.nvim',
+    'https://codeberg.org/andyg/leap.nvim.git',
     dependencies = {'ggandor/leap-spooky.nvim'},
     config = function ()
       require('leap-spooky').setup()
@@ -180,34 +180,7 @@ require('lazy').setup {
   },
   require('settings/neogit'),
   require('settings/telescope'),
-  {
-    'yetone/avante.nvim',
-    event = 'VeryLazy',
-    version = false,
-    build = 'make',
-    dependencies = {
-      'nvim-lua/plenary.nvim',
-      'MunifTanjim/nui.nvim',
-      'nvim-telescope/telescope.nvim',
-      'saghen/blink.cmp',
-      'Kaiser-Yang/blink-cmp-avante', -- Native blink.cmp integration for avante
-      'stevearc/dressing.nvim',
-      'nvim-tree/nvim-web-devicons',
-    },
-    config = function () require('settings/avante') end,
-  },
-
   -- Autocomplete stuff
-  {
-    'saghen/blink.compat',
-    -- use v2.* for blink.cmp v1.*
-    version = '2.*',
-    -- lazy.nvim will automatically load the plugin when it's required by blink.cmp
-    lazy = true,
-    -- make sure to set opts so that lazy.nvim calls blink.compat's setup
-    opts = {},
-    enable = util.use_codeium(),
-  },
   {
     'saghen/blink.cmp',
     dependencies = {
@@ -216,7 +189,6 @@ require('lazy').setup {
       'folke/neodev.nvim',
       'nvim-telescope/telescope.nvim',
       'danymat/neogen',
-      {'exafunction/codeium.nvim', enable = util.use_codeium()},
     },
     config = function () require('settings/cmp') end,
     version = '1.*',

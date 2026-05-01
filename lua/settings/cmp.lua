@@ -1,4 +1,3 @@
-local util = require('utilities')
 require('settings/luasnip')
 
 -- Set up on_attach so we can actually use the LSP
@@ -69,38 +68,6 @@ luasnip.setup({
   ft_func = nil -- To fix issue with normal mode keys in insert mode
 })
 
-local codium_blink_opts = {}
-if util.use_codeium() then
-  require('codeium').setup {
-    api = {
-      host = "codeium.itools.anduril.dev"
-    },
-    enterprise_mode = true,
-    uname = 'uname',
-    uuidgen = 'uuidgen',
-    curl = 'curl',
-    gzip = 'gzip',
-  }
-
-  codium_blink_opts = {
-    sources = {
-      default = { 'lsp', 'path', 'snippets', 'buffer', 'codeium', 'avante' },
-      providers = {
-        codeium = {
-          name = 'codeium',
-          module = 'blink.compat.source',
-        },
-        avante = {
-          name = 'Avante',
-          module = 'blink-cmp-avante',
-          score_offset = 1000,
-          opts = {},
-        },
-      },
-    },
-  }
-end
-
 local blink = require('blink.cmp')
 
 local blink_opts = {
@@ -124,14 +91,14 @@ local blink_opts = {
 
   sources = {
     -- Remove 'buffer' if you don't want text completions, by default it's only enabled when LSP returns no items
-    default = { 'lsp', 'path', 'snippets', 'buffer', 'avante' },
-    
+    default = { 'lsp', 'path', 'snippets', 'buffer' },
+    per_filetype = {
+      codecompanion = { 'codecompanion' },
+    },
+
     providers = {
-      avante = {
-        name = 'Avante',
-        module = 'blink-cmp-avante',
-        score_offset = 1000, -- show at a higher priority than lsp
-        opts = {},
+      snippets = {
+        score_offset = 100, -- Prioritize snippets above LSP
       },
     },
   },
@@ -177,7 +144,7 @@ local blink_opts = {
   },
 }
 
-blink.setup(vim.tbl_deep_extend('force', blink_opts, codium_blink_opts))
+blink.setup(blink_opts)
 -- -- Setup nvim-cmp.
 -- local icons = {
 --   Text = "",
@@ -268,7 +235,6 @@ blink.setup(vim.tbl_deep_extend('force', blink_opts, codium_blink_opts))
 --   sources = cmp.config.sources({
 --     { name = 'nvim_lsp' },
 --     { name = 'luasnip' }, -- For luasnip users.
---     { name = 'codeium' },
 --   }, {
 --     { name = 'buffer' },
 --   }),
@@ -376,6 +342,7 @@ vim.lsp.config('pylsp', {
 vim.lsp.config('clangd', {
   on_attach = on_attach,
   capabilities = capabilities,
+  cmd = { "clangd", "-j", "4" },
   filetypes = { "c", "cpp", "objc", "objcpp", "cuda" } -- remove proto
 })
 
@@ -441,6 +408,20 @@ vim.lsp.config('harper_ls', {
       spell_watcher_started = true
     end
 
+    -- Detect if this is a code file vs prose file and adjust settings accordingly
+    local filetype = vim.bo[bufnr].filetype
+    local code_filetypes = { "c", "cpp", "rust", "python", "lua", "javascript", "typescript", "go", "java", "sh", "bash", "zsh", "cuda", "objc", "objcpp" }
+    local is_code = vim.tbl_contains(code_filetypes, filetype)
+    
+    if is_code then
+      -- For code files, disable long_sentences check
+      client.config.settings["harper-ls"].linters = {
+        long_sentences = false,
+      }
+      -- Notify the server of the settings change
+      client.notify('workspace/didChangeConfiguration', { settings = client.config.settings })
+    end
+
     -- Emulate important parts of the normal spell functionality.
     local opts = { noremap = true, silent = true, buffer = bufnr, desc = 'Correct spelling' }
     vim.keymap.set('n', 'z=',
@@ -457,6 +438,10 @@ vim.lsp.config('harper_ls', {
   settings = {
     ["harper-ls"] = {
       userDictPath = spell_add_file,
+      -- Default settings for prose files (all checks enabled)
+      linters = {
+        long_sentences = true,
+      },
     },
   }
 })
