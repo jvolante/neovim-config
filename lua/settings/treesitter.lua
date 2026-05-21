@@ -1,96 +1,78 @@
-local parser_configs = require('nvim-treesitter.parsers').get_parser_configs()
-
--- local ts_repeat_move = require("nvim-treesitter.textobjects.repeatable_move")
--- vim.keymap.set({ "n", "x", "o" }, ";", ts_repeat_move.repeat_last_move_next)
--- vim.keymap.set({ "n", "x", "o" }, ",", ts_repeat_move.repeat_last_move_previous)
--- vim.keymap.set({ "n", "x", "o" }, "f", ts_repeat_move.builtin_f)
--- vim.keymap.set({ "n", "x", "o" }, "F", ts_repeat_move.builtin_F)
--- vim.keymap.set({ "n", "x", "o" }, "t", ts_repeat_move.builtin_t)
--- vim.keymap.set({ "n", "x", "o" }, "T", ts_repeat_move.builtin_T)
-
-require('nvim-treesitter.configs').setup {
-  sync_install = false,
-  auto_install = true,
-
-  ensure_installed = { 'python', 'cpp', 'c', 'cuda', 'rust', 'json', 'json5', 'cmake', 'bash', 'lua', 'vim', 'markdown', 'proto', 'nix' },
-
-  indent = {
-    enable = false,
+-- Enable treesitter highlighting for filetypes with installed parsers.
+-- nvim 0.12 automatically enables highlighting for its bundled parsers
+-- (c, lua, markdown, vim, vimdoc, query) via ftplugin. This autocmd covers
+-- the remaining parsers managed outside of nvim-treesitter.
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = {
+    'bash', 'sh',
+    'cmake',
+    'cpp', 'cuda',
+    'json', 'json5', 'jsonc',
+    'nix',
+    'proto',
+    'python',
+    'rust',
+    'toml',
+    'yaml',
   },
+  callback = function(args)
+    vim.treesitter.start(args.buf)
+  end,
+})
 
-  highlight = {
-    enable = true,
-    additional_vim_regex_higlighting = false,
-  },
+vim.o.foldmethod = 'expr'
+vim.o.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
 
-  textobjects = {
-    move = {
-      enable = true,
-      set_jumps = true, -- whether to set jumps in the jumplist
-      goto_next_start = {
-        ["]m"] = "@function.outer",
-        ["]]"] = { query = "@class.outer", desc = "Next class start" },
-        ["]s"] = {
-          query = "@scope",
-          query_group = "locals",
-          desc = "Next scope"
-        }
-      },
-      goto_previous_start = {
-        ["[m"] = "@function.outer",
-        ["[c"] = "@class.outer"
-      },
-      goto_next_end = {
-        ["]M"] = "@function.outer",
-        ["]C"] = "@class.outer"
-      },
-      goto_previous_end = {
-        ["[M"] = "@function.outer",
-        ["[C"] = "@class.outer"
-      },
-      goto_next = { ["]d"] = "@conditional.outer" },
-      goto_previous = { ["[d"] = "@conditional.outer" }
-    },
-    select = {
-      enable = true,
-      lookahead = true,
-      keymaps = {
-        ["am"] = "@function.outer",
-        ["im"] = "@function.inner",
-        ["ac"] = "@class.outer",
-        ["ic"] = "@class.inner",
-        ["al"] = "@loop.outer",
-        ["il"] = "@loop.inner",
-        ["aa"] = "@parameter.outer",
-        ["ia"] = "@parameter.inner",
-      },
-      selection_modes = {
-        ["@parameter.outer"] = "v",
-        ["@function.outer"] = "V",
-        ["@function.inner"] = "V",
-        ["@class.outer"] = "V",
-        ["@class.inner"] = "V",
-      },
+-- nvim-treesitter-textobjects (main branch) setup
+require('nvim-treesitter-textobjects').setup {
+  select = {
+    lookahead = true,
+    selection_modes = {
+      ['@parameter.outer'] = 'v',
+      ['@function.outer']  = 'V',
+      ['@function.inner']  = 'V',
+      ['@class.outer']     = 'V',
+      ['@class.inner']     = 'V',
     },
   },
-
-  textsubjects = {
-    enable = true,
-    keymaps = {
-      ['.'] = 'textsubjects-smart',
-      ['as'] = 'textsubjects-outer',
-      ['is'] = 'textsubjects-inner',
-    },
+  move = {
+    set_jumps = true,
   },
 }
 
-vim.o.foldmethod = 'expr'
-vim.o.foldexpr = 'nvim_treesitter#foldexpr()'
+local select = require('nvim-treesitter-textobjects.select')
+local move   = require('nvim-treesitter-textobjects.move')
+local modes  = { 'x', 'o' }
+
+-- Select textobjects
+vim.keymap.set(modes, 'am', function() select.select_textobject('@function.outer', 'textobjects') end, { desc = 'Select outer function' })
+vim.keymap.set(modes, 'im', function() select.select_textobject('@function.inner', 'textobjects') end, { desc = 'Select inner function' })
+vim.keymap.set(modes, 'ac', function() select.select_textobject('@class.outer',    'textobjects') end, { desc = 'Select outer class' })
+vim.keymap.set(modes, 'ic', function() select.select_textobject('@class.inner',    'textobjects') end, { desc = 'Select inner class' })
+vim.keymap.set(modes, 'al', function() select.select_textobject('@loop.outer',     'textobjects') end, { desc = 'Select outer loop' })
+vim.keymap.set(modes, 'il', function() select.select_textobject('@loop.inner',     'textobjects') end, { desc = 'Select inner loop' })
+vim.keymap.set(modes, 'aa', function() select.select_textobject('@parameter.outer','textobjects') end, { desc = 'Select outer parameter' })
+vim.keymap.set(modes, 'ia', function() select.select_textobject('@parameter.inner','textobjects') end, { desc = 'Select inner parameter' })
+
+-- Move motions
+local nm = { 'n', 'x', 'o' }
+vim.keymap.set(nm, ']m', function() move.goto_next_start('@function.outer',  'textobjects') end, { desc = 'Next function start' })
+vim.keymap.set(nm, '[m', function() move.goto_previous_start('@function.outer',  'textobjects') end, { desc = 'Prev function start' })
+vim.keymap.set(nm, ']M', function() move.goto_next_end('@function.outer',    'textobjects') end, { desc = 'Next function end' })
+vim.keymap.set(nm, '[M', function() move.goto_previous_end('@function.outer','textobjects') end, { desc = 'Prev function end' })
+
+vim.keymap.set(nm, ']]', function() move.goto_next_start('@class.outer',     'textobjects') end, { desc = 'Next class start' })
+vim.keymap.set(nm, '[[', function() move.goto_previous_start('@class.outer', 'textobjects') end, { desc = 'Prev class start' })
+vim.keymap.set(nm, ']C', function() move.goto_next_end('@class.outer',       'textobjects') end, { desc = 'Next class end' })
+vim.keymap.set(nm, '[C', function() move.goto_previous_end('@class.outer',   'textobjects') end, { desc = 'Prev class end' })
+
+vim.keymap.set(nm, ']d', function() move.goto_next('@conditional.outer',     'textobjects') end, { desc = 'Next conditional' })
+vim.keymap.set(nm, '[d', function() move.goto_previous('@conditional.outer', 'textobjects') end, { desc = 'Prev conditional' })
 
 require('markview').setup {
   preview = {
     icon_provider = "devicons",
-    filetypes = { "markdown", "quarto", "rmd", "Avante" }, -- Add Avante while keeping all default filetypes
+    filetypes = { "markdown", "quarto", "rmd", "Avante" },
   },
 }
 
