@@ -179,6 +179,7 @@ require('lazy').setup {
     config = function () require'settings/treesitter' end,
   },
   require('settings/neogit'),
+  require('settings/diffview'),
   require('settings/telescope'),
   -- Autocomplete stuff
   {
