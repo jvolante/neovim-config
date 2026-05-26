@@ -10,7 +10,29 @@ local on_attach = function(client, bufnr)
   opts['desc'] = 'LSP Go to deffinition'
   vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
   opts['desc'] = 'LSP Go to header'
-  vim.keymap.set('n', 'gh', '<cmd>LspClangdSwitchSourceHeader<CR>', opts)
+  vim.keymap.set('n', 'gh', function()
+    local clangd_client = nil
+    for _, client in ipairs(vim.lsp.get_clients({ bufnr = 0 })) do
+      if client.name == 'clangd' then
+        clangd_client = client
+        break
+      end
+    end
+    if not clangd_client then
+      vim.notify("clangd is not attached to this buffer", vim.log.levels.WARN)
+      return
+    end
+    local params = { uri = vim.uri_from_bufnr(0) }
+    clangd_client.request('textDocument/switchSourceHeader', params, function(err, result)
+      if err then
+        vim.notify("Error switching source/header: " .. tostring(err), vim.log.levels.ERROR)
+        return
+      end
+      if result then
+        vim.cmd('edit ' .. vim.uri_to_fname(result))
+      end
+    end, 0)
+  end, opts)
   opts['desc'] = 'LSP Show symbol info'
   vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
   opts['desc'] = 'LSP Go to implementation'
