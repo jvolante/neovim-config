@@ -186,7 +186,10 @@ require('lazy').setup {
     'saghen/blink.cmp',
     dependencies = {
       'neovim/nvim-lspconfig',
-      'L3MON4D3/LuaSnip',
+      {
+        'L3MON4D3/LuaSnip',
+        dependencies = { 'rafamadriz/friendly-snippets' },
+      },
       'folke/neodev.nvim',
       'nvim-telescope/telescope.nvim',
       'danymat/neogen',
