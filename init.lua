@@ -107,6 +107,14 @@ vim.api.nvim_create_autocmd("FileType", {
   command = 'set foldlevel=2'
 })
 
+-- Disable spell check on terminal buffers
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = 'terminal',
+  callback = function()
+    vim.opt_local.spell = false
+  end,
+})
+
 vim.api.nvim_create_autocmd("VimEnter", {
   pattern = "*",
   callback = function()

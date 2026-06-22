@@ -5,6 +5,11 @@ require('settings/luasnip')
 -- attached LSP
 
 local on_attach = function(client, bufnr)
+  -- Don't attach LSP to terminal buffers
+  if vim.bo[bufnr].buftype == 'terminal' then
+    return
+  end
+
   local opts = { noremap = true, silent = true, buffer = bufnr, desc = 'LSP Go to declaration' }
   vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
   opts['desc'] = 'LSP Go to deffinition'
