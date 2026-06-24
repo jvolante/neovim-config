@@ -501,3 +501,131 @@ vim.lsp.enable({
   'harper_ls',
   'ty',
 }, true) -- The true here enables silent mode
+
+-- ============================================================================
+-- LSP Status and Memory Monitoring
+-- ============================================================================
+
+-- Constants for memory monitoring
+local LSP_MEMORY_THRESHOLD_KB = 2 * 1024 * 1024 -- 2 GB in KB
+local LSP_MEMORY_POLL_INTERVAL_MS = 60000       -- 60 seconds
+
+--- Get memory usage in KB for a given PID, returns nil if unable to read
+---@param pid integer
+---@return integer|nil rss_kb
+local function get_process_memory_kb(pid)
+  local handle = io.popen(string.format("ps -o rss= -p %d 2>/dev/null", pid))
+  if handle then
+    local rss_str = handle:read("*a"):match("^%s*(%d+)")
+    handle:close()
+    if rss_str then
+      return tonumber(rss_str)
+    end
+  end
+  return nil
+end
+
+--- Format memory size from KB to human-readable string
+---@param kb integer
+---@return string
+local function format_memory(kb)
+  if kb < 1024 then
+    return string.format("%d KB", kb)
+  elseif kb < 1024 * 1024 then
+    return string.format("%.1f MB", kb / 1024)
+  else
+    return string.format("%.2f GB", kb / (1024 * 1024))
+  end
+end
+
+--- Create a formatted status string for all active LSP clients
+---@return string status_string
+local function format_lsp_status()
+  local clients = vim.lsp.get_clients()
+  if #clients == 0 then
+    return "No active LSP clients"
+  end
+
+  local lines = { "Active LSP Clients:" }
+  for _, client in ipairs(clients) do
+    -- Count how many buffers this client is attached to
+    local buffer_count = 0
+    for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+      if vim.lsp.buf_is_attached(buf, client.id) then
+        buffer_count = buffer_count + 1
+      end
+    end
+
+    local pid = client.pid or "?"
+    local root_dir = client.root_dir or "?"
+
+    -- Get memory usage
+    local memory_str = "?"
+    if client.pid then
+      local rss_kb = get_process_memory_kb(client.pid)
+      if rss_kb then
+        memory_str = format_memory(rss_kb)
+      end
+    end
+
+    table.insert(lines, string.format("  • %s (pid=%s) | memory=%s | buffers=%d | root=%s",
+      client.name, pid, memory_str, buffer_count, root_dir))
+  end
+
+  return table.concat(lines, "\n")
+end
+
+--- Create a user command to display LSP status
+vim.api.nvim_create_user_command('LspStatus', function()
+  vim.notify(format_lsp_status(), vim.log.levels.INFO)
+end, { desc = "Show active LSP clients and memory usage" })
+
+--- Check LSP process memory usage and notify if any exceed threshold
+local function check_lsp_memory()
+  local clients = vim.lsp.get_clients()
+  if #clients == 0 then
+    return
+  end
+
+  for _, client in ipairs(clients) do
+    if client.pid then
+      -- Run ps to get RSS for this PID
+      local handle = io.popen(string.format("ps -o rss= -p %d 2>/dev/null", client.pid))
+      if handle then
+        local rss_str = handle:read("*a"):match("^%s*(%d+)")
+        handle:close()
+
+        if rss_str then
+          local rss_kb = tonumber(rss_str)
+          if rss_kb and rss_kb > LSP_MEMORY_THRESHOLD_KB then
+            local rss_gb = rss_kb / (1024 * 1024)
+            vim.notify(
+              string.format("LSP Memory Alert: %s (pid=%d) using %.2f GB",
+                client.name, client.pid, rss_gb),
+              vim.log.levels.WARN
+            )
+          end
+        end
+      end
+    end
+  end
+end
+
+-- Module-level variable to store timer reference (prevents garbage collection)
+local _lsp_memory_timer = nil
+
+--- Initialize periodic memory monitoring on VimEnter
+vim.api.nvim_create_autocmd("VimEnter", {
+  pattern = "*",
+  callback = function()
+    vim.schedule(function()
+      local timer = vim.uv.new_timer()
+      if timer then
+        timer:start(LSP_MEMORY_POLL_INTERVAL_MS, LSP_MEMORY_POLL_INTERVAL_MS,
+          vim.schedule_wrap(check_lsp_memory))
+        -- Store timer reference so it doesn't get GC'd
+        _lsp_memory_timer = timer
+      end
+    end)
+  end,
+})
