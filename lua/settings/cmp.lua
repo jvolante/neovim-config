@@ -437,16 +437,17 @@ vim.lsp.config('harper_ls', {
 
     -- Detect if this is a code file vs prose file and adjust settings accordingly
     local filetype = vim.bo[bufnr].filetype
-    local code_filetypes = { "c", "cpp", "rust", "python", "lua", "javascript", "typescript", "go", "java", "sh", "bash", "zsh", "cuda", "objc", "objcpp" }
+    local code_filetypes = { "c", "cpp", "rust", "python", "lua", "javascript", "typescript", "go", "java", "sh", "bash",
+      "zsh", "cuda", "objc", "objcpp" }
     local is_code = vim.tbl_contains(code_filetypes, filetype)
-    
+
     if is_code then
       -- For code files, disable long_sentences check
       client.config.settings["harper-ls"].linters = {
         long_sentences = false,
       }
-      -- Notify the server of the settings change
-      client.notify('workspace/didChangeConfiguration', { settings = client.config.settings })
+      -- Use rpc.notify directly to avoid deprecated client.notify wrapper
+      client.rpc.notify('workspace/didChangeConfiguration', { settings = client.config.settings })
     end
 
     -- Emulate important parts of the normal spell functionality.
@@ -458,7 +459,8 @@ vim.lsp.config('harper_ls', {
     vim.keymap.set('n', 'zg',
       function()
         -- Just apply the code action. The file watcher will handle regeneration.
-        vim.lsp.buf.code_action({ filter = function(action) return action.title:find("^Add") ~= nil and action.title:find("to the user dictionary.") ~= nil end, apply = true })
+        vim.lsp.buf.code_action({ filter = function(action) return action.title:find("^Add") ~= nil and
+          action.title:find("to the user dictionary.") ~= nil end, apply = true })
       end, opts)
   end,
   capabilities = capabilities,
