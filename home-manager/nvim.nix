@@ -9,7 +9,7 @@ let
     set -euo pipefail
     export GIT_TERMINAL_PROMPT=0
     if [ ! -d "${nvimConfigDir}" ]; then
-      ${pkgs.git}/bin/git clone \
+      ${pkgs.git}/bin/git -c credential.helper= clone \
         ${lib.escapeShellArg nvimConfigRepo} \
         ${lib.escapeShellArg nvimConfigDir}
     else
