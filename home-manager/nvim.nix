@@ -16,7 +16,7 @@ let
         ${lib.escapeShellArg nvimConfigDir}
     else
       # Pull only if we're in a clean state to avoid conflicts
-      if [ -z "$(${pkgs.git}/bin/git -C ${nvimConfigDir} status --porcelain)" ]; then
+      if [ -z "$(${pkgs.git}/bin/git -c credential.helper= -C ${nvimConfigDir} status --porcelain)" ]; then
         ${pkgs.git}/bin/git -C ${nvimConfigDir} pull
       fi
     fi
