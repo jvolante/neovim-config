@@ -2,72 +2,82 @@
 
 let
   nvimConfigRepo = "https://github.com/jvolante/neovim-config.git";
-  nvimConfigDir  = "${config.xdg.configHome}/nvim-cloned";
+  nvimConfigDir  = "${config.xdg.configHome}/nvim";
 
-  # Single source of truth for the clone logic
+  # Tools that should only be visible inside Neovim
+  nvimTools = [
+    pkgs.tree-sitter
+    pkgs.wl-clipboard
+    pkgs.ripgrep
+    pkgs.clang-tools
+    pkgs.glsl_analyzer
+    pkgs.buf
+    pkgs.rust-analyzer
+    pkgs.lua-language-server
+    pkgs.tinymist
+    pkgs.nixd
+    pkgs.bash-language-server
+    pkgs.shfmt
+    pkgs.shellcheck
+    pkgs.yaml-language-server
+    pkgs.neocmakelsp
+    pkgs.taplo
+    pkgs.marksman
+    pkgs.jq-lsp
+    pkgs.jqfmt
+    pkgs.harper
+    pkgs.vscode-langservers-extracted
+    pkgs.gnumake
+    pkgs.gcc
+  ];
+
+  nvimWithTools = pkgs.runCommand "neovim-with-tools" {
+    nativeBuildInputs = [ pkgs.makeWrapper ];
+  } ''
+    mkdir -p $out/bin
+    makeWrapper ${pkgs.neovim}/bin/nvim $out/bin/nvim \
+      --prefix PATH : ${lib.makeBinPath nvimTools}
+    ln -s $out/bin/nvim $out/bin/vim
+    ln -s $out/bin/nvim $out/bin/vi
+  '';
+
   cloneScript = pkgs.writeShellScript "clone-nvim-config" ''
     set -euo pipefail
     export GIT_CONFIG_GLOBAL=/dev/null
     export GIT_CONFIG_SYSTEM=/dev/null
     export GIT_TERMINAL_PROMPT=0
+
+    if [ -e "${nvimConfigDir}" ] && [ ! -d "${nvimConfigDir}/.git" ]; then
+      rm -rf "${nvimConfigDir}"
+    fi
+
     if [ ! -d "${nvimConfigDir}" ]; then
       ${pkgs.git}/bin/git -c credential.helper= clone \
         ${lib.escapeShellArg nvimConfigRepo} \
         ${lib.escapeShellArg nvimConfigDir}
     else
-      # Pull only if we're in a clean state to avoid conflicts
-      if [ -z "$(${pkgs.git}/bin/git -c credential.helper= -C ${nvimConfigDir} status --porcelain)" ]; then
+      if [ -z "$(${pkgs.git}/bin/git -C ${nvimConfigDir} status --porcelain)" ]; then
         ${pkgs.git}/bin/git -C ${nvimConfigDir} pull
       fi
     fi
   '';
-  clonedInit = "${nvimConfigDir}/init.lua";
 in
 {
-  programs.neovim = {
-    enable = true;
-    defaultEditor = true;
-    vimAlias = true;
+  home.packages = [ nvimWithTools ];
 
-    withNodeJs = false;
-    withPerl = false;
-    withPython3 = false;
-    withRuby = false;
-
-    extraPackages = [
-      pkgs.tree-sitter
-      pkgs.wl-clipboard
-      pkgs.ripgrep
-      pkgs.clang-tools
-      pkgs.glsl_analyzer
-      pkgs.buf
-      pkgs.rust-analyzer
-      pkgs.lua-language-server
-      pkgs.tinymist
-      pkgs.nixd
-      pkgs.bash-language-server
-      pkgs.shfmt
-      pkgs.shellcheck
-      pkgs.yaml-language-server
-      pkgs.neocmakelsp
-      pkgs.taplo
-      pkgs.marksman
-      pkgs.jq-lsp
-      pkgs.jqfmt
-      pkgs.harper
-      pkgs.vscode-langservers-extracted
-      pkgs.gnumake
-      pkgs.gcc
-    ];
-    extraLuaConfig = ''
-      -- Load the user-managed config from the cloned repository
-      vim.opt.runtimepath:prepend("${nvimConfigDir}")
-      vim.opt.packpath:prepend("${nvimConfigDir}")
-      dofile("${clonedInit}")
-    '';
+  home.sessionVariables = {
+    EDITOR = "nvim";
   };
 
-  # Systemd user service: runs once per login if the directory is missing
+  home.shellAliases = {
+    vim = "nvim";
+    vi  = "nvim";
+  };
+
+  home.activation.cloneNvimConfig = lib.hm.dag.entryAfter ["writeBoundary"] ''
+    $DRY_RUN_CMD ${cloneScript}
+  '';
+
   systemd.user.services.clone-nvim-config = {
     Unit = {
       Description = "Clone Neovim configuration repository";
@@ -83,9 +93,4 @@ in
       WantedBy = [ "default.target" ];
     };
   };
-
-  # Activation: ensures the clone happens during rebuild even before login
-  home.activation.cloneNvimConfig = lib.hm.dag.entryAfter ["writeBoundary"] ''
-    $DRY_RUN_CMD ${cloneScript}
-  '';
 }
