@@ -2,7 +2,7 @@
 
 let
   nvimConfigRepo = "https://github.com/jvolante/neovim-config.git";
-  nvimConfigDir  = "${config.xdg.configHome}/nvim";
+  nvimConfigDir  = "${config.xdg.configHome}/nvim-cloned";
 
   # Single source of truth for the clone logic
   cloneScript = pkgs.writeShellScript "clone-nvim-config" ''
@@ -21,6 +21,7 @@ let
       fi
     fi
   '';
+  clonedInit = "${nvimConfigDir}/init.lua";
 in
 {
   programs.neovim = {
@@ -58,6 +59,12 @@ in
       pkgs.gnumake
       pkgs.gcc
     ];
+    extraLuaConfig = ''
+      -- Load the user-managed config from the cloned repository
+      vim.opt.runtimepath:prepend("${nvimConfigDir}")
+      vim.opt.packpath:prepend("${nvimConfigDir}")
+      dofile("${clonedInit}")
+    '';
   };
 
   # Systemd user service: runs once per login if the directory is missing
