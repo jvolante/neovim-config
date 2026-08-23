@@ -7,6 +7,7 @@ let
   # Single source of truth for the clone logic
   cloneScript = pkgs.writeShellScript "clone-nvim-config" ''
     set -euo pipefail
+    export GIT_TERMINAL_PROMPT=0
     if [ ! -d "${nvimConfigDir}" ]; then
       ${pkgs.git}/bin/git clone \
         ${lib.escapeShellArg nvimConfigRepo} \
@@ -61,7 +62,8 @@ in
   systemd.user.services.clone-nvim-config = {
     Unit = {
       Description = "Clone Neovim configuration repository";
-      After = [ "network.target" ];
+      After = [ "network-online.target" ];
+      Wants = [ "network-online.target" ];
     };
     Service = {
       Type = "oneshot";
@@ -75,10 +77,6 @@ in
 
   # Activation: ensures the clone happens during rebuild even before login
   home.activation.cloneNvimConfig = lib.hm.dag.entryAfter ["writeBoundary"] ''
-    if ${pkgs.systemd}/bin/systemctl --user is-system-running &>/dev/null && ${pkgs.systemd}/bin/systemctl list-unit-files "clone-neovim-config"; then
-      $DRY_RUN_CMD ${pkgs.systemd}/bin/systemctl --user start clone-nvim-config.service
-    else
-      $DRY_RUN_CMD ${cloneScript}
-    fi
+    $DRY_RUN_CMD ${cloneScript}
   '';
 }
