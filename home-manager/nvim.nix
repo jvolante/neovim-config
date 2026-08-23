@@ -75,7 +75,7 @@ in
 
   # Activation: ensures the clone happens during rebuild even before login
   home.activation.cloneNvimConfig = lib.hm.dag.entryAfter ["writeBoundary"] ''
-    if ${pkgs.systemd}/bin/systemctl --user is-system-running &>/dev/null; then
+    if ${pkgs.systemd}/bin/systemctl --user is-system-running &>/dev/null && ${pkgs.systemd}/bin/systemctl list-unit-files "clone-neovim-config"; then
       $DRY_RUN_CMD ${pkgs.systemd}/bin/systemctl --user start clone-nvim-config.service
     else
       $DRY_RUN_CMD ${cloneScript}
