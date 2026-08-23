@@ -7,6 +7,8 @@ let
   # Single source of truth for the clone logic
   cloneScript = pkgs.writeShellScript "clone-nvim-config" ''
     set -euo pipefail
+    export GIT_CONFIG_GLOBAL=/dev/null
+    export GIT_CONFIG_SYSTEM=/dev/null
     export GIT_TERMINAL_PROMPT=0
     if [ ! -d "${nvimConfigDir}" ]; then
       ${pkgs.git}/bin/git -c credential.helper= clone \
