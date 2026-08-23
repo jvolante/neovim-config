@@ -1,7 +1,7 @@
 { pkgs, lib, config, ... }:
 
 let
-  nvimConfigRepo = "https://github.com/jvolante/nvim-config.git";
+  nvimConfigRepo = "https://github.com/jvolante/neovim-config.git";
   nvimConfigDir  = "${config.xdg.configHome}/nvim";
 
   # Single source of truth for the clone logic
