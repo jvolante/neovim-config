@@ -4,6 +4,7 @@ local function blame()
   return blame
 end
 
+local tokencount = require'settings.tokencount'
 local lsp_progress = require'lsp-progress'
 lsp_progress.setup()
 
@@ -26,7 +27,7 @@ lualine.setup {
     lualine_c = {'filename', 'aerial'},
     lualine_x = {'overseer', function ()
       return lsp_progress.progress()
-    end},
+    end, tokencount.component},
     lualine_y = {'filetype'},
     lualine_z = {blame, 'location'}
   },
